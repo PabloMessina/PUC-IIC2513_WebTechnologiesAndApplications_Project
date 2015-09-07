@@ -1,16 +1,17 @@
-# Equipo <nombre equipo>
+# Equipo ToPa
 
-* Proyecto a trabajar: <proyecto>
-* Ayudante: <ayudante>
+* Proyecto a trabajar: [Alma](https://github.com/IIC2513-2015-2/syllabus/blob/master/proyecto/alternativas/Alma.md)
+* Ayudante: Pedro Pablo Aste Kompen
 
 Pueden revisar el feedback y evaluación recibida después de cada entrega en la carpeta [feedback](feedback).
 
 ## Integrantes:
 Asegúrense de llenar lo siguiente:
 
-| Nº Alumno    | Nombre              | Email UC      |
-|:-------------|:--------------------|:--------------|
-| 0123456789   | Nombre alumno       | correo@uc.cl  |
+| Nº Alumno    | Nombre              | Email UC            |
+|:-------------|:--------------------|:--------------------|
+| 12638188     | Tomás Andrighetti   | taandrighetti@uc.cl |
+| 0123456789   | Nombre alumno       | correo@uc.cl        |
 
 # Setup inicial
 

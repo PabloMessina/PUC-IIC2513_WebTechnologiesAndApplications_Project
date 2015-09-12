@@ -11,7 +11,7 @@ Asegúrense de llenar lo siguiente:
 | Nº Alumno    | Nombre              | Email UC            |
 |:-------------|:--------------------|:--------------------|
 | 12638188     | Tomás Andrighetti   | taandrighetti@uc.cl |
-| 0123456789   | Nombre alumno       | correo@uc.cl        |
+| 11637072   | Pablo Messina       | pamessina@uc.cl        |
 
 # Setup inicial
 

@@ -8,18 +8,18 @@ class Admin::UsersController < ApplicationController
   end
 
   def new
-    @user = User.new    
-    @submit_message = "Create account";
+    @user = User.new
+    @submit_message = "Create user";
   end
 
   def edit
-    @submit_message = "Edit account";
+    @submit_message = "Edit user";
   end
 
   def show
     if(@user.nil?)
       flash[:error] = "ERROR: user with id #{params[:id]} could not be found"
-      render 'index'
+      redirect_to admin_users_path
     end
   end
 
@@ -28,7 +28,7 @@ class Admin::UsersController < ApplicationController
     if @user.save
         flash[:success] = "SUCCESS: user registered successfully!"
         redirect_to admin_users_path
-    else      
+    else
       flash[:error] = "ERROR: user could not be registered!"
       render 'new'
     end
@@ -44,7 +44,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def destroy
-    if(!@user.nil?) 
+    if(!@user.nil?)
       @user.destroy
       flash[:success] = "User destroyed successfully!"
     else
@@ -56,7 +56,11 @@ class Admin::UsersController < ApplicationController
   private
 
     def set_user
-      @user = User.find(params[:id])
+      begin
+        @user = User.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        @user = nil
+      end
     end
 
     def user_params
@@ -64,7 +68,7 @@ class Admin::UsersController < ApplicationController
     end
 
     def set_namespace
-      userExists = defined?(@user) && !@user.new_record?
+      userExists = @user && !@user.new_record?
       @namespace = userExists ? admin_user_path(@user) : admin_users_path
     end
 

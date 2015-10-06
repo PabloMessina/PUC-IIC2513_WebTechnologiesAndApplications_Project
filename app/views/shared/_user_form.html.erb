@@ -1,11 +1,11 @@
 <%= form_for(@user, url: @namespace) do |f| %>
 
- 	<%= render 'shared/user_error_messages' %>
+ 	<%= render 'shared/error_messages', object: @user %>
 
 	<%= f.label :first_name, "First Name" %>
 	<%= f.text_field :first_name %>
 
-	<%= f.label :last_name, "Last Name" %>		
+	<%= f.label :last_name, "Last Name" %>
 	<%= f.text_field :last_name %>
 
 	<%= f.label :username, "Username" %>
@@ -23,5 +23,5 @@
 	<%= f.label :address, "Address" %>
 	<%= f.text_field :address %>
 
-	<%= f.submit @submit_message%>
+	<%= f.submit @submit_message %>
 <% end %>

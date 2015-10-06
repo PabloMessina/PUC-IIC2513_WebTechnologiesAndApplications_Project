@@ -2,12 +2,14 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
-  namespace :admin do 
+  namespace :admin do
     resources :users
+    resources :groceries
+    resources :products
   end
 
   match '/signup',    to: 'users#new',            via: 'get'
-  match '/signin',    to: 'sessions#new',         via: 'get'    
+  match '/signin',    to: 'sessions#new',         via: 'get'
   match '/signout',   to: 'sessions#destroy',     via: 'delete'
 
 

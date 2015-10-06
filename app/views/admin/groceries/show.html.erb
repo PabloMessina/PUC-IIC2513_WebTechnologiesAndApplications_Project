@@ -1,0 +1,12 @@
+<p>
+  <strong>Name:</strong>
+  <%= @grocery.name %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @grocery.address %>
+</p>
+
+<%= link_to 'Edit', edit_admin_grocery_path(@grocery) %> |
+<%= link_to 'Back', admin_groceries_path %>

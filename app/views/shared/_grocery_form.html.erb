@@ -1,0 +1,12 @@
+<%= form_for(@grocery, url: @namespace) do |f| %>
+
+ 	<%= render 'shared/error_messages', object: @grocery %>
+
+	<%= f.label :name, "Name" %>
+	<%= f.text_field :name %>
+
+	<%= f.label :address, "Address" %>
+	<%= f.text_field :address %>
+
+	<%= f.submit @submit_message%>
+<% end %>

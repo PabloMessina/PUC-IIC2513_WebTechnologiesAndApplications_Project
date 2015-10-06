@@ -1,2 +1,2 @@
-class GroceryController < ApplicationController
+class Product < ApplicationController
 end

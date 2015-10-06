@@ -1,0 +1,18 @@
+<%= form_for(@product, url: @namespace) do |f| %>
+
+ 	<%= render 'shared/error_messages', object: @product %>
+
+	<%= f.label :name, "Name" %>
+	<%= f.text_field :name %>
+
+  <%= f.label :stock, "Stock" %>
+	<%= f.number_field :stock %>
+
+  <%= f.label :unit, "Unit" %>
+	<%= f.select :unit, options_for_select(Product.get_units_matrix, @product.unit) %>
+
+  <%= f.label :price, "Price" %>
+	<%= f.number_field :price %>
+
+	<%= f.submit @submit_message%>
+<% end %>

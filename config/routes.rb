@@ -3,9 +3,7 @@ Rails.application.routes.draw do
   root 'home#index'
 
   namespace :admin do 
-  end
-
-  resources :users do
+    resources :users
   end
 
   match '/signup',    to: 'users#new',            via: 'get'

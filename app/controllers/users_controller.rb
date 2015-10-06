@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
+	before_action :set_namespace
+
+
 	def new
 		@user = User.new
+    	@submit_message = "Create my account";
 	end
 
 	def create
@@ -18,4 +22,7 @@ class UsersController < ApplicationController
 		def user_params
 			params.require(:user).permit(:first_name, :last_name,:username,:password,:email,:password_confirmation);
 		end
+	 	def set_namespace
+	      @namespace = users_path
+	    end
 end

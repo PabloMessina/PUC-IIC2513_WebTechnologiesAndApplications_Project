@@ -13,26 +13,5 @@ Asegúrense de llenar lo siguiente:
 | 12638188     | Tomás Andrighetti   | taandrighetti@uc.cl |
 | 11637072   | Pablo Messina       | pamessina@uc.cl        |
 
-# Setup inicial
-
-Al momento de crear la aplicación, deben asegurarse que este directorio sea el **_root_**. Si la aplicación queda aquí contenida dentro de una carpeta **tendrán problemas al momento de hacer un deployment.**
-
-#### Procedimiento sugerido
-
-Cambiar `EQUIPO` por el nombre de su equipo en Github.
-```sh
-# Clonamos el repositorio, esto creará la carpeta EQUIPO en el directorio actual
-$ git clone https://github.com/IIC2513-2015-2/EQUIPO.git
-
-# Creamos la aplicación Rails, puedes añadir parámetros adicionales. 
-# Ver: rails new --help 
-$ rails new EQUIPO
-```
-
-# Instrucciones para el desarrollo local
-
-Aquí se deberá indicar el procedimiento necesario para poder ejecutar la aplicación Rails localmente. Usar [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) para disponer de una buena marcación.
-
-# Deployment
-
-Cuando sea solicitado, aquí se deberá indicar la URL de la aplicación corriendo en un servidor externo.
+# Entrega 2
+	En el homepage tiene un header para hacer singup/login/logout, de los cuales singup y logout funcionan. No tomar esto muy en serio, más bien como bonus, porque el grueso de la implementación se encuentra en el namespace admin. En concreto, se pueden administrar users, groceries y products en las urls "/admin/users", "/admin/groceries" y "/admin/products", las cuales implementan CRUD.

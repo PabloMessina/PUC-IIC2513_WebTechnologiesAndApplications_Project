@@ -1,74 +1,76 @@
-# default.gems generated gem export file. Note that any env variable settings will be missing. Append these after using a ';' field separator
+source 'https://rubygems.org'
 
-actionmailer -v4.2.4
-actionpack -v4.2.4
-actionview -v4.2.4
-activejob -v4.2.4
-activemodel -v4.2.4
-activerecord -v4.2.4
-activesupport -v4.2.4
-arel -v6.0.3
-bigdecimal -v1.2.6
-binding_of_caller -v0.7.2
-builder -v3.2.2
-bundler -v1.10.6
-byebug -v6.0.2
-coffee-rails -v4.1.0
-coffee-script -v2.4.1
-coffee-script-source -v1.9.1.1
-debug_inspector -v0.0.2
-erubis -v2.7.0
-execjs -v2.6.0
-faker -v1.5.0
-globalid -v0.3.6
-i18n -v0.7.0
-io-console -v0.4.3
-jbuilder -v2.3.2
-jbuilder -v2.3.1
-jquery-rails -v4.0.5
-jquery-rails -v4.0.4
-json -v1.8.3
-json -v1.8.1
-loofah -v2.0.3
-mail -v2.6.3
-mime-types -v2.6.2
-mime-types -v2.6.1
-mini_portile -v0.6.2
-minitest -v5.8.1
-minitest -v5.8.0
-multi_json -v1.11.2
-nokogiri -v1.6.6.2
-pg -v0.18.3
-pg -v0.18.2
-psych -v2.0.8
-rack -v1.6.4
-rack-test -v0.6.3
-rails -v4.2.4
-rails-deprecated_sanitizer -v1.0.3
-rails-dom-testing -v1.0.7
-rails-html-sanitizer -v1.0.2
-rails_12factor -v0.0.3
-rails_serve_static_assets -v0.0.4
-rails_stdout_logging -v0.0.4
-railties -v4.2.4
-rake -v10.4.2
-rdoc -v4.2.0
-sass -v3.4.18
-sass-rails -v5.0.4
-sass-rails -v5.0.3
-sdoc -v0.4.1
-spring -v1.4.0
-spring -v1.3.6
-sprockets -v3.3.5
-sprockets -v3.3.3
-sprockets-rails -v2.3.3
-sprockets-rails -v2.3.2
-sqlite3 -v1.3.10
-thor -v0.19.1
-thread_safe -v0.3.5
-tilt -v2.0.1
-tilt -v1.4.1
-turbolinks -v2.5.3
-tzinfo -v1.2.2
-uglifier -v2.7.2
-web-console -v2.2.1
+ruby=ruby-2.2.3
+
+gem 'actionmailer', '4.2.4'
+gem 'actionpack', '4.2.4'
+gem 'actionview', '4.2.4'
+gem 'activejob', '4.2.4'
+gem 'activemodel', '4.2.4'
+gem 'activerecord', '4.2.4'
+gem 'activesupport', '4.2.4'
+gem 'arel', '6.0.3'
+gem 'bigdecimal', '1.2.6'
+gem 'binding_of_caller', '0.7.2'
+gem 'builder', '3.2.2'
+gem 'bundler', '1.10.6'
+gem 'byebug', '6.0.2'
+gem 'coffee-rails', '4.1.0'
+gem 'coffee-script', '2.4.1'
+gem 'coffee-script-source', '1.9.1.1'
+gem 'debug_inspector', '0.0.2'
+gem 'erubis', '2.7.0'
+gem 'execjs', '2.6.0'
+gem 'faker', '1.5.0'
+gem 'globalid', '0.3.6'
+gem 'i18n', '0.7.0'
+gem 'io-console', '0.4.3'
+gem 'jbuilder', '2.3.2'
+gem 'jbuilder', '2.3.1'
+gem 'jquery-rails', '4.0.5'
+gem 'jquery-rails', '4.0.4'
+gem 'json', '1.8.3'
+gem 'json', '1.8.1'
+gem 'loofah', '2.0.3'
+gem 'mail', '2.6.3'
+gem 'mime-types', '2.6.2'
+gem 'mime-types', '2.6.1'
+gem 'mini_portile', '0.6.2'
+gem 'minitest', '5.8.1'
+gem 'minitest', '5.8.0'
+gem 'multi_json', '1.11.2'
+gem 'nokogiri', '1.6.6.2'
+gem 'pg', '0.18.3'
+gem 'pg', '0.18.2'
+gem 'psych', '2.0.8'
+gem 'rack', '1.6.4'
+gem 'rack-test', '0.6.3'
+gem 'rails', '4.2.4'
+gem 'rails-deprecated_sanitizer', '1.0.3'
+gem 'rails-dom-testing', '1.0.7'
+gem 'rails-html-sanitizer', '1.0.2'
+gem 'rails_12factor', '0.0.3'
+gem 'rails_serve_static_assets', '0.0.4'
+gem 'rails_stdout_logging', '0.0.4'
+gem 'railties', '4.2.4'
+gem 'rake', '10.4.2'
+gem 'rdoc', '4.2.0'
+gem 'sass', '3.4.18'
+gem 'sass-rails', '5.0.4'
+gem 'sass-rails', '5.0.3'
+gem 'sdoc', '0.4.1'
+gem 'spring', '1.4.0'
+gem 'spring', '1.3.6'
+gem 'sprockets', '3.3.5'
+gem 'sprockets', '3.3.3'
+gem 'sprockets-rails', '2.3.3'
+gem 'sprockets-rails', '2.3.2'
+gem 'sqlite3', '1.3.10'
+gem 'thor', '0.19.1'
+gem 'thread_safe', '0.3.5'
+gem 'tilt', '2.0.1'
+gem 'tilt', '1.4.1'
+gem 'turbolinks', '2.5.3'
+gem 'tzinfo', '1.2.2'
+gem 'uglifier', '2.7.2'
+gem 'web-console', '2.2.1'

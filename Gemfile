@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-#ruby=ruby-2.2.3
+ruby "2.2.3"
 
 gem 'actionmailer', '4.2.4'
 gem 'actionpack', '4.2.4'

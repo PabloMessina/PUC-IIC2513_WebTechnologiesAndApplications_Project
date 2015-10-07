@@ -1,4 +1,5 @@
 class Product < ActiveRecord::Base
+  belongs_to :grocery
 
   # ojo: debe estar en orden 0,1,2,...
   @@units_matrix = [["-",0],["kg",1],["g",2],["L",3],["mL",4],["m",5]]

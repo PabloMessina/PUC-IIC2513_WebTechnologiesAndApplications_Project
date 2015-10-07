@@ -1,5 +1,9 @@
 class User < ActiveRecord::Base
-	has_and_belongs_to_many :groceries
+	has_many :privileges
+	has_many :groceries, through: :privileges
+
+	has_many :followers
+	has_many :groceries, through: :followers
 
 	def User.new_remember_token
   		SecureRandom.urlsafe_base64

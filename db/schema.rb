@@ -11,10 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151006225004) do
+ActiveRecord::Schema.define(version: 20151007003134) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "followers", id: false, force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "grocery_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "followers", ["grocery_id"], name: "index_followers_on_grocery_id", using: :btree
+  add_index "followers", ["user_id"], name: "index_followers_on_user_id", using: :btree
 
   create_table "groceries", force: :cascade do |t|
     t.string   "name"
@@ -31,6 +41,17 @@ ActiveRecord::Schema.define(version: 20151006225004) do
   add_index "groceries_users", ["grocery_id"], name: "index_groceries_users_on_grocery_id", using: :btree
   add_index "groceries_users", ["user_id"], name: "index_groceries_users_on_user_id", using: :btree
 
+  create_table "privileges", id: false, force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "grocery_id"
+    t.integer  "privilege"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "privileges", ["grocery_id"], name: "index_privileges_on_grocery_id", using: :btree
+  add_index "privileges", ["user_id"], name: "index_privileges_on_user_id", using: :btree
+
   create_table "products", force: :cascade do |t|
     t.string   "name"
     t.float    "stock"
@@ -38,7 +59,10 @@ ActiveRecord::Schema.define(version: 20151006225004) do
     t.integer  "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "grocery_id"
   end
+
+  add_index "products", ["grocery_id"], name: "index_products_on_grocery_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "first_name"
@@ -55,4 +79,5 @@ ActiveRecord::Schema.define(version: 20151006225004) do
 
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
 
+  add_foreign_key "products", "groceries"
 end

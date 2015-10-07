@@ -1,50 +1,74 @@
-source 'https://rubygems.org'
+# default.gems generated gem export file. Note that any env variable settings will be missing. Append these after using a ';' field separator
 
-
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.4'
-# Use postgresql as the database for Active Record
-gem 'pg'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-# Use CoffeeScript for .coffee assets and views
-# gem 'coffee-rails', '~> 4.1.0'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
-
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
-# bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
-
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use Unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
-end
-
-group :development do
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
-
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-end
-
-group :production do
-  gem 'rails_12factor'
-end
+actionmailer -v4.2.4
+actionpack -v4.2.4
+actionview -v4.2.4
+activejob -v4.2.4
+activemodel -v4.2.4
+activerecord -v4.2.4
+activesupport -v4.2.4
+arel -v6.0.3
+bigdecimal -v1.2.6
+binding_of_caller -v0.7.2
+builder -v3.2.2
+bundler -v1.10.6
+byebug -v6.0.2
+coffee-rails -v4.1.0
+coffee-script -v2.4.1
+coffee-script-source -v1.9.1.1
+debug_inspector -v0.0.2
+erubis -v2.7.0
+execjs -v2.6.0
+faker -v1.5.0
+globalid -v0.3.6
+i18n -v0.7.0
+io-console -v0.4.3
+jbuilder -v2.3.2
+jbuilder -v2.3.1
+jquery-rails -v4.0.5
+jquery-rails -v4.0.4
+json -v1.8.3
+json -v1.8.1
+loofah -v2.0.3
+mail -v2.6.3
+mime-types -v2.6.2
+mime-types -v2.6.1
+mini_portile -v0.6.2
+minitest -v5.8.1
+minitest -v5.8.0
+multi_json -v1.11.2
+nokogiri -v1.6.6.2
+pg -v0.18.3
+pg -v0.18.2
+psych -v2.0.8
+rack -v1.6.4
+rack-test -v0.6.3
+rails -v4.2.4
+rails-deprecated_sanitizer -v1.0.3
+rails-dom-testing -v1.0.7
+rails-html-sanitizer -v1.0.2
+rails_12factor -v0.0.3
+rails_serve_static_assets -v0.0.4
+rails_stdout_logging -v0.0.4
+railties -v4.2.4
+rake -v10.4.2
+rdoc -v4.2.0
+sass -v3.4.18
+sass-rails -v5.0.4
+sass-rails -v5.0.3
+sdoc -v0.4.1
+spring -v1.4.0
+spring -v1.3.6
+sprockets -v3.3.5
+sprockets -v3.3.3
+sprockets-rails -v2.3.3
+sprockets-rails -v2.3.2
+sqlite3 -v1.3.10
+thor -v0.19.1
+thread_safe -v0.3.5
+tilt -v2.0.1
+tilt -v1.4.1
+turbolinks -v2.5.3
+tzinfo -v1.2.2
+uglifier -v2.7.2
+web-console -v2.2.1

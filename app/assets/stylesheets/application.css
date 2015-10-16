@@ -22,3 +22,24 @@ ul.hmenu {
 ul.hmenu li {
   display: inline;  
 }
+
+.hide-element {
+	display: none;
+}
+
+.highlight-div {
+  outline: 1px solid blue;
+}
+
+.size-of-content {
+	display: inline-block
+}
+
+#password_div {
+	padding: 5px;
+}
+
+div.field {
+  margin-bottom: 10px;
+}
+

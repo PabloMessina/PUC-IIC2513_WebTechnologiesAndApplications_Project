@@ -1,0 +1,33 @@
+<%= link_to 'Edit', edit_user_path(@user) %> 
+<br>
+
+<% if @user.has_image? %>
+  <%= image_tag @user.user_image.user_image_url, :style => "width: 120px; height: 120px;"  %>
+<% else %>
+  <%= image_tag "default_profile.jpg", :style => "width: 120px; height: 120px;"  %>
+<% end %>
+
+<p>
+  <strong>First name:</strong>
+  <%= @user.first_name %>
+</p>
+
+<p>
+  <strong>Last name:</strong>
+  <%= @user.last_name %>
+</p>
+
+<p>
+  <strong>Username:</strong>
+  <%= @user.username %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @user.email %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @user.address %>
+</p>

@@ -17,7 +17,19 @@ class UsersController < ApplicationController
 	end
 
 	def create
-		@user = User.new(user_params)
+    filtered_params = user_params
+    puts "----------------------------------";
+    puts "----------------------------------";
+    puts "----------------------------------";
+    puts filtered_params.inspect
+    puts "----------------------------------";
+    puts "----------------------------------";
+    puts "----------------------------------";
+		@user = User.new(filtered_params)
+    flash[:debug] = "ESTAMOS EN users_controller.create()"
+
+
+
 		if @user.save
 			sign_in @user
   			flash[:success] = "User registered successfully!"
@@ -35,6 +47,7 @@ class UsersController < ApplicationController
 	end
 
   def update
+    flash[:debug] = "ESTAMOS EN users_controller.update()"
 
   	if(@user.nil?)
       flash[:error] = "ERROR: user with id #{params[:id]} could not be found"
@@ -73,7 +86,7 @@ class UsersController < ApplicationController
 	private
 
 		def user_params
-      params.require(:user).permit(:first_name, :last_name,:username,:password,:email,:password_confirmation, :address);
+      params.require(:user).permit(:first_name, :last_name,:username,:password,:password_confirmation,:email, :address);
     end
 
     def edit_user_params    	

@@ -1,7 +1,6 @@
 class User < ActiveRecord::Base	
 
 	#virtual attributes for edit form
-	attr_accessor :password, :password_confirmation
 	attr_accessor :edit_password 
 	attr_accessor :current_password
 	attr_accessor :wrong_current_password
@@ -29,7 +28,6 @@ class User < ActiveRecord::Base
 
 	has_secure_password
 	validates :password, length: { minimum: 6, maximum: 30}, unless: :skip_password_validation
-	validates :password_confirmation, presence: true, unless: :skip_password_validation
 	validate :current_password_correct, unless: :skip_password_validation
 
 	def User.new_remember_token
@@ -51,6 +49,6 @@ class User < ActiveRecord::Base
 	  end
 	  
 		def current_password_correct
-			errors.add(:current_password, "provided is not correct") unless !wrong_current_password
+			errors.add(:current_password, "provided is not correct") if wrong_current_password
 		end
 end

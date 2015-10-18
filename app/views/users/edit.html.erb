@@ -1,11 +1,11 @@
 <h1>Editing User</h1>
 
-<%= form_for(@user, url: @namespace) do |f| %>
+<%= form_for(@logged_user, url: user_path(@logged_user)) do |f| %>
 
- 	<%= render 'shared/error_messages', object: @user %>
+ 	<%= render 'shared/error_messages', object: @logged_user %>
 
- 	<% if @user.has_image? %>
-		<%= image_tag @user.user_image.user_image_url, :style => "width: 120px; height: 120px;"  %>
+ 	<% if @logged_user.has_image? %>
+		<%= image_tag @logged_user.user_image.user_image_url, :style => "width: 120px; height: 120px;"  %>
 	<% else %>
 		<%= image_tag "default_profile.jpg", :style => "width: 120px; height: 120px;"  %>
 	<% end %>
@@ -63,5 +63,5 @@
 	<%= f.submit @submit_message %>
 <% end %>
 
-<%= link_to 'Show', admin_user_path(@user) %> |
+<%= link_to 'Show', admin_user_path(@logged_user) %> |
 <%= link_to 'Back', admin_users_path %>

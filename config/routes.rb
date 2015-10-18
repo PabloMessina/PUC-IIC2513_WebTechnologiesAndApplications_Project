@@ -8,7 +8,10 @@ Rails.application.routes.draw do
     resources :products
   end
 
-  resources :users
+  resources :users, only: [:show, :new, :create, :edit, :update]
+  resources :groceries do
+    resources :products, controller:'grocery_products'
+  end
   resources :sessions, only: [:new, :create, :destroy]
 
   match '/signup',    to: 'users#new',            via: 'get'

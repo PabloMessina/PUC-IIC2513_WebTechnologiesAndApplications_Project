@@ -1,0 +1,17 @@
+<% if @grocery.has_image? %>
+  <%= image_tag @grocery.grocery_image.grocery_image_url, :style => "width: 250px; height: 120px;"  %>
+<% else %>
+  <%= image_tag "Springfield_grocery_store.png", :style => "width: 250px; height: 120px;"  %>
+<% end %>
+
+<p>
+  <strong>Name:</strong>
+  <%= @grocery.name %>
+</p>
+
+<p> 
+  <strong>Address:</strong>
+  <%= @grocery.address %>
+</p>
+
+<%= link_to 'Create a new product', new_grocery_product_path(@grocery) %>

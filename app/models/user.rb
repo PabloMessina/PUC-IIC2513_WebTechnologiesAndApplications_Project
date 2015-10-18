@@ -8,16 +8,16 @@ class User < ActiveRecord::Base
 	attr_accessor :image
 
 	has_many :privileges
-	has_many :groceries, through: :privileges
+	has_many :privileged_groceries, through: :privileges, source: :grocery
 	has_many :followers
-	has_many :groceries, through: :followers
+	has_many :following_groceries, through: :followers, source: :grocery
 	has_one :user_image, :dependent => :destroy
 
 	before_create :create_remember_token
 
 
 	validates :username, presence: true, 
-				length: { maximum: 25 },
+				length: { minimum: 1, maximum: 25 },
 				uniqueness: { case_sensitive: true }
 	validates :first_name, presence: true, length: { maximum: 50 }
 	validates :last_name, presence: true, length: { maximum: 50 }

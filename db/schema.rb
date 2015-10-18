@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151013163940) do
+ActiveRecord::Schema.define(version: 20151018183111) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,12 +41,21 @@ ActiveRecord::Schema.define(version: 20151013163940) do
   add_index "groceries_users", ["grocery_id"], name: "index_groceries_users_on_grocery_id", using: :btree
   add_index "groceries_users", ["user_id"], name: "index_groceries_users_on_user_id", using: :btree
 
+  create_table "grocery_images", force: :cascade do |t|
+    t.string   "grocery_image"
+    t.integer  "grocery_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "grocery_images", ["grocery_id"], name: "index_grocery_images_on_grocery_id", using: :btree
+
   create_table "privileges", id: false, force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "grocery_id"
-    t.integer  "privilege"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "privilege",  default: 0
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "privileges", ["grocery_id"], name: "index_privileges_on_grocery_id", using: :btree
@@ -86,5 +95,6 @@ ActiveRecord::Schema.define(version: 20151013163940) do
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  add_foreign_key "grocery_images", "groceries"
   add_foreign_key "products", "groceries"
 end

@@ -1,5 +1,10 @@
-<%= link_to 'Edit', edit_user_path(@user) %> 
+<%= link_to 'Edit Profile', edit_user_path(@user) %> 
 <br>
+
+<% if user_id_matches_logged_user? %>
+  <%= link_to 'Create a new grocery', new_grocery_path %>
+  <br>
+<% end %>
 
 <% if @user.has_image? %>
   <%= image_tag @user.user_image.user_image_url, :style => "width: 120px; height: 120px;"  %>
@@ -31,3 +36,20 @@
   <strong>Address:</strong>
   <%= @user.address %>
 </p>
+
+<% if @user.privileges.any? %>
+  <strong>Associated groceries</strong>
+  <table border>
+    <tr>
+      <th>Name</th>
+      <th>Privilege</th>
+    </tr>   
+    <% @user.privileges.each do |privilege| %>
+      <% grocery = privilege.grocery %>
+      <tr>
+        <td><%= link_to grocery.name, grocery_path(grocery) %></td>
+        <td><%= privilege.privilege %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

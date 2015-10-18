@@ -2,11 +2,20 @@
 
  	<%= render 'shared/error_messages', object: @grocery %>
 
-	<%= f.label :name, "Name" %>
-	<%= f.text_field :name %>
+ 	<div class = "field">
+    <%= f.label :image, "Image" %>
+    <%= f.file_field :image %>
+  </div>
 
-	<%= f.label :address, "Address" %>
-	<%= f.text_field :address %>
+	<div class = "field">
+		<%= f.label :name, "Name" %>
+		<%= f.text_field :name %>
+	</div>
+
+	<div class = "field">
+		<%= f.label :address, "Address" %>
+		<%= f.text_field :address %>
+	</div>
 
 	<%= f.submit @submit_message%>
 <% end %>

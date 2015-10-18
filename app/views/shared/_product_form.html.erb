@@ -9,7 +9,11 @@
 	<%= f.number_field :stock %>
 
   <%= f.label :unit, "Unit" %>
-	<%= f.select :unit, options_for_select(Product.get_units_matrix, @product.unit) %>
+	<%= f.select :unit, 
+		options_for_select(
+			Product.unit.key.map{ |unit| [unit,unit] }, 
+			@product.unit
+		) %>
 
   <%= f.label :price, "Price" %>
 	<%= f.number_field :price %>

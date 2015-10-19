@@ -1,22 +1,44 @@
-<%= form_for(@product, url: @namespace) do |f| %>
+<!-- remember to provide local variables product, namespace and submit_message -->
 
- 	<%= render 'shared/error_messages', object: @product %>
+<%= form_for(product, url: namespace) do |f| %>
 
-	<%= f.label :name, "Name" %>
-	<%= f.text_field :name %>
+  <%= render 'shared/error_messages', object: product %>
 
-  <%= f.label :stock, "Stock" %>
-	<%= f.number_field :stock %>
+  <div class = "field">
+    <% if product.has_image? %>
+      <%= image_tag product.product_image.product_image_url, :style => "width: 250px; height: 120px;"  %>
+    <% else %>
+      <%= image_tag "products-icon-basket.gif", :style => "width: 250px; height: 120px;"  %>
+    <% end %>
+    <br>
+    <%= f.label :image, "Change Image" %>
+    <%= f.file_field :image %>
+  </div>
 
-  <%= f.label :unit, "Unit" %>
-	<%= f.select :unit, 
-		options_for_select(
-			Product.unit.key.map{ |unit| [unit,unit] }, 
-			@product.unit
-		) %>
+  <div class = "field">
+    <%= f.label :name, "Name" %>
+    <%= f.text_field :name %>
+  </div>
 
-  <%= f.label :price, "Price" %>
-	<%= f.number_field :price %>
+  <div class="field">
+    <%= f.label :stock, "Stock" %>
+    <%= f.number_field :stock %>
+  </div>
 
-	<%= f.submit @submit_message%>
+  <div class="field">
+    <%= f.label :unit, "Unit" %>
+    <%= f.select :unit, 
+      options_for_select(
+        Product.units.keys.map{ |k| [k,k] }, 
+        product.unit
+      ) %>
+  </div>
+
+  <div class="field">
+    <%= f.label :price, "Price" %>
+    <%= f.number_field :price %>
+  </div>
+
+  <%= f.submit submit_message %>
+
 <% end %>

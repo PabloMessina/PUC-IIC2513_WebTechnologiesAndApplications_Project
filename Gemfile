@@ -32,6 +32,7 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'fog'
 gem 'carrierwave'
+gem 'will_paginate'
 
 
 group :development, :test do

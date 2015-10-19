@@ -1,9 +1,15 @@
-<%= form_for(@grocery, url: @namespace) do |f| %>
+<%= form_for(grocery, url: namespace) do |f| %>
 
- 	<%= render 'shared/error_messages', object: @grocery %>
+ 	<%= render 'shared/error_messages', object: grocery %>
 
  	<div class = "field">
-    <%= f.label :image, "Image" %>
+    <% if grocery.has_image? %>
+      <%= image_tag grocery.grocery_image.grocery_image_url, :style => "width: 250px; height: 120px;"  %>
+    <% else %>
+      <%= image_tag "Springfield_grocery_store.png", :style => "width: 250px; height: 120px;"  %>
+    <% end %>
+    <br>
+    <%= f.label :image, "Change Image" %>
     <%= f.file_field :image %>
   </div>
 
@@ -17,5 +23,5 @@
 		<%= f.text_field :address %>
 	</div>
 
-	<%= f.submit @submit_message%>
+	<%= f.submit submit_message%>
 <% end %>

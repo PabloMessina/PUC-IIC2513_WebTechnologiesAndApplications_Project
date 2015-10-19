@@ -1,7 +1,6 @@
-<%= link_to 'Edit Profile', edit_user_path(@user) %> 
-<br>
-
 <% if user_id_matches_logged_user? %>
+  <%= link_to 'Edit Profile', edit_user_path(@user) %> 
+  <br>
   <%= link_to 'Create a new grocery', new_grocery_path %>
   <br>
 <% end %>

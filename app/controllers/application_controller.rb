@@ -9,7 +9,11 @@ class ApplicationController < ActionController::Base
   end 
 
   def check_user_logged_in
-  	permission_denied("You must be logged in to perform this action") unless signed_in?
+  	unless signed_in?
+  		permission_denied("You must be logged in to perform this action")
+  		return false;
+  	end
+  	return true;
   end
 
 end

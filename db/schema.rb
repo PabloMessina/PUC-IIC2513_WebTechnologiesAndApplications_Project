@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151018183111) do
+ActiveRecord::Schema.define(version: 20151018231658) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,8 @@ ActiveRecord::Schema.define(version: 20151018183111) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "groceries", ["name"], name: "index_groceries_on_name", unique: true, using: :btree
 
   create_table "groceries_users", id: false, force: :cascade do |t|
     t.integer "grocery_id"
@@ -61,6 +63,15 @@ ActiveRecord::Schema.define(version: 20151018183111) do
   add_index "privileges", ["grocery_id"], name: "index_privileges_on_grocery_id", using: :btree
   add_index "privileges", ["user_id"], name: "index_privileges_on_user_id", using: :btree
 
+  create_table "product_images", force: :cascade do |t|
+    t.string   "product_image"
+    t.integer  "product_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "product_images", ["product_id"], name: "index_product_images_on_product_id", using: :btree
+
   create_table "products", force: :cascade do |t|
     t.string   "name"
     t.float    "stock"
@@ -71,6 +82,7 @@ ActiveRecord::Schema.define(version: 20151018183111) do
     t.integer  "grocery_id"
   end
 
+  add_index "products", ["grocery_id", "name"], name: "index_products_on_grocery_id_and_name", unique: true, using: :btree
   add_index "products", ["grocery_id"], name: "index_products_on_grocery_id", using: :btree
 
   create_table "user_images", force: :cascade do |t|
@@ -96,5 +108,6 @@ ActiveRecord::Schema.define(version: 20151018183111) do
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   add_foreign_key "grocery_images", "groceries"
+  add_foreign_key "product_images", "products"
   add_foreign_key "products", "groceries"
 end

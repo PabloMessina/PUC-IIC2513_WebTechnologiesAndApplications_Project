@@ -1,3 +1,8 @@
+<% if @privilege == :administrator %>
+  <%= link_to 'Edit Grocery', edit_grocery_path(@grocery) %>
+  <br>
+<% end %>
+
 <% if @grocery.has_image? %>
   <%= image_tag @grocery.grocery_image.grocery_image_url, :style => "width: 250px; height: 120px;"  %>
 <% else %>
@@ -14,4 +19,10 @@
   <%= @grocery.address %>
 </p>
 
-<%= link_to 'Create a new product', new_grocery_product_path(@grocery) %>
+<% if @privilege == :administrator %>
+  <%= link_to 'Create a new product', new_grocery_product_path(@grocery) %>
+<% end %>
+
+<div id = "products_pagination">
+		<%= render 'shared/grocery_products_pagination' %>
+</div>

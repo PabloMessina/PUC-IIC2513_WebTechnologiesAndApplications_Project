@@ -3,16 +3,16 @@ class UsersController < ApplicationController
   before_action :set_logged_user_by_cookie
   before_action :set_user_by_id, only:[:show]
 
+  def show
+    unless @user
+      permission_denied ("ERROR: user with id #{params[:id]} could not be found") 
+    end
+  end
+
 	def new
 		@user = User.new
   	@submit_message = "Create my account";
   	@dontShowHeader = true;
-	end
-
- 	def show
-    unless @user
-      permission_denied ("ERROR: user with id #{params[:id]} could not be found") 
-    end
 	end
 
 	def create

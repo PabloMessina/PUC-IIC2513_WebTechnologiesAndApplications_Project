@@ -1,21 +1,17 @@
 class GroceriesController < ApplicationController
-  before_action :set_namespace
   before_action :set_logged_user_by_cookie
   before_action :set_grocery_by_id, only: [:show, :edit, :update, :destroy]
+  before_action :set_privilege_on_grocery, only: [:show, :edit, :update, :destroy]
 
   def new
-    unless signed_in?
-      permission_denied ("You are not allowed to create a grocery unless you are logged in with a user account")
-    end
+    return unless check_user_logged_in   
 
     @grocery = Grocery.new
     @submit_message = "Create grocery";
   end
 
   def create
-    unless signed_in?
-      permission_denied ("You are not allowed to create a grocery unless you are logged in with a user account")
-    end
+    return unless check_user_logged_in
 
     filtered_params = grocery_params
     @grocery = Grocery.new(filtered_params.except(:image))
@@ -33,7 +29,7 @@ class GroceriesController < ApplicationController
         user_id: @logged_user.id,
         grocery_id: @grocery.id, 
         privilege: :administrator)
-      
+
       redirect_to grocery_path(@grocery)
     else 
       render 'new'
@@ -41,24 +37,78 @@ class GroceriesController < ApplicationController
   end
 
   def show
-    unless @grocery
-      permission_denied("Error: grocery with id #{params[:id]} could not be found")
+    return unless check_grocery_exists
+    @products = @grocery.products.paginate(page: 1, per_page: 10)
+  end
+
+  def edit
+    unless (check_grocery_exists &&
+            check_user_logged_in &&
+            check_privilege_on_grocery(:administrator))
+      return
     end
+  end
+
+  def update
+    unless (check_grocery_exists &&
+            check_user_logged_in &&
+            check_privilege_on_grocery(:administrator))
+      return
+    end
+
+    filtered_params = grocery_params
+
+    if @grocery.update(filtered_params.except(:image))
+      flash[:success] = "Grocery updated successfully!"
+
+      if(filtered_params[:image])
+        if(@grocery.grocery_image)
+          @grocery.grocery_image.update(grocery_image: filtered_params[:image])
+        else
+          @grocery.grocery_image = GroceryImage.create(
+            grocery_image: filtered_params[:image], 
+            grocery_id: @grocery.id)
+        end
+      end
+
+      redirect_to grocery_path(@grocery)
+    else 
+      render 'edit'
+    end
+
   end
 
   private
 
-    def set_namespace
-      grocery_exists = @grocery && !@grocery.new_record?
-      @namespace = grocery_exists ? grocery_path(@grocery) : groceries_path
+    def set_grocery_by_id
+      @grocery = Grocery.find_by_id(params[:id])
     end
 
-    def set_grocery_by_id
-      begin
-        @grocery = Grocery.find(params[:id])
-      rescue ActiveRecord::RecordNotFound
-        @grocery = nil
+    def set_privilege_on_grocery
+      if(@logged_user)
+        @privilege = @logged_user.privileges.find {|x| x.grocery_id.to_s == params[:id]}
+        if(@privilege) 
+          @privilege = @privilege.privilege.to_sym
+        end
+      else
+        @privilege = nil
       end
+    end
+
+    def check_grocery_exists
+      unless @grocery
+        permission_denied ("Grocery with id #{params[:id]} not found")
+        return false;
+      end
+      return true;
+    end
+
+    def check_privilege_on_grocery(privilege)
+      unless @privilege == privilege
+        permission_denied ("You (user_id = #{@logged_user.id}) need a privilege of #{privilege} on this grocery (id = #{params[:id]}) to perform this action")
+        return false;
+      end
+      return true;
     end
 
     def grocery_params

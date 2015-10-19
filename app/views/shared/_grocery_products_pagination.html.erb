@@ -1,0 +1,36 @@
+<% if @products.any? %>
+	<br>
+	<strong>Products</strong>
+	<%= will_paginate @products, params: {controller: 'grocery_products', action: 'index', grocery_id: @grocery.id} %>  
+
+  <table border>
+    <tr>
+      <th>Name</th>
+      <th>Image</th>
+    	<th>Actions</th>
+    </tr>   	
+	<% @products.each do |product| %>  
+		<tr>
+			<td>
+	      <%= link_to product.name, grocery_product_path(@grocery,product) %>  
+	    </td>
+	    <td>
+		    <% if product.has_image? %>
+				  <%= image_tag product.product_image.product_image_url, :style => "width: 50; height: 50px;"  %>
+				<% else %>
+				  <%= image_tag "products-icon-basket.gif", :style => "width: 50px; height: 50px;"  %>
+				<% end %>
+			</td>
+			<td>
+				<%= link_to "Show", grocery_product_path(@grocery,product) %>
+		    <% if @privilege == :administrator %>
+		      | <%= link_to "Edit", edit_grocery_product_path(@grocery,product) %>
+		      | <%= link_to "Destroy", grocery_product_path(@grocery,product), :confirm => "Are you sure?", :method => :delete %>  
+		    <% end %>
+	    </td>
+    </tr>
+	<% end %>  	
+  </table>
+
+	<%= will_paginate @products, params: {controller: 'grocery_products', action: 'index', grocery_id: @grocery.id} %>  
+<% end %>

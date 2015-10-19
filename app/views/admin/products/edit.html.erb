@@ -1,6 +1,6 @@
 <h1>Editing Product</h1>
 
-<%= render 'shared/product_form' %>
+<%= render 'shared/product_form', locals: {product: @product, namespace: @namespace, submit_message: @submit_message} %>
 
 <%= link_to 'Show', admin_product_path(@product) %> |
 <%= link_to 'Back', admin_products_path %>

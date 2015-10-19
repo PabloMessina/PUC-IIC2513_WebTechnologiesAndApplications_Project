@@ -1,0 +1,32 @@
+<h1>Product View</h1>
+
+<% if @privilege == :administrator %>
+	<%= link_to 'Edit Product', edit_grocery_product_path(@grocery,@product) %>
+  <br>
+<% end %>
+
+<% if @product.has_image? %>
+  <%= image_tag @product.product_image.product_image_url, :style => "width: 250px; height: 120px;"  %>
+<% else %>
+  <%= image_tag "products-icon-basket.gif", :style => "width: 250px; height: 120px;"  %>
+<% end %>
+
+<p>
+  <strong>Name:</strong>
+  <%= @product.name %>
+</p>
+
+<p> 
+  <strong>Stock:</strong>
+  <%= @product.stock %>
+</p>
+
+<p> 
+  <strong>Unit:</strong>
+  <%= @product.unit %>
+</p>
+
+<p> 
+  <strong>Price:</strong>
+   $ <%= @product.price %>
+</p>

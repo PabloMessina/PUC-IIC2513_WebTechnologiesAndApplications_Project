@@ -39,6 +39,57 @@
     <%= f.number_field :price %>
   </div>
 
+  <div class = "field">
+    <%= f.radio_button :category_mode, "existing_category", checked: product.category_mode == "existing_category", onclick: "switchCategoryMode(this)" %>
+    <%= f.label :category_mode, 'Choose an existing category', value: "existing_category" %>
+    <br>
+    <%= f.radio_button :category_mode, "new_category", checked: product.category_mode != "existing_category", onclick: "switchCategoryMode(this)" %>
+    <%= f.label :category_mode, 'Create and assign a new category', value: "new_category" %>    
+    <br>
+    <div id = "existing_category_div">
+      <%= f.label :existing_category, "Existing Category: " %>
+      <br>
+      <%= f.select :existing_category, options_for_select(Category.all.collect {|c| [c.name,c.id]}, product.category ? product.category.id : nil ) , {include_blank: true}, {class: 'awesome-select'} %>
+    </div>
+    <div id = "new_category_div" class="hide-element">
+      <%= f.label :new_category, "New Category: " %>
+      <br>
+      <%= f.text_field :new_category %>
+    </div>
+  </div>
+
+  <div class = "field">
+    <div>
+      <%= f.label :existing_tags, "Existing Tags" %>
+      <br>
+      <%= f.select :existing_tags, options_for_select(Tag.all.collect {|tag| [tag.name,tag.id]}, product.tags.map { |j| j.id} ), {}, {multiple: true, class: 'awesome-select'} %>
+    </div>
+    <div>
+      <%= f.label :new_tags, "New Tags: " %>
+      <%= f.text_field :new_tags, id: 'new_tags', value: product.new_tags %>
+    </div>
+  </div>
+
   <%= f.submit submit_message %>
 
 <% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".awesome-select").select2({
+      width: "230px"
+    });
+    $("#new_tags").tagsInput();
+  });
+
+  function switchCategoryMode(radio) {
+    if(radio.value == "new_category") {
+      $("#existing_category_div").addClass("hide-element");
+      $("#new_category_div").removeClass("hide-element");
+
+    } else {  
+      $("#existing_category_div").removeClass("hide-element");
+      $("#new_category_div").addClass("hide-element");
+    }
+  }
+</script>

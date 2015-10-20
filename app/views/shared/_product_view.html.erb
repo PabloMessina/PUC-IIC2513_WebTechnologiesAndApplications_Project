@@ -30,3 +30,13 @@
   <strong>Price:</strong>
    $ <%= @product.price %>
 </p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @product.category ? @product.category.name : "none" %>
+</p>
+
+<p>
+  <strong>Tags:</strong>
+  <%= @product.tags.any? ? @product.tags.map{|x| x.name}.join(', ') : 'none'%>
+</p>

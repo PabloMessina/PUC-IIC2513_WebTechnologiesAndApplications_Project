@@ -11,10 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151018231658) do
+ActiveRecord::Schema.define(version: 20151020051353) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "followers", id: false, force: :cascade do |t|
     t.integer  "user_id"
@@ -77,13 +83,29 @@ ActiveRecord::Schema.define(version: 20151018231658) do
     t.float    "stock"
     t.integer  "unit"
     t.integer  "price"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.integer  "grocery_id"
+    t.integer  "category_id"
   end
 
+  add_index "products", ["category_id"], name: "index_products_on_category_id", using: :btree
   add_index "products", ["grocery_id", "name"], name: "index_products_on_grocery_id_and_name", unique: true, using: :btree
   add_index "products", ["grocery_id"], name: "index_products_on_grocery_id", using: :btree
+
+  create_table "products_tags", id: false, force: :cascade do |t|
+    t.integer "product_id", null: false
+    t.integer "tag_id",     null: false
+  end
+
+  add_index "products_tags", ["product_id", "tag_id"], name: "index_products_tags_on_product_id_and_tag_id", unique: true, using: :btree
+  add_index "products_tags", ["tag_id", "product_id"], name: "index_products_tags_on_tag_id_and_product_id", unique: true, using: :btree
+
+  create_table "tags", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "user_images", force: :cascade do |t|
     t.integer  "user_id"
@@ -109,5 +131,6 @@ ActiveRecord::Schema.define(version: 20151018231658) do
 
   add_foreign_key "grocery_images", "groceries"
   add_foreign_key "product_images", "products"
+  add_foreign_key "products", "categories"
   add_foreign_key "products", "groceries"
 end

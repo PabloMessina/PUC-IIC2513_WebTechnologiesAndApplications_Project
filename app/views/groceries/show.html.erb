@@ -23,6 +23,65 @@
   <%= link_to 'Create a new product', new_grocery_product_path(@grocery) %>
 <% end %>
 
+
+<%= form_tag grocery_products_path(@grocery), method: 'get', remote: true, id: "products_search" do %>
+  <div class="stack-horizontal">
+    <label>Filter by string</label>
+    <%= text_field_tag :search %>
+  </div>
+  <div class="stack-horizontal">
+    <label>Filter by category (OR)</label>
+    <%= select_tag :categories, options_from_collection_for_select(@grocery_categories, "id", "name"), multiple: true, class: 'awesome-select' %>
+  </div>
+  <div class="stack-horizontal">
+    <label>Filter by tags (AND)</label>
+    <%= select_tag :tags, options_from_collection_for_select(@grocery_tags,"id","name"), multiple: true, class: 'awesome-select' %>
+  </div>  
+  <div id="search_submit_div">
+  <%= submit_tag "Search", :name => nil , :class => "stack-horizontal" %>
+  </div>
+<% end %>
+
 <div id = "products_pagination">
 		<%= render 'shared/grocery_products_pagination' %>
 </div>
+
+
+<script type="text/javascript">
+
+  var refreshProductLinks = false;
+  var searchSubmitDivContent;
+
+  function refreshProductsPagination() {
+    $('#products_pagination .pagination a').click(function () {  
+        refreshProductLinks = true;
+        $('#products_pagination .pagination').html('Loading products...');  
+        $.get(this.href, null, null, 'script');  
+        return false;  
+    }); 
+    refreshProductLinks = false;
+  }
+
+  $(document).ajaxStop(function() {
+    if(refreshProductLinks)
+      refreshProductsPagination();
+  });
+
+  $(document).ready(function() {  
+    refreshProductsPagination();
+    $(".awesome-select").select2({
+      width: "150px",
+      placeholder: "No filter"
+    });
+    $('#products_search').bind('ajax:success', function(evt, data, status, xhr){
+      eval(xhr.responseText);
+      refreshProductsPagination();
+      $('#search_submit_div').html(searchSubmitDivContent);
+    });
+   $('#products_search').bind('ajax:before', function(evt, data, status, xhr){
+      var search_div = $('#search_submit_div');
+      searchSubmitDivContent = search_div.html();
+      search_div.html("<label>Searching ... </label>");
+    });
+  });  
+</script>

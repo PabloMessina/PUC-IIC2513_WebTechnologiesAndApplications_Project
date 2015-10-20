@@ -11,6 +11,7 @@
  * file per style scope.
  *
  *= require_self
+ *= require_tree ../../../vendor/assets/stylesheets/
  */
 
 ul.hmenu {
@@ -41,5 +42,9 @@ ul.hmenu li {
 
 div.field {
   margin-bottom: 10px;
+}
+
+.stack-horizontal {
+	display: table-cell
 }
 

@@ -39,7 +39,7 @@ class GroceriesController < ApplicationController
   def show
     return unless check_grocery_exists
     @products = @grocery.products.paginate(page: 1, per_page: 10)
-    @whats_news = @grocery.whats_news.paginate(page: 1, per_page: 10)
+    @reports = @grocery.reports.paginate(page: 1, per_page: 10)
     @grocery_categories = Category.find_by_sql("select distinct c.id,c.name from categories
      as c, products as p where p.grocery_id = #{@grocery.id} and c.id = p.category_id");
     @grocery_tags = Tag.find_by_sql("select distinct t.id, t.name from tags as t, products_tags as pt, products as p

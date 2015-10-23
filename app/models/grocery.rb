@@ -8,7 +8,7 @@ class Grocery < ActiveRecord::Base
 	has_many :users, through: :followers
 
 	has_many :products
-	has_many :whats_news
+	has_many :reports
 
 	has_one :grocery_image, :dependent => :destroy
 

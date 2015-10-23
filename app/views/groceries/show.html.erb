@@ -49,17 +49,17 @@
 <hr>
 
 <% if @privilege == :administrator %>
-  <%= link_to 'Create a news', new_grocery_whats_news_path(@grocery) %>
+  <%= link_to 'Create a news', new_grocery_reports_path(@grocery) %>
 <% end %>
 
-<div id="whats_news_pagination">
-  <%= render 'shared/grocery_whats_news_pagination' %>
+<div id="reports_pagination">
+  <%= render 'shared/grocery_reports_pagination' %>
 </div>
 
 <script type="text/javascript">
 
   var refreshProductLinks = false;
-  var refreshWhatsNewsLinks = false;
+  var refreshReportsLinks = false;
   var searchSubmitDivContent;
 
   function refreshProductsPagination() {
@@ -72,27 +72,27 @@
     refreshProductLinks = false;
   }
 
-  function refreshWhatsNewsPagination() {
-    $('#whats_news_pagination .pagination a').click(function () {
-        refreshWhatsNewsLinks = true;
-        $('#whats_news_pagination .pagination').html('Loading news...');
+  function refreshReportsPagination() {
+    $('#reports_pagination .pagination a').click(function () {
+        refreshReportsLinks = true;
+        $('#reports_pagination .pagination').html('Loading news...');
         $.get(this.href, null, null, 'script');
         return false;
     });
-    refreshWhatsNewsLinks = false;
+    refreshReportsLinks = false;
   }
 
   $(document).ajaxStop(function() {
     if(refreshProductLinks)
       refreshProductsPagination();
 
-    if(refreshWhatsNewsLinks)
-      refreshWhatsNewsPagination();
+    if(refreshReportsLinks)
+      refreshReportsPagination();
   });
 
   $(document).ready(function() {
     refreshProductsPagination();
-    refreshWhatsNewsPagination();
+    refreshReportsPagination();
 
     $(".awesome-select").select2({
       width: "150px",

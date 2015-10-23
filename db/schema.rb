@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151020051353) do
+ActiveRecord::Schema.define(version: 20151022155248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,17 @@ ActiveRecord::Schema.define(version: 20151020051353) do
 
   add_index "grocery_images", ["grocery_id"], name: "index_grocery_images_on_grocery_id", using: :btree
 
+  create_table "order_lines", force: :cascade do |t|
+    t.integer  "product_id"
+    t.integer  "purchase_order_id"
+    t.decimal  "amount"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "order_lines", ["product_id"], name: "index_order_lines_on_product_id", using: :btree
+  add_index "order_lines", ["purchase_order_id"], name: "index_order_lines_on_purchase_order_id", using: :btree
+
   create_table "privileges", id: false, force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "grocery_id"
@@ -80,7 +91,7 @@ ActiveRecord::Schema.define(version: 20151020051353) do
 
   create_table "products", force: :cascade do |t|
     t.string   "name"
-    t.float    "stock"
+    t.decimal  "stock"
     t.integer  "unit"
     t.integer  "price"
     t.datetime "created_at",  null: false
@@ -100,6 +111,16 @@ ActiveRecord::Schema.define(version: 20151020051353) do
 
   add_index "products_tags", ["product_id", "tag_id"], name: "index_products_tags_on_product_id_and_tag_id", unique: true, using: :btree
   add_index "products_tags", ["tag_id", "product_id"], name: "index_products_tags_on_tag_id_and_product_id", unique: true, using: :btree
+
+  create_table "purchase_orders", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "grocery_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "purchase_orders", ["grocery_id"], name: "index_purchase_orders_on_grocery_id", using: :btree
+  add_index "purchase_orders", ["user_id"], name: "index_purchase_orders_on_user_id", using: :btree
 
   create_table "tags", force: :cascade do |t|
     t.string   "name"
@@ -130,7 +151,11 @@ ActiveRecord::Schema.define(version: 20151020051353) do
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   add_foreign_key "grocery_images", "groceries"
+  add_foreign_key "order_lines", "products"
+  add_foreign_key "order_lines", "purchase_orders"
   add_foreign_key "product_images", "products"
   add_foreign_key "products", "categories"
   add_foreign_key "products", "groceries"
+  add_foreign_key "purchase_orders", "groceries"
+  add_foreign_key "purchase_orders", "users"
 end

@@ -42,10 +42,6 @@ class GroceryProductsController < ApplicationController
 
   end
 
-  def search
-
-  end 
-
   def new
   	unless (check_grocery_exists &&
   					check_user_logged_in &&
@@ -137,6 +133,7 @@ class GroceryProductsController < ApplicationController
   					check_privilege_on_grocery(:administrator))
   		return
   	end
+
   end
 
   def update

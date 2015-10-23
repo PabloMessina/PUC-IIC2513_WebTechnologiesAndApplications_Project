@@ -1,0 +1,38 @@
+<strong>Purchase Orders</strong>
+
+<%= link_to 'Create a new purchase order', new_grocery_purchase_orders_path(@grocery) %>
+
+
+<%= will_paginate @purchases_data %>  
+
+<table border>
+  <tr>
+    <th>Date</th>
+    <th>Number of products</th>
+  	<th>Total price</th>
+  	<th>Buyer</th>
+  	<th></th>
+  </tr>   	
+
+<% @purchases_data.each do |row| %>  
+	<tr>
+		<td>
+   		<%= row.purchase_date %>
+    </td>
+    <td>
+    	<%= row.products_count %>
+    </td>
+    <td>
+    	<%= row.total_price %>
+    </td>
+    <td>
+    	<%= link_to row.user_name, user_path(row.user_id) %>
+    </td>
+    <td>
+    	<%= link_to 'see details', grocery_purchase_order_path(@grocery,row.order_id) %>
+    </td>
+  </tr>
+<% end %>  	
+</table>
+
+<%= will_paginate @purchases_data %>

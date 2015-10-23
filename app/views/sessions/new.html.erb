@@ -4,11 +4,15 @@
 <div>
   <%= form_for(:session, url: sessions_path) do |f| %>
 
-    <%= f.label :username %>
-    <%= f.text_field :username %>
+    <div class = "field">
+      <%= f.label :username %>
+      <%= f.text_field :username, autofocus: true %>
+    </div>
 
-    <%= f.label :password %>
-    <%= f.password_field :password %>
+    <div class = "field">
+      <%= f.label :password %>
+      <%= f.password_field :password %>
+    </div>
 
     <%= f.submit "Sign in"%>
   <% end %>

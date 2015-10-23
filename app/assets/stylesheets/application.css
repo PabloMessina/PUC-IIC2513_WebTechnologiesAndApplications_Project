@@ -14,15 +14,46 @@
  *= require_tree ../../../vendor/assets/stylesheets/
  */
 
-ul.hmenu {
-  list-style: none; 
+
+header {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  z-index: 100;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 0 10px 0 black;
+}
+
+#header-table {
+  float: right;
+  border-spacing: 15px;
+}
+
+body {
+  font-family: arial,sans-serif;
+  background-color: #ddd;
+  padding-top: 60px;
+}
+
+#page-wrap {
+     max-width: 960px;
+     min-width: 600px;
+     margin: 0 auto;
+     padding: 30px;
+     border-radius: 15px;
+     background-color: #fafafa;
+}
+
+/*ul.hmenu {
+  list-style: none;
   margin: 0 0 2em;
   padding: 0;
 }
 
 ul.hmenu li {
-  display: inline;  
-}
+  display: inline;
+}*/
 
 .hide-element {
 	display: none;
@@ -45,6 +76,5 @@ div.field {
 }
 
 .stack-horizontal {
-	display: table-cell
+	display: table-cell;
 }
-

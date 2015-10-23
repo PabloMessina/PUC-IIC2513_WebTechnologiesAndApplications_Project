@@ -1,27 +1,43 @@
 <%= form_for(@user, url: @namespace) do |f| %>
 
+  <h1>Create a new account</h1>
+
  	<%= render 'shared/error_messages', object: @user %>
 
-	<%= f.label :first_name, "First Name" %>
-	<%= f.text_field :first_name %>
+  <div class = "field">
+  	<%= f.label :first_name, "First Name" %>
+  	<%= f.text_field :first_name %>
+  </div>
 
-	<%= f.label :last_name, "Last Name" %>
-	<%= f.text_field :last_name %>
+  <div class = "field">
+  	<%= f.label :last_name, "Last Name" %>
+  	<%= f.text_field :last_name %>
+  </div>
 
-	<%= f.label :username, "Username" %>
-	<%= f.text_field :username %>
+  <div class = "field">
+  	<%= f.label :username, "Username" %>
+  	<%= f.text_field :username %>
+  </div>
 
-	<%= f.label :password, "Password" %>
-	<%= f.password_field :password %>
+  <div class = "field">
+  	<%= f.label :password, "Password" %>
+  	<%= f.password_field :password %>
+  </div>
 
-	<%= f.label :password_confirmation, "Confirm password" %>
-	<%= f.password_field :password_confirmation %>
+  <div class = "field">
+  	<%= f.label :password_confirmation, "Confirm password" %>
+  	<%= f.password_field :password_confirmation %>
+  </div>
 
-	<%= f.label :email, "Email" %>
-	<%= f.text_field :email %>
+  <div class = "field">
+  	<%= f.label :email, "Email" %>
+  	<%= f.text_field :email %>
+  </div>
 
-	<%= f.label :address, "Address" %>
-	<%= f.text_field :address %>
+  <div class = "field">
+  	<%= f.label :address, "Address" %>
+  	<%= f.text_field :address %>
+  </div>
 
 	<%= f.submit @submit_message %>
 <% end %>

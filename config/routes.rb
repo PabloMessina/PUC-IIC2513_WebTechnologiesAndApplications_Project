@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :users, only: [:show, :new, :create, :edit, :update]
   resources :groceries do
     resources :products, controller:'grocery_products'
+    resources :whats_news, controller:'grocery_whats_news'
   end
   resources :sessions, only: [:new, :create, :destroy]
 
@@ -18,7 +19,7 @@ Rails.application.routes.draw do
   match '/signin',    to: 'sessions#new',         via: 'get'
   match '/signout',   to: 'sessions#destroy',     via: 'delete'
 
-  
+
 
 
   # The priority is based upon order of creation: first created -> highest priority.

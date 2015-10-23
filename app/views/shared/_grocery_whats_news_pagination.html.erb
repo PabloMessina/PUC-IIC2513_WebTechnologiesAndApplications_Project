@@ -1,0 +1,36 @@
+<% if @whats_news.any? %>
+	<br>
+	<strong>News</strong>
+	<%= will_paginate @whats_news, params: {controller: 'grocery_whats_news', action: 'index', grocery_id: @grocery.id} %>
+
+  <table border>
+    <tr>
+      <th>Name</th>
+      <!-- <th>Image</th> -->
+    	<th>Actions</th>
+    </tr>
+	<% @whats_news.each do |whats_new| %>
+		<tr>
+			<td>
+	      <%= link_to whats_new.name, grocery_whats_new_path(@grocery,whats_new) %>
+	    </td>
+	    <!-- <td>
+		    <% if product.has_image? %>
+				  <%= image_tag product.product_image.product_image_url, :style => "width: 50; height: 50px;"  %>
+				<% else %>
+				  <%= image_tag "products-icon-basket.gif", :style => "width: 50px; height: 50px;"  %>
+				<% end %>
+			</td> -->
+			<td>
+				<%= link_to "Show", grocery_whats_new_path(@grocery,whats_new) %>
+		    <% if @privilege == :administrator %>
+		      | <%= link_to "Edit", edit_grocery_whats_new_path(@grocery,whats_new) %>
+		      | <%= link_to "Destroy", grocery_whats_new_path(@grocery,whats_new), :confirm => "Are you sure?", :method => :delete %>
+		    <% end %>
+	    </td>
+    </tr>
+	<% end %>
+  </table>
+
+	<%= will_paginate @whats_news, params: {controller: 'grocery_whats_news', action: 'index', grocery_id: @grocery.id} %>
+<% end %>

@@ -10,6 +10,7 @@ class Product < ActiveRecord::Base
   belongs_to :category
   has_one :product_image
   has_and_belongs_to_many :tags
+  #belongs_to :whats_new
 
   # ojo: debe estar en orden 0,1,2,...
   enum unit: {item: 0, kg:1, g:2, L:3, mL:4, m:5}
@@ -24,6 +25,6 @@ class Product < ActiveRecord::Base
 
   def has_image?
     return self.product_image && !self.product_image.product_image.blank?
-  end 
+  end
 
 end

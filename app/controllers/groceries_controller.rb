@@ -4,7 +4,7 @@ class GroceriesController < ApplicationController
   before_action :set_privilege_on_grocery, only: [:show, :edit, :update, :destroy]
 
   def new
-    return unless check_user_logged_in   
+    return unless check_user_logged_in
 
     @grocery = Grocery.new
     @submit_message = "Create grocery";
@@ -21,24 +21,25 @@ class GroceriesController < ApplicationController
       if(filtered_params[:image])
 
         @grocery.grocery_image = GroceryImage.create(
-            grocery_image: filtered_params[:image], 
+            grocery_image: filtered_params[:image],
             grocery_id: @grocery.id)
       end
 
       Privilege.create(
         user_id: @logged_user.id,
-        grocery_id: @grocery.id, 
+        grocery_id: @grocery.id,
         privilege: :administrator)
 
       redirect_to grocery_path(@grocery)
-    else 
+    else
       render 'new'
     end
   end
 
   def show
     return unless check_grocery_exists
-    @products = @grocery.products.paginate(page: 1, per_page: 10)     
+    @products = @grocery.products.paginate(page: 1, per_page: 10)
+    @whats_news = @grocery.whats_news.paginate(page: 1, per_page: 10)
     @grocery_categories = Category.find_by_sql("select distinct c.id,c.name from categories
      as c, products as p where p.grocery_id = #{@grocery.id} and c.id = p.category_id");
     @grocery_tags = Tag.find_by_sql("select distinct t.id, t.name from tags as t, products_tags as pt, products as p
@@ -76,13 +77,13 @@ class GroceriesController < ApplicationController
           @grocery.grocery_image.update(grocery_image: filtered_params[:image])
         else
           @grocery.grocery_image = GroceryImage.create(
-            grocery_image: filtered_params[:image], 
+            grocery_image: filtered_params[:image],
             grocery_id: @grocery.id)
         end
       end
 
       redirect_to grocery_path(@grocery)
-    else 
+    else
       render 'edit'
     end
 
@@ -97,7 +98,7 @@ class GroceriesController < ApplicationController
     def set_privilege_on_grocery
       if(@logged_user)
         @privilege = @logged_user.privileges.find {|x| x.grocery_id.to_s == params[:id]}
-        if(@privilege) 
+        if(@privilege)
           @privilege = @privilege.privilege.to_sym
         end
       else

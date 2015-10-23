@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151020051353) do
+ActiveRecord::Schema.define(version: 20151023002830) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,8 +129,19 @@ ActiveRecord::Schema.define(version: 20151020051353) do
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  create_table "whats_news", force: :cascade do |t|
+    t.string   "name"
+    t.text     "text"
+    t.integer  "grocery_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "whats_news", ["grocery_id"], name: "index_whats_news_on_grocery_id", using: :btree
+
   add_foreign_key "grocery_images", "groceries"
   add_foreign_key "product_images", "products"
   add_foreign_key "products", "categories"
   add_foreign_key "products", "groceries"
+  add_foreign_key "whats_news", "groceries"
 end

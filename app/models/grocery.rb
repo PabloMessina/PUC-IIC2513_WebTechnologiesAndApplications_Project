@@ -8,6 +8,7 @@ class Grocery < ActiveRecord::Base
 	has_many :users, through: :followers
 
 	has_many :products
+	has_many :whats_news
 
 	has_one :grocery_image, :dependent => :destroy
 
@@ -16,6 +17,6 @@ class Grocery < ActiveRecord::Base
 
 	def has_image?
 		return self.grocery_image && !self.grocery_image.grocery_image.blank?
-	end	
+	end
 
 end

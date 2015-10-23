@@ -14,7 +14,7 @@
   <%= @grocery.name %>
 </p>
 
-<p> 
+<p>
   <strong>Address:</strong>
   <%= @grocery.address %>
 </p>
@@ -36,7 +36,7 @@
   <div class="stack-horizontal">
     <label>Filter by tags (AND)</label>
     <%= select_tag :tags, options_from_collection_for_select(@grocery_tags,"id","name"), multiple: true, class: 'awesome-select' %>
-  </div>  
+  </div>
   <div id="search_submit_div">
   <%= submit_tag "Search", :name => nil , :class => "stack-horizontal" %>
   </div>
@@ -46,29 +46,54 @@
 		<%= render 'shared/grocery_products_pagination' %>
 </div>
 
+<hr>
+
+<% if @privilege == :administrator %>
+  <%= link_to 'Create a news', new_grocery_whats_news_path(@grocery) %>
+<% end %>
+
+<div id="whats_news_pagination">
+  <%= render 'shared/grocery_whats_news_pagination' %>
+</div>
 
 <script type="text/javascript">
 
   var refreshProductLinks = false;
+  var refreshWhatsNewsLinks = false;
   var searchSubmitDivContent;
 
   function refreshProductsPagination() {
-    $('#products_pagination .pagination a').click(function () {  
+    $('#products_pagination .pagination a').click(function () {
         refreshProductLinks = true;
-        $('#products_pagination .pagination').html('Loading products...');  
-        $.get(this.href, null, null, 'script');  
-        return false;  
-    }); 
+        $('#products_pagination .pagination').html('Loading products...');
+        $.get(this.href, null, null, 'script');
+        return false;
+    });
     refreshProductLinks = false;
+  }
+
+  function refreshWhatsNewsPagination() {
+    $('#whats_news_pagination .pagination a').click(function () {
+        refreshWhatsNewsLinks = true;
+        $('#whats_news_pagination .pagination').html('Loading news...');
+        $.get(this.href, null, null, 'script');
+        return false;
+    });
+    refreshWhatsNewsLinks = false;
   }
 
   $(document).ajaxStop(function() {
     if(refreshProductLinks)
       refreshProductsPagination();
+
+    if(refreshWhatsNewsLinks)
+      refreshWhatsNewsPagination();
   });
 
-  $(document).ready(function() {  
+  $(document).ready(function() {
     refreshProductsPagination();
+    refreshWhatsNewsPagination();
+
     $(".awesome-select").select2({
       width: "150px",
       placeholder: "No filter"
@@ -83,5 +108,5 @@
       searchSubmitDivContent = search_div.html();
       search_div.html("<label>Searching ... </label>");
     });
-  });  
+  });
 </script>

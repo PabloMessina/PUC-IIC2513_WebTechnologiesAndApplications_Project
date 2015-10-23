@@ -1,8 +1,10 @@
 class GroceryProductsController < ApplicationController
+	include GroceryHelper
+
 	before_action :set_logged_user_by_cookie
 	before_action :set_privilege_on_grocery
 	before_action :set_grocery_by_id
-	before_action :set_product_by_id, only:[:show, :edit, :update, :delete]
+	before_action :set_product_by_id, only:[:show, :edit, :update, :destroy]
 
 
   def index
@@ -23,14 +25,14 @@ class GroceryProductsController < ApplicationController
     puts search_string
     puts "%%%%%%%%%%%%%%%%%%%%"
 
-    @products = @grocery.products    
+    @products = @grocery.products
     if search_string && !search_string.blank?
       @products = @products.where("products.name LIKE ?","%#{search_string}%")
     end
     if categories && categories.count > 0
       @products = @products.where('products.category_id IN (?)',categories.map{|x|x.to_i} )
     end
-    if tags && tags.count > 0      
+    if tags && tags.count > 0
       @products = @products.where("(SELECT COUNT(*) FROM products_tags as pt WHERE
        pt.product_id = products.id AND pt.tag_id in (?)) = ?",tags.map{|x|x.to_i},tags.count)
     end
@@ -44,14 +46,14 @@ class GroceryProductsController < ApplicationController
 
   def search
 
-  end 
+  end
 
   def new
   	unless (check_grocery_exists &&
   					check_user_logged_in &&
-  					check_privilege_on_grocery(:administrator))  	
+  					check_privilege_on_grocery(:administrator))
   		return
-  	end  
+  	end
 
   	@product = Product.new
   end
@@ -72,12 +74,12 @@ class GroceryProductsController < ApplicationController
 			end
 
       if filtered_params[:category_mode] == 'existing_category'
-        if filtered_params[:existing_category] 
+        if filtered_params[:existing_category]
           cat_id = filtered_params[:existing_category].to_i
           category = Category.find_by_id(cat_id)
           if(category)
             category.products << @product
-          end          
+          end
         end
       else
         if filtered_params[:new_category]
@@ -104,7 +106,7 @@ class GroceryProductsController < ApplicationController
       end
 
       new_tags = filtered_params[:new_tags]
-      if new_tags 
+      if new_tags
         new_tags = new_tags.split(",")
         new_tags.each do |name|
           tag = Tag.where('name = ?',name).first
@@ -131,7 +133,7 @@ class GroceryProductsController < ApplicationController
 
   def edit
   	unless (check_grocery_exists &&
-  					check_product_exists && 
+  					check_product_exists &&
   					check_product_belongs_to_grocery &&
   					check_user_logged_in &&
   					check_privilege_on_grocery(:administrator))
@@ -141,13 +143,13 @@ class GroceryProductsController < ApplicationController
 
   def update
     unless (check_grocery_exists &&
-            check_product_exists && 
+            check_product_exists &&
             check_product_belongs_to_grocery &&
             check_user_logged_in &&
             check_privilege_on_grocery(:administrator))
       return
     end
-    
+
     filtered_params = product_params
     if @product.update(filtered_params)
 
@@ -160,12 +162,12 @@ class GroceryProductsController < ApplicationController
       end
 
       if filtered_params[:category_mode] == 'existing_category'
-        if filtered_params[:existing_category] 
+        if filtered_params[:existing_category]
           cat_id = filtered_params[:existing_category].to_i
           category = Category.find_by_id(cat_id)
           if(category)
             category.products << @product
-          end          
+          end
         end
       else
         if filtered_params[:new_category]
@@ -195,7 +197,7 @@ class GroceryProductsController < ApplicationController
       end
 
       new_tags = filtered_params[:new_tags]
-      if new_tags 
+      if new_tags
         new_tags = new_tags.split(",")
         new_tags.each do |name|
           tag = Tag.where('name = ?',name).first
@@ -218,38 +220,26 @@ class GroceryProductsController < ApplicationController
     end
   end
 
-  private
+	def destroy
+		if(!@product.nil?)
+			@product.destroy
+			flash[:success] = "Product destroyed successfully!"
+		else
+			flash[:error] = "Product was nil"
+		end
+		redirect_to grocery_path(@grocery)
+	end
 
-  	def set_grocery_by_id
-  		@grocery = Grocery.find_by_id(params[:grocery_id])
-  	end
+
+  private
 
   	def set_product_by_id
   		@product = Product.find_by_id(params[:id])
   	end
 
-  	def set_privilege_on_grocery
-  		if(@logged_user)
-  		  @privilege = @logged_user.privileges.find {|x| x.grocery_id.to_s == params[:grocery_id]}
-  		  if(@privilege) 
-  		  	@privilege = @privilege.privilege.to_sym
-  		  end
-  		else
-  			@privilege = nil
-  		end
-  	end
-
   	def check_product_belongs_to_grocery
     	unless @product.grocery_id == @grocery.id
     		permission_denied ("Product with id #{params[:id]} does not belong to grocery with id #{params[:grocery_id]}")
-    		return false;
-    	end
-    	return true;
-  	end
-
-  	def check_grocery_exists
-  		unless @grocery
-    		permission_denied ("Grocery with id #{params[:grocery_id]} not found")
     		return false;
     	end
     	return true;
@@ -263,17 +253,9 @@ class GroceryProductsController < ApplicationController
     	return true;
   	end
 
-  	def check_privilege_on_grocery(privilege)
-  		unless @privilege == privilege
-  			permission_denied ("You (user_id = #{@logged_user.id}) need a privilege of #{privilege} on this grocery (id = #{params[:grocery_id]}) to perform this action")
-  			return false;
-  		end
-  		return true;
-  	end
-
   	def product_params
       p = params.require(:product).permit(
-        :image, :name, :stock, :unit, :price, :category_mode, :existing_category, 
+        :image, :name, :stock, :unit, :price, :category_mode, :existing_category,
         :new_category, {:existing_tags => []}, :new_tags);
       p[:grocery_id] = params[:grocery_id]
       if(p[:unit])
@@ -285,4 +267,4 @@ class GroceryProductsController < ApplicationController
     def search_params
       params.permit(:search, {categories: []}, {tags: []}, :page)
     end
-end	
+end

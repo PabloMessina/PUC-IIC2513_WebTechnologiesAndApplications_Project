@@ -1,16 +1,15 @@
 require 'will_paginate/array'
 
-class PurchaseOrdersController < ApplicationController	
+class PurchaseOrdersController < ApplicationController
 	before_action :set_logged_user_by_cookie
 	before_action :set_privilege_on_grocery
 	before_action :set_grocery_by_id
 
-	def index			
+	def index
 
-unless (check_grocery_exists && 
+unless (check_grocery_exists &&
         check_user_logged_in &&
         check_privilege_on_grocery(:administrator))
-			)
 	    return
 	  end
 
@@ -35,7 +34,7 @@ unless (check_grocery_exists &&
 	def set_privilege_on_grocery
 		if(@logged_user)
 		  @privilege = @logged_user.privileges.find {|x| x.grocery_id.to_s == params[:grocery_id]}
-		  if(@privilege) 
+		  if(@privilege)
 		  	@privilege = @privilege.privilege.to_sym
 		  end
 		else

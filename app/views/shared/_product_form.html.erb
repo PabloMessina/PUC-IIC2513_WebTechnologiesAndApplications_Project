@@ -46,12 +46,12 @@
     <%= f.radio_button :category_mode, "new_category", checked: product.category_mode != "existing_category", onclick: "switchCategoryMode(this)" %>
     <%= f.label :category_mode, 'Create and assign a new category', value: "new_category" %>    
     <br>
-    <div id = "existing_category_div">
+    <div id = "existing_category_div" class="hide-element">
       <%= f.label :existing_category, "Existing Category: " %>
       <br>
       <%= f.select :existing_category, options_for_select(Category.all.collect {|c| [c.name,c.id]}, product.category ? product.category.id : nil ) , {include_blank: true}, {class: 'awesome-select'} %>
     </div>
-    <div id = "new_category_div" class="hide-element">
+    <div id = "new_category_div">
       <%= f.label :new_category, "New Category: " %>
       <br>
       <%= f.text_field :new_category %>

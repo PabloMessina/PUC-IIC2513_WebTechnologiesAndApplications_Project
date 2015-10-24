@@ -1,26 +1,10 @@
-<header>
-  <!--
-  <ul class="hmenu">
-    <% if signed_in? %>
-      <li>
-        <%= link_to('Sign out', signout_path, :method => :delete) %>
-      </li>
-    <% else %>
-      <li>
-        <%= link_to('Sign in', signin_path)  %>
-      </li>
-       <li>
-        <%= link_to('Sign up', signup_path)  %>
-      </li>
-    <% end %>
-  </ul>
-  -->
-  
+<header>  
   <!-- como mas puedo hacer que esten separados horizontalmente? -->
   <table id="header-table">
     <tr>
 
     <% if signed_in? %>
+      <td><%= link_to(@logged_user.username, user_path(@logged_user)) %></td>
       <td><%= link_to('Sign out', signout_path, :method => :delete) %></td>
     <% else %>
       <td><%= link_to('Sign in', signin_path)  %></td>

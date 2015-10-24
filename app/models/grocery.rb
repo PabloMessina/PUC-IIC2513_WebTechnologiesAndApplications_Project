@@ -20,27 +20,58 @@ class Grocery < ActiveRecord::Base
 		return self.grocery_image && !self.grocery_image.grocery_image.blank?
 	end	
 
-	def purchases_data
+	def purchases_data_with_count (args)
 		Grocery.find_by_sql("
 			SELECT 	po.id as order_id, 
-					po.created_at as purchase_date, 
-					count(p.*) as products_count, 
-					sum(ol.amount *  p.price) as total_price, 
-					u.username as user_name, 
-					u.id as user_id
+							po.created_at as purchase_date, 
+							count(ol.*) as products_count, 
+							sum(ol.amount *  ol.product_price) as total_price, 
+							count(*) over() as total_count
+							
+			FROM 	purchase_orders as po, 
+						order_lines as ol
+					
+			WHERE	po.grocery_id = #{self.id} AND 
+						po.id = ol.purchase_order_id
+
+			GROUP BY po.id
+			ORDER BY purchase_date DESC
+			LIMIT #{args[:per_page]}
+			OFFSET #{args[:per_page] * (args[:page]-1)}")
+	end
+
+	def purchases_data_without_count (args)
+		 Grocery.find_by_sql("
+			SELECT 	po.id as order_id, 
+							po.created_at as purchase_date, 
+							count(ol.*) as products_count, 
+							sum(ol.amount *  ol.product_price) as total_price
 					
 			FROM 	purchase_orders as po, 
-					users as u,
-					order_lines as ol, 
-					products as p
+						order_lines as ol
 					
-			WHERE	
-					po.grocery_id = #{self.id} AND 
-					u.id = po.user_id AND
-					po.id = ol.purchase_order_id AND
-					p.id = ol.product_id
+			WHERE	po.grocery_id = #{self.id} AND 
+						po.id = ol.purchase_order_id
 
-			GROUP BY po.id, u.id, u.username
-			ORDER BY purchase_date DESC")
+			GROUP BY po.id
+			ORDER BY purchase_date DESC
+			LIMIT #{args[:per_page]}
+			OFFSET #{args[:per_page] * (args[:page]-1)}")
 	end
+
+	def products_purchase_data_to_JSON
+		json_str = "{"
+		first = true
+		self.products.each  do |p|
+			if first
+				first = false
+			else
+				json_str << ","
+			end
+			json_str << %Q["#{p.id}" : {"name": "#{p.name}", "stock": #{p.stock} }]
+		end
+		json_str << "}"
+		return json_str.html_safe
+	end
+
 end

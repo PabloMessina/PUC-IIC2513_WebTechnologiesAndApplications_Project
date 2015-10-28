@@ -9,6 +9,12 @@ class GroceryReportsController < ApplicationController
   def index
     return unless check_grocery_exists
     @reports = @grocery.reports
+
+    if params[:page]
+      @reports = @reports.paginate(page: params[:page], per_page: 5)
+    else
+      @reports = @reports.paginate(page: 1, per_page: 5)
+    end
   end
 
   def new
@@ -30,17 +36,18 @@ class GroceryReportsController < ApplicationController
 
     @report = Report.new(report_params)
     if @report.save
-      flash[:success] = "Report created successfully!"
+      flash[:success] = "News created successfully!"
       redirect_to grocery_path(@grocery)
+      return
     else
       render 'new'
     end
   end
 
   def show
-  	unless (check_grocery_exists
-      && check_report_exists
-      && check_report_belongs_to_grocery)
+  	unless (check_grocery_exists &&
+      check_report_exists &&
+      check_report_belongs_to_grocery)
   		return
   	end
   end
@@ -65,7 +72,7 @@ class GroceryReportsController < ApplicationController
     end
 
     if @report.update(report_params)
-      flash[:success] = 'Report updated succesfully!'
+      flash[:success] = 'News updated succesfully!'
       redirect_to grocery_path(@grocery)
     else
       render 'edit'
@@ -75,9 +82,9 @@ class GroceryReportsController < ApplicationController
   def destroy
 		if(!@report.nil?)
 			@report.destroy
-			flash[:success] = "Report destroyed successfully!"
+			flash[:success] = "News destroyed successfully!"
 		else
-			flash[:error] = "Report was nil"
+			flash[:error] = "News was nil"
 		end
 		redirect_to grocery_path(@grocery)
 	end
@@ -91,7 +98,7 @@ class GroceryReportsController < ApplicationController
 
   def check_report_belongs_to_grocery
     unless @report.grocery_id == @grocery.id
-      permission_denied ("Report with id #{params[:id]} does not belong to grocery with id #{params[:grocery_id]}")
+      permission_denied ("News with id #{params[:id]} does not belong to grocery with id #{params[:grocery_id]}")
       return false;
     end
     return true;
@@ -99,16 +106,16 @@ class GroceryReportsController < ApplicationController
 
   def check_report_exists
     unless @report
-      permission_denied ("Report with id #{params[:id]} not found")
+      permission_denied ("News with id #{params[:id]} not found")
       return false;
     end
     return true;
   end
 
   def report_params
-    #p = params.require(:report).permit(:image, :title, :text, :product);
-    p = params.require(:report).permit(:title, :text, :product);
+    p = params.require(:report).permit(:title, :text);
     p[:grocery_id] = params[:grocery_id]
+    p[:product_id] = params.require(:report)[:product]
     return p
   end
 

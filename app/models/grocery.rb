@@ -12,7 +12,7 @@ class Grocery < ActiveRecord::Base
 
 	has_one :grocery_image, :dependent => :destroy
 
-	validates :name, presence: true, length: { minimum: 1, maximum: 25 }, uniqueness: true
+	validates :name, presence: true, length: { minimum: 1, maximum: 40 }, uniqueness: true
 	validates :address, presence: true
 
 	def has_image?

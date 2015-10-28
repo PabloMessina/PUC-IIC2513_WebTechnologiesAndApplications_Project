@@ -49,7 +49,7 @@
 <hr>
 
 <% if @privilege == :administrator %>
-  <%= link_to 'Create a news', new_grocery_reports_path(@grocery) %>
+  <%= link_to 'Create a news', new_grocery_report_path(@grocery) %>
 <% end %>
 
 <div id="reports_pagination">
@@ -103,7 +103,7 @@
       refreshProductsPagination();
       $('#search_submit_div').html(searchSubmitDivContent);
     });
-   $('#products_search').bind('ajax:before', function(evt, data, status, xhr){
+    $('#products_search').bind('ajax:before', function(evt, data, status, xhr){
       var search_div = $('#search_submit_div');
       searchSubmitDivContent = search_div.html();
       search_div.html("<label>Searching ... </label>");

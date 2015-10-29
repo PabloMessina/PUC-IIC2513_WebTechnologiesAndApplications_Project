@@ -1,6 +1,8 @@
 <% if @privilege == :administrator %>
   <%= link_to 'Edit Grocery', edit_grocery_path(@grocery) %>
   <br>
+  <%= link_to 'Manage Purchase Orders', grocery_purchase_orders_path(@grocery) %>
+  <br>
 <% end %>
 
 <% if @grocery.has_image? %>
@@ -8,6 +10,8 @@
 <% else %>
   <%= image_tag "Springfield_grocery_store.png", :style => "width: 250px; height: 120px;"  %>
 <% end %>
+
+
 
 <p>
   <strong>Name:</strong>

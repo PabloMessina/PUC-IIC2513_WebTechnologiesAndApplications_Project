@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
 	has_many :privileged_groceries, through: :privileges, source: :grocery
 	has_many :followers
 	has_many :following_groceries, through: :followers, source: :grocery
+	has_many :purchase_orders
 	has_one :user_image, :dependent => :destroy
 
 	before_create :create_remember_token

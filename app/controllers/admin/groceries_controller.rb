@@ -20,16 +20,7 @@ class Admin::GroceriesController < ApplicationController
     if(@grocery.nil?)
       flash[:error] = "ERROR: grocery with id #{params[:id]} could not be found"
       redirect_to admin_groceries_path
-    end    
-    @grocery_categories = Category.find_by_sql("select distinct c.id,c.name from categories
-     as c, products as p where p.grocery_id = #{@grocery.id} and c.id = p.category_id");
-    @grocery_tags = @grocery.products.joins("product_tags").joins("tags").select("tags.id,tags.name")
-    puts "-------------------------------------"
-    puts "-------------------------------------"
-    puts @grocery_categories
-    puts @grocery_tags
-    puts "-------------------------------------"
-    puts "-------------------------------------"
+    end   
   end
 
   def create

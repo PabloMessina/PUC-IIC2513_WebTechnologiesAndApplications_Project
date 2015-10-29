@@ -31,10 +31,18 @@
 
   <% @purchase_order.order_lines.each do |order_line| %>
    <tr>
-      <td><%= link_to order_line.product.name, grocery_product_path(@grocery,order_line.product)%></td>
+      <% if order_line.product.nil? %>
+        <td> (deleted) </td>
+      <% else %>
+        <td><%= link_to order_line.product.name, grocery_product_path(@grocery,order_line.product)%></td>
+      <% end %>
       <td> $ <%= order_line.product_price %></td>
       <td><%= order_line.amount %></td>
-      <td><%= order_line.product.unit.to_s %></td>
+      <%if order_line.product.nil? %>
+        <td> (deleted) </td>           
+      <% else %>
+        <td><%= order_line.product.unit.to_s %></td>
+      <%end%>
       <td> $ <%= order_line.amount * order_line.product_price %></td>
     </tr>
   <% end %>

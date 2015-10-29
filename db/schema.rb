@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151023230158) do
+ActiveRecord::Schema.define(version: 20151028203406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,15 @@ ActiveRecord::Schema.define(version: 20151023230158) do
 
   add_index "grocery_images", ["grocery_id"], name: "index_grocery_images_on_grocery_id", using: :btree
 
+  create_table "inventories", force: :cascade do |t|
+    t.decimal  "stock"
+    t.integer  "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "inventories", ["product_id"], name: "index_inventories_on_product_id", using: :btree
+
   create_table "order_lines", force: :cascade do |t|
     t.integer  "product_id"
     t.integer  "purchase_order_id"
@@ -92,7 +101,6 @@ ActiveRecord::Schema.define(version: 20151023230158) do
 
   create_table "products", force: :cascade do |t|
     t.string   "name"
-    t.decimal  "stock"
     t.integer  "unit"
     t.integer  "price"
     t.datetime "created_at",  null: false
@@ -152,7 +160,7 @@ ActiveRecord::Schema.define(version: 20151023230158) do
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   add_foreign_key "grocery_images", "groceries"
-  add_foreign_key "order_lines", "products"
+  add_foreign_key "inventories", "products"
   add_foreign_key "order_lines", "purchase_orders"
   add_foreign_key "product_images", "products"
   add_foreign_key "products", "categories"

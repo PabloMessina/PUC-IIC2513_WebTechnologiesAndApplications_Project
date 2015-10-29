@@ -21,29 +21,12 @@ class PurchaseOrder < ActiveRecord::Base
 
   	def check_order_lines
 
-  		puts "------------------------------------"
-  		puts "------------------------------------"
-  		puts "------------------------------------"
-  		puts order_lines_data
-  		puts "------------------------------------"
-  		puts "------------------------------------"
-  		puts "------------------------------------"
-
   		begin
   			array = JSON.parse(order_lines_data)
   		rescue
   			errors.add(:order_lines_data, " submitted does not meet JSON format")
   			return
   		end  		  		  		
-
-  		puts "------------------------------------"
-  		puts "------------------------------------"
-  		puts "------------------------------------"
-  		puts array
-  		puts array.inspect
-  		puts "------------------------------------"
-  		puts "------------------------------------"
-  		puts "------------------------------------"
 
   		if(!array.kind_of?(Array)) 
   			errors.add(:order_lines_data, " must be an array")
@@ -57,12 +40,6 @@ class PurchaseOrder < ActiveRecord::Base
   		array.each do |x|
   			product_id = x["product_id"]
   			amount = x["amount"]
-
-  			puts "--------------"
-  			puts "en el each:"
-  			puts "\t x = #{x.inspect}"
-  			puts "\t product_id = #{product_id}"
-  			puts "\t amount = #{amount}"
 
   			unless product_id && product_id.is_a?(Integer) && ids_set.add?(product_id)
   				next

@@ -25,7 +25,7 @@
 				<%= link_to "Show", grocery_product_path(@grocery,product) %>
 		    <% if @privilege == :administrator %>
 		      | <%= link_to "Edit", edit_grocery_product_path(@grocery,product) %>
-		      | <%= link_to "Destroy", grocery_product_path(@grocery,product), :confirm => "Are you sure?", :method => :delete %>  
+		      | <%= link_to 'Destroy', grocery_product_path(@grocery,product), method: :delete, data: { confirm: 'Are you sure?' } %>
 		    <% end %>
 	    </td>
     </tr>

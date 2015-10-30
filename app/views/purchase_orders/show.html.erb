@@ -1,0 +1,49 @@
+
+<%= link_to 'Go back to Grocery', grocery_path(@grocery) %> 
+<br>
+<%= link_to 'Manage Purchase Orders', grocery_purchase_orders_path(@grocery) %>
+<br>
+
+
+<% if !@purchase_order.user.nil? %>
+  <p>
+    <strong>Buyer:</strong>
+    <%= link_to @purchase_order.user.username, user_path(@purchase_order.user) %>
+  </p>
+<% end %>
+
+<p> 
+  <strong>Total Order Price:</strong>
+  $ <%= PurchaseOrder.total_price(@purchase_order.id)%>
+</p>
+
+
+<h3> Order Lines (<%= @purchase_order.order_lines.count %>)</h3>
+
+<table border>
+  <tr>
+    <th>Product</th>
+    <th>Price (at the moment)</th>
+    <th>Amount</th>
+    <th>Unit</th>
+    <th>Total Price</th>
+  </tr>
+
+  <% @purchase_order.order_lines.each do |order_line| %>
+   <tr>
+      <% if order_line.product.nil? %>
+        <td> (deleted) </td>
+      <% else %>
+        <td><%= link_to order_line.product.name, grocery_product_path(@grocery,order_line.product)%></td>
+      <% end %>
+      <td> $ <%= order_line.product_price %></td>
+      <td><%= order_line.amount %></td>
+      <%if order_line.product.nil? %>
+        <td> (deleted) </td>           
+      <% else %>
+        <td><%= order_line.product.unit.to_s %></td>
+      <%end%>
+      <td> $ <%= order_line.amount * order_line.product_price %></td>
+    </tr>
+  <% end %>
+</table>

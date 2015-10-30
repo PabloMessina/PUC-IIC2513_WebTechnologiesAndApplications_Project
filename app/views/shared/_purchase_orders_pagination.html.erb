@@ -1,0 +1,30 @@
+<%= will_paginate @pagination_data %>  
+
+<label>Showing <%= @purchases_data.count %> results: </label>
+<table border>
+  <tr>
+    <th>Date</th>
+    <th>Products Count</th>
+  	<th>Total Price</th>
+  	<th>Details</th>
+  </tr>   	
+
+<% @purchases_data.each do |row| %>  
+	<tr>
+		<td>
+   		<%= row.purchase_date %>
+    </td>
+    <td>
+    	<%= row.products_count %>
+    </td>
+    <td>
+    	$ <%= row.total_price %>
+    </td>
+    <td>
+    	<%= link_to 'see details', grocery_purchase_order_path(@grocery,row.order_id) %>
+    </td>
+  </tr>
+<% end %>  	
+</table>
+
+<%= will_paginate @pagination_data %>

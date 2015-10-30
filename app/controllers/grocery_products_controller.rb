@@ -6,24 +6,18 @@ class GroceryProductsController < ApplicationController
 	before_action :set_grocery_by_id
 	before_action :set_product_by_id, only:[:show, :edit, :update, :destroy]
 
+  before_action :check_grocery_exists
+  before_action :check_user_logged_in, only: [:new, :create, :update, :destroy]
+  before_action only: [:new, :create, :update, :destroy] do check_privilege_on_grocery(:administrator) end
+  before_action :check_product_exists, only: [:show, :edit, :update, :destroy]
+  before_action :check_product_belongs_to_grocery, only: [:show, :edit, :update, :destroy]
 
   def index
-    puts "----------------------------------"
-    puts "----------------------------------"
-    puts params.inspect
-    puts "----------------------------------"
-    puts "----------------------------------"
-    return unless check_grocery_exists
 
     filtered_params = search_params
     categories = filtered_params[:categories]
     tags = filtered_params[:tags]
     search_string = filtered_params[:search]
-    puts "%%%%%%%%%%%%%%%%%%%%"
-    puts categories
-    puts tags
-    puts search_string
-    puts "%%%%%%%%%%%%%%%%%%%%"
 
     @products = @grocery.products
     if search_string && !search_string.blank?
@@ -45,187 +39,51 @@ class GroceryProductsController < ApplicationController
   end
 
   def new
-  	unless (check_grocery_exists &&
-  					check_user_logged_in &&
-  					check_privilege_on_grocery(:administrator))
-  		return
-  	end
-
   	@product = Product.new
+    @product.setup_attributes_new
   end
 
   def create
-  	unless (check_grocery_exists &&
-  		 			check_user_logged_in &&
-  		 			check_privilege_on_grocery(:administrator))
-  		return
-  	end
-
   	filtered_params = product_params
-
-  	@product = Product.new (filtered_params)
+  	@product = @grocery.products.new(filtered_params)
 		if @product.save
-			if filtered_params[:image]
-				ProductImage.create(product_image: filtered_params[:image], product_id: @product.id)
-			end
-
-      if filtered_params[:category_mode] == 'existing_category'
-        if filtered_params[:existing_category]
-          cat_id = filtered_params[:existing_category].to_i
-          category = Category.find_by_id(cat_id)
-          if(category)
-            category.products << @product
-          end
-        end
-      else
-        if filtered_params[:new_category]
-          cat_name = filtered_params[:new_category]
-          category = Category.where('name = ?',cat_name).first
-          if(category)
-            category.products << @product
-          elsif !cat_name.blank?
-            category = Category.create(name: cat_name)
-            category.products << @product
-          end
-        end
-      end
-
-      existing_tags = filtered_params[:existing_tags]
-      if existing_tags && existing_tags.size > 0
-        existing_tags.each do |x|
-          id = x.to_i
-          tag = Tag.find_by_id(id)
-          if(tag)
-            @product.tags << tag
-          end
-        end
-      end
-
-      new_tags = filtered_params[:new_tags]
-      if new_tags
-        new_tags = new_tags.split(",")
-        new_tags.each do |name|
-          tag = Tag.where('name = ?',name).first
-          if(tag)
-            @product.tags << tag
-          else
-            tag = Tag.create(name: name)
-            @product.tags << tag
-          end
-        end
-      end
-
+      @product.update_category
+      @product.update_tags
+      flash[:success] = 'Product created successfully!'
 			redirect_to grocery_product_path(@grocery, @product)
 		else
+      @product.setup_attributes_from_form
 			render 'new'
 		end
   end
 
   def show
-  	unless (check_grocery_exists && check_product_exists && check_product_belongs_to_grocery)
-  		return
-  	end
   end
 
   def edit
-  	unless (check_grocery_exists &&
-  					check_product_exists &&
-  					check_product_belongs_to_grocery &&
-  					check_user_logged_in &&
-  					check_privilege_on_grocery(:administrator))
-  		return
-  	end
-
+    @product.setup_attributes_edit
   end
 
   def update
-    unless (check_grocery_exists &&
-            check_product_exists &&
-            check_product_belongs_to_grocery &&
-            check_user_logged_in &&
-            check_privilege_on_grocery(:administrator))
-      return
-    end
-
     filtered_params = product_params
     if @product.update(filtered_params)
-
-      if filtered_params[:image]
-        if(@product.product_image)
-          @product.product_image.update(product_image: filtered_params[:image])
-        else
-          ProductImage.create(product_image: filtered_params[:image], product_id: @product.id)
-        end
-      end
-
-      if filtered_params[:category_mode] == 'existing_category'
-        if filtered_params[:existing_category]
-          cat_id = filtered_params[:existing_category].to_i
-          category = Category.find_by_id(cat_id)
-          if(category)
-            category.products << @product
-          end
-        end
-      else
-        if filtered_params[:new_category]
-          cat_name = filtered_params[:new_category]
-          category = Category.where('name = ?',cat_name).first
-          if(category)
-            category.products << @product
-          elsif !cat_name.blank?
-            category = Category.create(name: cat_name)
-            category.products << @product
-          end
-        end
-      end
-
-      existing_tags = filtered_params[:existing_tags]
-      if existing_tags && existing_tags.size > 0
-        existing_tags.each do |x|
-          id = x.to_i
-          tag = Tag.find_by_id(id)
-          if(tag)
-            begin
-              @product.tags << tag
-            rescue ActiveRecord::RecordNotUnique => e
-            end
-          end
-        end
-      end
-
-      new_tags = filtered_params[:new_tags]
-      if new_tags
-        new_tags = new_tags.split(",")
-        new_tags.each do |name|
-          tag = Tag.where('name = ?',name).first
-          if(tag)
-            begin
-              @product.tags << tag
-            rescue ActiveRecord::RecordNotUnique => e
-            end
-          else
-            tag = Tag.create(name: name)
-            @product.tags << tag
-          end
-        end
-      end
-
-      flash[:success] = 'Product updated succesfully!'
+      @product.update_category
+      @product.update_tags
+      flash[:success] = 'Product updated successfully!'
       redirect_to grocery_product_path(@grocery, @product)
     else
+      @product.setup_attributes_from_form
       render 'edit'
     end
   end
 
-	def destroy
-		if(!@product.nil?)
-			@product.destroy
-			flash[:success] = "Product destroyed successfully!"
-		else
-			flash[:error] = "Product was nil"
-		end
-		redirect_to grocery_path(@grocery)
-	end
+  def destroy
+    @product.destroy
+    flash[:success] = 'Product deleted successfully!'
+    redirect_to grocery_path(@grocery)
+  end
+
+  private
 
 
   private
@@ -235,26 +93,33 @@ class GroceryProductsController < ApplicationController
   	end
 
   	def check_product_belongs_to_grocery
-    	unless @product.grocery_id == @grocery.id
-    		permission_denied ("Product with id #{params[:id]} does not belong to grocery with id #{params[:grocery_id]}")
-    		return false;
+      unless @product.grocery_id == @grocery.id
+        raise ActionController::RoutingError.new("Product with id #{params[:id]} does not belong to grocery with id #{params[:grocery_id]}")
+      end
+  	end
+
+  	def check_grocery_exists
+  		unless @grocery
+        raise ActionController::RoutingError.new("Grocery with id #{params[:grocery_id]} not found")
     	end
-    	return true;
   	end
 
   	def check_product_exists
-  		unless @product
-    		permission_denied ("Product with id #{params[:id]} not found")
-    		return false;
-    	end
-    	return true;
+      unless @product
+        raise ActionController::RoutingError.new("Product with id #{params[:id]} not found")
+      end
+  	end
+
+  	def check_privilege_on_grocery(privilege)
+      unless @privilege == privilege
+        raise ActionController::RoutingError.new("You (user_id = #{@logged_user.id}) need a privilege of #{privilege} on this grocery (id = #{params[:grocery_id]}) to perform this action")
+      end
   	end
 
   	def product_params
       p = params.require(:product).permit(
         :image, :name, :stock, :unit, :price, :category_mode, :existing_category,
-        :new_category, {:existing_tags => []}, :new_tags);
-      p[:grocery_id] = params[:grocery_id]
+        :new_category, {:existing_tags => []}, :new_tags, inventory_attributes: [:stock], product_image_attributes: [:product_image]);
       if(p[:unit])
       	p[:unit] = p[:unit].to_sym
       end

@@ -11,8 +11,10 @@
       <%= image_tag "products-icon-basket.gif", :style => "width: 250px; height: 120px;"  %>
     <% end %>
     <br>
-    <%= f.label :image, "Change Image" %>
-    <%= f.file_field :image %>
+    <%= f.fields_for :product_image do |ff| %>
+      <%= ff.label :product_image, "Change Image" %>
+      <%= ff.file_field :product_image %>
+    <% end %>
   </div>
 
   <div class = "field">
@@ -20,10 +22,12 @@
     <%= f.text_field :name %>
   </div>
 
-  <div class="field">
-    <%= f.label :stock, "Stock" %>
-    <%= f.number_field :stock, step: 0.01 %>
-  </div>
+  <%= f.fields_for :inventory do |ff| %>
+    <div class="field">
+      <%= ff.label :stock, "Stock" %>
+      <%= ff.number_field :stock, step: 0.01 %>
+    </div>
+  <% end %>
 
   <div class="field">
     <%= f.label :unit, "Unit" %>
@@ -39,19 +43,22 @@
     <%= f.number_field :price %>
   </div>
 
+
+  <% @show_existing = (product.category_mode == :existing_category) %>
+
   <div class = "field">
-    <%= f.radio_button :category_mode, "existing_category", checked: product.category_mode == "existing_category", onclick: "switchCategoryMode(this)" %>
+    <%= f.radio_button :category_mode, "existing_category", checked: @show_existing, onclick: "switchCategoryMode(this)" %>
     <%= f.label :category_mode, 'Choose an existing category', value: "existing_category" %>
     <br>
-    <%= f.radio_button :category_mode, "new_category", checked: product.category_mode != "existing_category", onclick: "switchCategoryMode(this)" %>
+    <%= f.radio_button :category_mode, "new_category", checked: !@show_existing, onclick: "switchCategoryMode(this)" %>
     <%= f.label :category_mode, 'Create and assign a new category', value: "new_category" %>
     <br>
-    <div id = "existing_category_div">
+    <div id = "existing_category_div" <%= @show_existing ? '' : 'class=hide-element'%>>
       <%= f.label :existing_category, "Existing Category: " %>
       <br>
-      <%= f.select :existing_category, options_for_select(Category.all.collect {|c| [c.name,c.id]}, product.category ? product.category.id : nil ) , {include_blank: true}, {class: 'awesome-select'} %>
+      <%= f.select :existing_category, options_for_select(Category.all.collect {|c| [c.name,c.id]}, product.existing_category ) , {include_blank: true}, {class: 'awesome-select'} %>
     </div>
-    <div id = "new_category_div" class="hide-element">
+    <div id = "new_category_div" <%= !@show_existing ? '' : 'class=hide-element'%>>
       <%= f.label :new_category, "New Category: " %>
       <br>
       <%= f.text_field :new_category %>
@@ -62,7 +69,7 @@
     <div>
       <%= f.label :existing_tags, "Existing Tags" %>
       <br>
-      <%= f.select :existing_tags, options_for_select(Tag.all.collect {|tag| [tag.name,tag.id]}, product.tags.map { |j| j.id} ), {}, {multiple: true, class: 'awesome-select'} %>
+      <%= f.select :existing_tags, options_for_select(Tag.all.collect {|tag| [tag.name,tag.id]}, product.existing_tags ), {}, {multiple: true, class: 'awesome-select'} %>
     </div>
     <div>
       <%= f.label :new_tags, "New Tags: " %>

@@ -1,0 +1,81 @@
+<%= link_to 'Go back to Grocery', grocery_path(@grocery) %> 
+<br>
+<%= link_to 'Manage Purchase Orders', grocery_purchase_orders_path(@grocery) %>
+<br>
+
+
+<%= render 'shared/error_messages', object: @purchase_order %>
+
+<h3>New Purchase Order</h3>
+
+<%= form_for @purchase_order, url: grocery_purchase_orders_path(@grocery) do |f| %>
+	<%= f.hidden_field :order_lines_data, value: @purchase_order.order_lines_data %>
+	<table id = 'order_lines_table' border>
+		<tr>
+			<th>Product</th>
+			<th>Amount</th>
+			<th>In Stock</th>
+		</tr>
+		<% @order_lines_data.each do |x| %>
+			<%= %Q[<tr id = "row_#{x[:product_id]}"><td>#{x[:product_name]}</td><td><input class="stock" id="#{x[:product_id]}" type = "number" min="0" max="#{x[:stoke]}" required/></td><td>#{x[:stock]}</td>].html_safe %>
+		<% end %>
+	</table>
+	<%= f.submit "Submit Purchase Order" %>
+<% end %>
+
+<div class="field">
+	<label>Select products</label>
+	<%= select_tag "products_select", options_for_select(@grocery.products.map{|x|[x.name, x.id]}, @selected_ids),multiple: true %>
+</div>
+
+<script>
+
+	var products_data = <%= @grocery.products_purchase_data_to_JSON %>
+
+	$(document).ready(function() {
+    $("#products_select").select2({
+      width: "150px",
+      placeholder: "Select products ..."
+    })
+		.on("select2:select", function(e) {
+			var id = e.params.data.id;
+			var name = products_data[id].name;
+			var stock = products_data[id].stock;
+
+			$('#order_lines_table tr:last')
+				.after(
+					'<tr id = "row_'+id+'"><td>'+name+'</td><td><input class="stock" id = "'+id+'" type="number" min="0" max="'+stock+'" required/></td><td>'+stock+'</td></tr>');
+		})
+		.on("select2:unselect", function(e) {
+			var id = e.params.data.id;
+			$('#row_'+id).remove();
+		});	
+
+		$("#new_purchase_order").submit(function(e){
+			//e.preventDefault();
+
+			var values = "[";
+			var first = true;
+			$(".stock").each(function() {
+				var id = $(this).attr("id");
+				var amount = $(this).val();
+				if(first)
+					first = false;
+				else
+					values+=",";
+				values += '{"product_id":'+id+',"amount":'+amount+'}'
+			});
+			values +="]";			
+			$("#purchase_order_order_lines_data").val(values);
+			//console.log(values);
+
+		});
+
+		$('.pagination a').each(function() {
+      var _href = $(this).attr("href");
+      $(this).attr("href", _href + page_count_str);
+    });
+
+  });  
+
+</script>

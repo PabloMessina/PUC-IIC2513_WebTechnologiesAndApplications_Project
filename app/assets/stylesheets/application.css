@@ -14,7 +14,6 @@
  *= require_tree ../../../vendor/assets/stylesheets/
  */
 
-
 header {
   position: fixed;
   left: 0px;
@@ -25,9 +24,37 @@ header {
   box-shadow: 0 0 10px 0 black;
 }
 
-#header-table {
-  float: right;
-  border-spacing: 15px;
+header ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #98bf21;
+}
+
+header li.left {
+    float: left;
+}
+header li.right {
+    float: right;
+}
+
+header a:link,
+header a:visited {
+    display: block;
+    width: 120px;
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #98bf21;
+    text-align: center;
+    padding: 4px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+header a:hover, 
+header a:active {
+    background-color: #7A991A;
 }
 
 body {
@@ -43,17 +70,14 @@ body {
      padding: 30px;
      border-radius: 15px;
      background-color: #fafafa;
+     overflow: auto;
 }
 
-/*ul.hmenu {
-  list-style: none;
-  margin: 0 0 2em;
-  padding: 0;
+.center {        
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
 }
-
-ul.hmenu li {
-  display: inline;
-}*/
 
 .hide-element {
 	display: none;

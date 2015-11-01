@@ -5,8 +5,8 @@ class GroceryProductsController < ApplicationController
 	before_action :set_product_by_id, only:[:show, :edit, :update, :destroy]
 
   before_action :check_grocery_exists
-  before_action :check_user_logged_in, only: [:new, :create, :update, :destroy]
-  before_action only: [:new, :create, :update, :destroy] do check_privilege_on_grocery(:administrator) end
+  before_action :check_user_logged_in, only: [:new, :create, :edit, :update, :destroy]
+  before_action only: [:new, :create, :edit, :update, :destroy] do check_privilege_on_grocery(:administrator) end
   before_action :check_product_exists, only: [:show, :edit, :update, :destroy]
   before_action :check_product_belongs_to_grocery, only: [:show, :edit, :update, :destroy]
 
@@ -19,7 +19,7 @@ class GroceryProductsController < ApplicationController
 
     @products = @grocery.products    
     if search_string && !search_string.blank?
-      @products = @products.where("products.name LIKE ?","%#{search_string}%")
+      @products = @products.where("products.name ILIKE ?","%#{search_string}%")
     end
     if categories && categories.count > 0
       @products = @products.where('products.category_id IN (?)',categories.map{|x|x.to_i} )

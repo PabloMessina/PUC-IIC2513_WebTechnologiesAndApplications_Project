@@ -1,0 +1,8 @@
+$("#pagination_div").html("<%= escape_javascript(render(partial: "products/products_pagination", 
+  locals: {products: @products})) %> ");  
+
+$('.pagination a').click(function () {  
+    $('.pagination').html('Loading products...');  
+    $.get(this.href, null, null, 'script');  
+    return false;  
+});

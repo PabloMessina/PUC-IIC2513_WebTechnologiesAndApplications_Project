@@ -1,0 +1,6 @@
+<strong>Groceries</strong>
+<%= will_paginate pagination_data, params: {controller: 'groceries', action: 'index'} %>  
+<div class = "groceries_container">
+	<%= render groceries %>
+</div>
+<%= will_paginate pagination_data, params: {controller: 'groceries', action: 'index'} %>

@@ -1,0 +1,10 @@
+<div class="product_div">
+	<%= link_to grocery_product_path(product.grocery, product) do %>
+		<strong><%= product.name %></strong>
+		<% if product.has_image? %>
+		  <%= image_tag product.product_image.product_image_url, :style => "width: 120px; height: 120px;"  %>
+		<% else %>
+		  <%= image_tag "products-icon-basket.gif", :style => "width: 120px; height: 120px;"  %>
+		<% end %>
+	<% end %>
+</div>

@@ -30,7 +30,7 @@
 
 <%= form_tag grocery_products_path(@grocery), method: 'get', remote: true, id: "products_search" do %>
   <div class="stack-horizontal">
-    <label>Filter by string</label>
+    <label>Filter by name</label>
     <%= text_field_tag :search %>
   </div>
   <div class="stack-horizontal">

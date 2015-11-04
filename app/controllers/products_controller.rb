@@ -7,7 +7,7 @@ class ProductsController < ApplicationController
     tags = filtered_params[:tags]
     search_string = filtered_params[:search]
 
-    @products = Product.all    
+    @products = Product.all.where("products.visible = true")
     if search_string && !search_string.blank?
       @products = @products.where("products.name ILIKE ?","%#{search_string}%")
     end

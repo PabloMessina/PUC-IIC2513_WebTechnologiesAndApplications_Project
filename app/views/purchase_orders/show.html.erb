@@ -25,7 +25,6 @@
     <th>Product</th>
     <th>Price (at the moment)</th>
     <th>Amount</th>
-    <th>Unit</th>
     <th>Total Price</th>
   </tr>
 
@@ -37,12 +36,7 @@
         <td><%= link_to order_line.product.name, grocery_product_path(@grocery,order_line.product)%></td>
       <% end %>
       <td> $ <%= order_line.product_price %></td>
-      <td><%= order_line.amount %></td>
-      <%if order_line.product.nil? %>
-        <td> (deleted) </td>           
-      <% else %>
-        <td><%= order_line.product.unit.to_s %></td>
-      <%end%>
+      <td><%= order_line.amount %></td>   
       <td> $ <%= order_line.amount * order_line.product_price %></td>
     </tr>
   <% end %>

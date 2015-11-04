@@ -1,0 +1,67 @@
+<%#=
+  parameters: review, rating, product, grocery, rating_titles
+%>
+<div class ="inline-blockme">
+
+  <% if rating.nil? %>
+    
+    <fieldset id="interactive-rf" class="rating-fieldset">
+      <legend>rate this product</legend> 
+      <div id="interactive-rsc" class = "rating-stars-container active">      
+      <% (0..rating_titles.size-1).each do |i|
+        j = rating_titles.size - i %>
+        <%= radio_button_tag(:rating, j.to_s, false, onclick: "submit_rating(this)") %>
+        <%= label_tag("rating_#{j}".to_sym, "", title: rating_titles[i]) %>
+      <% end %>
+      </div>
+    </fieldset>
+
+    <% if review.nil? %>
+      | <%= link_to 'write a review!', new_product_review_path(product) %>
+    <% end %>
+
+  <% else %>
+
+    <fieldset class="rating-fieldset">
+      <legend>your rating for this product</legend>
+      <div class = "rating-stars-container">
+      <% (0..rating_titles.size-1).each do |i| 
+        j = rating_titles.size - i %>
+        <%#= radio_button_tag(:rating, j.to_s, j == rating.value, disabled: true) %>
+        <input type="radio" disabled="disabled" <%= (j == rating.value) ? 'checked=checked' : '' %>>
+        <label title="<%= rating_titles[i]%>"></label>
+         <%#= label_tag("rating_#{j}".to_sym, "", title: rating_titles[i]) %>
+      <% end %>
+      </div>
+    </fieldset>
+
+    <% if review.nil? %>
+      | <%= link_to 'write a review!', new_product_review_path(product) %>
+    <% end %>
+
+  <%  end  %>
+
+</div>
+
+<% if rating.nil? %>
+  <script type="text/javascript">
+    function submit_rating(radio) {
+
+      $("#interactive-rsc input:radio").attr('disabled',true);
+      $("#interactive-rsc").removeClass("active");
+      $("#interactive-rf legend").html("sending rating ... ");
+
+      $.post("<%= escape_javascript(rate_product_url(grocery,product))%>", {value: radio.value})
+      .done(function(data, textStatus, jqXHR) {            
+        $("#interactive-rf legend").html("your rating for this product");
+      })
+      .fail(function(jqXHR, textStatus, errorThrown) {
+        $("#interactive-rsc").addClass("active");
+        $("#interactive-rf legend").html("rate this product");
+        $("#interactive-rsc input:radio").attr('disabled',false);
+        radio.checked = false;
+        alert("jqXHR: "+textStatus+"\ntextStatus = "+textStatus+"\nerrorThrown = "+errorThrown);
+      });
+    }
+  </script>
+<% end %>

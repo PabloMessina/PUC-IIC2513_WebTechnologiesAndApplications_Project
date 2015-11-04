@@ -13,6 +13,9 @@ class User < ActiveRecord::Base
 	has_many :following_groceries, through: :followers, source: :grocery
 	has_many :purchase_orders
 	has_one :user_image, :dependent => :destroy
+	has_many :reviews
+	has_many :stars
+	has_many :review_comments
 
 	before_create :create_remember_token
 
@@ -41,6 +44,14 @@ class User < ActiveRecord::Base
 
 	def has_image?
 		return self.user_image && !self.user_image.user_image.blank?
+	end
+
+	def get_review_for(product_id)
+		self.reviews.where("product_id = ?",product_id).first
+	end
+
+	def get_rating_for(product_id)
+		self.stars.where("product_id = ?",product_id).first
 	end
 
 	private

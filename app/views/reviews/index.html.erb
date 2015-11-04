@@ -1,0 +1,22 @@
+<%= render partial: 'shared/product_with_rating_bars', locals: {product: @product, grocery: @product.grocery} %> <br/>
+<% if signed_in? %>
+	<%= render partial: 'rate_or_review', locals: {review: @logged_user.get_review_for(@product.id), rating: @logged_user.get_rating_for(@product.id), product: @product, grocery: @product.grocery, rating_titles: @rating_titles} %> <br/>
+<% end %>
+
+<br/>
+<br/>
+<strong>All Customer Reviews (<%= @product.reviews.count %>)</strong> 
+<br/>
+<br/>
+
+<div id = "pagination_div">
+	<%= render partial: "reviews_pagination", locals: {reviews: @reviews, rating_titles: @rating_titles} %>
+</div>
+
+<script type="text/javascript">
+	$('.pagination a').click(function () {  
+	    $('.pagination').html('Loading reviews...');  
+	    $.get(this.href, null, null, 'script');  
+	    return false;  
+	});
+</script>

@@ -64,7 +64,7 @@ class Admin::ProductsController < ApplicationController
     end
 
     def product_params
-      params.require(:product).permit(:name, :stock, :unit, :price);
+      params.require(:product).permit(:name, :stock, :price);
     end
 
     def set_namespace

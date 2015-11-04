@@ -16,7 +16,7 @@
 	  	<%= form_tag groceries_path, method: 'get', remote: true, id: "groceries_search_form" do %>
 		  	<fieldset>
 				  <div>
-				    <label>Filter by string</label>
+				    <label>Filter by name</label>
 				    <%= text_field_tag :search %>
 				  </div>
 				  <div>
@@ -38,7 +38,7 @@
 	  	<%= form_tag products_path, method: 'get', remote: true, id: "products_search_form" do %>
 		  	<fieldset>
 				  <div>
-				    <label>Filter by string</label>
+				    <label>Filter by name</label>
 				    <%= text_field_tag :search %>
 				  </div>
 				  <div>
@@ -64,12 +64,4 @@
 <div id="pagination_div">
 	<%= render partial: 'groceries/groceries_pagination', locals: {groceries: @groceries, pagination_data: @groceries} %>	
 </div>
-
-<script type="text/javascript">
-	$('.pagination a').click(function () {  
-    $('.pagination').html('Searching groceries...');  
-    $.get(this.href, null, null, 'script');  
-    return false;  
-	});
-</script>
 

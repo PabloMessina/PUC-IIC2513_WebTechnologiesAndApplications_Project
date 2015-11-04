@@ -82,11 +82,12 @@ def create_grocery(owner_id)
   n_products.times do
     p = Product.create!(
       name: Faker::Commerce.product_name,
-      stock: rand(0..100),
       unit: rand(1..Product.units.values.max),
       price: rand(1..100) * 50,
       grocery_id: g.id,
       category_id: rand_id(Category))
+
+    Inventory.create!(product_id: p.id, stock: rand(0..100))
 
     # TODO: imagenes
 

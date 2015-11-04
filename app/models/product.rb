@@ -20,8 +20,8 @@ class Product < ActiveRecord::Base
 
   validates :grocery, presence: true
   validates :name, presence: true, length: {minimum: 1, maximum: 30}
-  validates :stock, numericality: { greater_than_or_equal_to: 0, only_integer: true }, if: "unit == 'item'"
-  validates :stock, numericality: { greater_than_or_equal_to: 0 }, unless: "unit == 'item'"
+  # validates :stock, numericality: { greater_than_or_equal_to: 0, only_integer: true }, if: "unit == 'item'"
+  # validates :stock, numericality: { greater_than_or_equal_to: 0 }, unless: "unit == 'item'"
   validates :unit, inclusion: { in: Product.units.keys }
   validates :price, numericality: { only_integer: true, greater_than: 0 }
   validates_uniqueness_of :name, allow_blank: false, scope: :grocery

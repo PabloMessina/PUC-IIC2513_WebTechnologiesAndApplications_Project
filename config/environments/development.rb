@@ -39,5 +39,8 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
+  # Vagrant
+  config.web_console.whitelisted_ips = '10.0.2.2'
+
   config.reload_classes_only_on_change = false
 end

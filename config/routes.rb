@@ -11,7 +11,9 @@ Rails.application.routes.draw do
   resources :users, only: [:show, :new, :create, :edit, :update]
   resources :groceries do
     resources :products, controller: 'grocery_products'
-    resources :reports, controller: 'grocery_reports'
+    resources :reports do
+      resources :comments
+    end
     resources :purchase_orders
   end
 

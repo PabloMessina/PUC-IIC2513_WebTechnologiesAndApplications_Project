@@ -52,12 +52,8 @@
 
 <hr>
 
-<% if @privilege == :administrator %>
-  <%= link_to 'Create a news', new_grocery_report_path(@grocery) %>
-<% end %>
-
 <div id="reports_pagination">
-  <%= render 'shared/grocery_reports_pagination' %>
+  <%= render 'shared/reports_pagination' %>
 </div>
 
 <script type="text/javascript">

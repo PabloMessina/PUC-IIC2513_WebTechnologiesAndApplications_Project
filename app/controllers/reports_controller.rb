@@ -1,4 +1,4 @@
-class GroceryReportsController < ApplicationController
+class ReportsController < ApplicationController
   include GroceryHelper
 
 	before_action :set_logged_user_by_cookie

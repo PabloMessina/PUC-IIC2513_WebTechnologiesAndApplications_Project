@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151025002830) do
+ActiveRecord::Schema.define(version: 20151104182412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,17 @@ ActiveRecord::Schema.define(version: 20151025002830) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "comments", force: :cascade do |t|
+    t.text     "text"
+    t.integer  "user_id"
+    t.integer  "report_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "comments", ["report_id"], name: "index_comments_on_report_id", using: :btree
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "followers", id: false, force: :cascade do |t|
     t.integer  "user_id"
@@ -170,6 +181,8 @@ ActiveRecord::Schema.define(version: 20151025002830) do
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  add_foreign_key "comments", "reports"
+  add_foreign_key "comments", "users"
   add_foreign_key "grocery_images", "groceries"
   add_foreign_key "inventories", "products"
   add_foreign_key "order_lines", "purchase_orders"

@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20151104063905) do
+=======
+ActiveRecord::Schema.define(version: 20151104182412) do
+>>>>>>> origin/dev_tomas
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +25,17 @@ ActiveRecord::Schema.define(version: 20151104063905) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "comments", force: :cascade do |t|
+    t.text     "text"
+    t.integer  "user_id"
+    t.integer  "report_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "comments", ["report_id"], name: "index_comments_on_report_id", using: :btree
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "followers", id: false, force: :cascade do |t|
     t.integer  "user_id"
@@ -132,6 +147,7 @@ ActiveRecord::Schema.define(version: 20151104063905) do
   add_index "purchase_orders", ["grocery_id"], name: "index_purchase_orders_on_grocery_id", using: :btree
   add_index "purchase_orders", ["user_id"], name: "index_purchase_orders_on_user_id", using: :btree
 
+<<<<<<< HEAD
   create_table "review_comments", force: :cascade do |t|
     t.text     "content"
     t.integer  "review_id"
@@ -173,13 +189,24 @@ ActiveRecord::Schema.define(version: 20151104063905) do
     t.integer  "value"
     t.integer  "product_id"
     t.integer  "user_id"
+=======
+  create_table "reports", force: :cascade do |t|
+    t.string   "title"
+    t.text     "text"
+    t.integer  "grocery_id"
+    t.integer  "product_id"
+>>>>>>> origin/dev_tomas
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+<<<<<<< HEAD
   add_index "stars", ["product_id", "user_id"], name: "index_stars_on_product_id_and_user_id", unique: true, using: :btree
   add_index "stars", ["product_id"], name: "index_stars_on_product_id", using: :btree
   add_index "stars", ["user_id"], name: "index_stars_on_user_id", using: :btree
+=======
+  add_index "reports", ["grocery_id"], name: "index_reports_on_grocery_id", using: :btree
+>>>>>>> origin/dev_tomas
 
   create_table "tags", force: :cascade do |t|
     t.string   "name"
@@ -209,6 +236,8 @@ ActiveRecord::Schema.define(version: 20151104063905) do
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  add_foreign_key "comments", "reports"
+  add_foreign_key "comments", "users"
   add_foreign_key "grocery_images", "groceries"
   add_foreign_key "inventories", "products"
   add_foreign_key "order_lines", "purchase_orders"
@@ -217,6 +246,7 @@ ActiveRecord::Schema.define(version: 20151104063905) do
   add_foreign_key "products", "groceries"
   add_foreign_key "purchase_orders", "groceries"
   add_foreign_key "purchase_orders", "users"
+<<<<<<< HEAD
   add_foreign_key "review_comments", "reviews"
   add_foreign_key "review_comments", "users"
   add_foreign_key "reviews", "products"
@@ -224,4 +254,8 @@ ActiveRecord::Schema.define(version: 20151104063905) do
   add_foreign_key "star_counts", "products"
   add_foreign_key "stars", "products"
   add_foreign_key "stars", "users"
+=======
+  add_foreign_key "reports", "groceries"
+  add_foreign_key "reports", "products"
+>>>>>>> origin/dev_tomas
 end

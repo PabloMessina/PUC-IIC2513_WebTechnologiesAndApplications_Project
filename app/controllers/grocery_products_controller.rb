@@ -1,4 +1,6 @@
 class GroceryProductsController < ApplicationController
+	include GroceryHelper
+
 	before_action :set_logged_user_by_cookie
 	before_action :set_privilege_on_grocery
 	before_action :set_grocery_by_id
@@ -18,14 +20,16 @@ class GroceryProductsController < ApplicationController
     tags = filtered_params[:tags]
     search_string = filtered_params[:search]
 
+
     @products = @grocery.products.where("products.visible = true")   
+
     if search_string && !search_string.blank?
       @products = @products.where("products.name ILIKE ?","%#{search_string}%")
     end
     if categories && categories.count > 0
       @products = @products.where('products.category_id IN (?)',categories.map{|x|x.to_i} )
     end
-    if tags && tags.count > 0      
+    if tags && tags.count > 0
       @products = @products.where("(SELECT COUNT(*) FROM products_tags as pt WHERE
        pt.product_id = products.id AND pt.tag_id in (?)) = ?",tags.map{|x|x.to_i},tags.count)
     end
@@ -63,7 +67,7 @@ class GroceryProductsController < ApplicationController
     @product.setup_attributes_edit
   end
 
-  def update    
+  def update
     filtered_params = product_params
     if @product.update_attributes(filtered_params)     
       @product.update_category
@@ -95,23 +99,11 @@ class GroceryProductsController < ApplicationController
 
   private
 
-  	def set_grocery_by_id
-  		@grocery = Grocery.find_by_id(params[:grocery_id])
-  	end
+
+  private
 
   	def set_product_by_id
   		@product = Product.find_by_id(params[:id])
-  	end
-
-  	def set_privilege_on_grocery
-  		if(@logged_user)
-  		  @privilege = @logged_user.privileges.find {|x| x.grocery_id.to_s == params[:grocery_id]}
-  		  if(@privilege) 
-  		  	@privilege = @privilege.privilege.to_sym
-  		  end
-  		else
-  			@privilege = nil
-  		end
   	end
 
   	def check_product_belongs_to_grocery
@@ -159,4 +151,4 @@ class GroceryProductsController < ApplicationController
     def search_params
       params.permit(:search, {categories: []}, {tags: []}, :page)
     end
-end	
+end

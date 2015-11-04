@@ -16,11 +16,11 @@
 
   function refreshPagination() {
     //set click function
-    $('.pagination a').click(function () {  
-        $('.pagination').html('Loading page...');  
-        $.get(this.href, null, null, 'script');  
-        return false;  
-    }); 
+    $('.pagination a').click(function () {
+        $('.pagination').html('Loading page...');
+        $.get(this.href, null, null, 'script');
+        return false;
+    });
     //append page_count
     $('.pagination a').each(function() {
       var _href = $(this).attr("href");
@@ -33,8 +33,8 @@
     refreshPagination();
   });
 
-  $(document).ready(function() {  
+  $(document).ready(function() {
     refreshPagination();
-  });  
+  });
 
 </script>

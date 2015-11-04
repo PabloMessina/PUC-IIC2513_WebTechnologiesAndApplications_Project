@@ -1,0 +1,31 @@
+<!-- remember to provide local variables product, namespace and submit_message -->
+
+<%= form_for(report, url: namespace) do |f| %>
+
+  <%= render 'shared/error_messages', object: report %>
+
+  <div class = "field">
+    <%= f.label :title, "Title" %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= f.label :text, "Text" %>
+    <%= f.text_area :text %>
+  </div>
+
+  <div class="field">
+    <%= f.label :product, "Product link: " %>
+    <br>
+    <%= f.select :product, options_for_select(Product.where(grocery_id: @grocery.id).collect {|p| [p.name,p.id]}, report.product ? report.product.id : nil ), {include_blank: true}, {class: 'awesome-select'} %>
+  </div>
+
+  <script>
+    // make title and text look similar
+    $("#report_text").css("font-family", $("#report_title").css("font-family"));
+    $("#report_text").css("font-size", $("#report_title").css("font-size"));
+  </script>
+
+  <%= f.submit submit_message %>
+
+<% end %>

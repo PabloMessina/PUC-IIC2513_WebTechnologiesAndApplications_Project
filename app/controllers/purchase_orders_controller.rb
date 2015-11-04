@@ -1,14 +1,14 @@
 require 'will_paginate/array'
 require 'pagination_data.rb'
 
-class PurchaseOrdersController < ApplicationController	
+class PurchaseOrdersController < ApplicationController
 	before_action :set_logged_user_by_cookie
 	before_action :set_privilege_on_grocery
 	before_action :set_grocery_by_id
 	before_action :set_purchase_order_by_id, only: [:show, :edit, :update, :destroy]
 
 	def index			
-		unless (check_grocery_exists && 
+		unless (check_grocery_exists &&
 		        check_user_logged_in &&
 		        check_privilege_on_grocery(:administrator))
 	    return
@@ -36,17 +36,17 @@ class PurchaseOrdersController < ApplicationController
 	  	else
 	  		@page_count = 1
 	  		@total_entries = 0
-	  	end	  
+	  	end
 	  else
 	  	@purchases_data = @grocery.purchases_data_without_count(page: page, per_page: per_page)
 	  	@total_entries = @page_count * per_page
-	  end	
+	  end
 
 	  @pagination_data = PaginationData.new(@page_count, page)
 	end
 
 	def show
-		unless (check_grocery_exists && 
+		unless (check_grocery_exists &&
 						check_purchase_order_exists &&
 		        check_user_logged_in &&
 		        check_privilege_on_grocery(:administrator))
@@ -55,7 +55,7 @@ class PurchaseOrdersController < ApplicationController
 	end
 
 	def new
-		unless (check_grocery_exists && 
+		unless (check_grocery_exists &&
 	        check_user_logged_in &&
 	        check_privilege_on_grocery(:administrator))
 	    return
@@ -66,7 +66,7 @@ class PurchaseOrdersController < ApplicationController
 	end
 
 	def create
-		unless (check_grocery_exists && 
+		unless (check_grocery_exists &&
 			      check_user_logged_in &&
 			      check_privilege_on_grocery(:administrator))
   		return
@@ -81,25 +81,25 @@ class PurchaseOrdersController < ApplicationController
 
 	  @purchase_order = PurchaseOrder.new(grocery_id: @grocery.id, order_lines_data: order_lines_data)
 
-	  if(@purchase_order.save)	  	
+	  if(@purchase_order.save)
 
 	  	@purchase_order.filtered_order_lines_data.each do |x|
 	  		@purchase_order.order_lines.
-	  		create(	product_id: 		x[:product_id], 
-	  						amount: 				x[:amount], 
+	  		create(	product_id: 		x[:product_id],
+	  						amount: 				x[:amount],
 	  						product_price: 	x[:product_price])
 	  		product = Product.find_by_id(x[:product_id])
 	  		product.update_attribute(:stock, product.stock - x[:amount])
 	  	end
 
 	  	redirect_to grocery_purchase_orders_path(@grocery)
-	  else	  	
+	  else
 	  	begin
   			aux_array = JSON.parse(order_lines_data)
   			aux_array = [] unless aux_array.is_a? (Array)
   		rescue
   			aux_array = []
-  		end 
+  		end
 
   		@order_lines_data = []
   		@selected_ids = []
@@ -129,7 +129,7 @@ class PurchaseOrdersController < ApplicationController
 	def set_privilege_on_grocery
 		if(@logged_user)
 		  @privilege = @logged_user.privileges.find {|x| x.grocery_id.to_s == params[:grocery_id]}
-		  if(@privilege) 
+		  if(@privilege)
 		  	@privilege = @privilege.privilege.to_sym
 		  end
 		else
@@ -162,8 +162,8 @@ class PurchaseOrdersController < ApplicationController
     return true;
   end
 
-  def purchase_order_params 
+  def purchase_order_params
   	params.require(:purchase_order).permit(:order_lines_data)
-  end 
+  end
 
 end

@@ -10,16 +10,18 @@ class Product < ActiveRecord::Base
   has_one :product_image
   has_one :inventory
   has_and_belongs_to_many :tags
+
   has_many :stars
   has_many :reviews
   has_one :star_count
+  has_many :reports
 
   accepts_nested_attributes_for :product_image, update_only: true, reject_if: proc { |attributes| attributes[:product_image].blank? }
   accepts_nested_attributes_for :inventory, update_only: true
 
   validates :grocery, presence: true
   validates :name, presence: true, length: {minimum: 1, maximum: 30}
-  validates :price, presence: true, numericality: {allow_nil: false, greater_than_or_equal_to: 0}
+  validates :price, presence: true, numericality: {only_integer: true, allow_nil: false, greater_than: 0}
   validates :description, length: {maximum: 200}
   validates_uniqueness_of :name, allow_blank: false, scope: :grocery
   validate :validate_new_category
@@ -28,14 +30,14 @@ class Product < ActiveRecord::Base
   after_create :create_associated_star_count
 
   def setup_attributes_new
-    #defaults 
+    #defaults
     self.category_mode ||= :existing_category
     self.existing_category ||= nil
     self.new_category ||= nil
     self.existing_tags ||= []
     self.new_tags ||= []
     self.product_image ||= ProductImage.new
-    self.inventory ||= Inventory.new  
+    self.inventory ||= Inventory.new
 
   end
 
@@ -46,7 +48,7 @@ class Product < ActiveRecord::Base
     self.existing_tags = self.tags.map {|x|x.id}
     self.new_tags = []
     self.product_image ||= ProductImage.new
-    self.inventory ||= Inventory.new 
+    self.inventory ||= Inventory.new
   end
 
   def setup_attributes_from_form
@@ -66,12 +68,12 @@ class Product < ActiveRecord::Base
     @category_mode = @category_mode.to_sym unless @category_mode.nil?
 
     self.product_image ||= ProductImage.new
-    self.inventory ||= Inventory.new 
+    self.inventory ||= Inventory.new
   end
 
   def has_image?
     return self.product_image && !self.product_image.product_image.blank?
-  end 
+  end
 
   def validate_new_tags
     unless @new_tags.blank? || (/^(\w+(,\w+)*)?$/ =~ @new_tags) == 0
@@ -86,7 +88,7 @@ class Product < ActiveRecord::Base
   end
 
   def update_category
-    self.update_attribute(:category_id, nil)  
+    self.update_attribute(:category_id, nil)
     @category_mode = @category_mode.to_sym unless @category_mode.blank?
     if @category_mode == :existing_category
       return if @existing_category.nil?
@@ -96,7 +98,7 @@ class Product < ActiveRecord::Base
       category.products << self if category
     else
       return if @new_category.blank?
-      category = Category.where('name = ?',@new_category).first      
+      category = Category.where('name = ?',@new_category).first
       category = Category.create(name: @new_category) if(category.nil?)
       category.products << self
     end
@@ -136,7 +138,7 @@ class Product < ActiveRecord::Base
         end
       end
     end
-  end     
+  end
 
   private 
 

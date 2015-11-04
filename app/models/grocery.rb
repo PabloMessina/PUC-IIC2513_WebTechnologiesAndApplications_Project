@@ -8,30 +8,31 @@ class Grocery < ActiveRecord::Base
 	has_many :users, through: :followers
 
 	has_many :products, :dependent => :destroy
+	has_many :reports
 
 	has_many :purchase_orders
 
 	has_one :grocery_image, :dependent => :destroy
 
-	validates :name, presence: true, length: { minimum: 1, maximum: 25 }, uniqueness: true
+	validates :name, presence: true, length: { minimum: 1, maximum: 40 }, uniqueness: true
 	validates :address, presence: true
 
 	def has_image?
 		return self.grocery_image && !self.grocery_image.grocery_image.blank?
-	end	
+	end
 
 	def purchases_data_with_count (args)
 		Grocery.find_by_sql("
-			SELECT 	po.id as order_id, 
-							po.created_at as purchase_date, 
-							count(ol.*) as products_count, 
-							sum(ol.amount *  ol.product_price) as total_price, 
+			SELECT 	po.id as order_id,
+							po.created_at as purchase_date,
+							count(ol.*) as products_count,
+							sum(ol.amount *  ol.product_price) as total_price,
 							count(*) over() as total_count
-							
-			FROM 	purchase_orders as po, 
+
+			FROM 	purchase_orders as po,
 						order_lines as ol
-					
-			WHERE	po.grocery_id = #{self.id} AND 
+
+			WHERE	po.grocery_id = #{self.id} AND
 						po.id = ol.purchase_order_id
 
 			GROUP BY po.id
@@ -42,15 +43,15 @@ class Grocery < ActiveRecord::Base
 
 	def purchases_data_without_count (args)
 		 Grocery.find_by_sql("
-			SELECT 	po.id as order_id, 
-							po.created_at as purchase_date, 
-							count(ol.*) as products_count, 
+			SELECT 	po.id as order_id,
+							po.created_at as purchase_date,
+							count(ol.*) as products_count,
 							sum(ol.amount *  ol.product_price) as total_price
-					
-			FROM 	purchase_orders as po, 
+
+			FROM 	purchase_orders as po,
 						order_lines as ol
-					
-			WHERE	po.grocery_id = #{self.id} AND 
+
+			WHERE	po.grocery_id = #{self.id} AND
 						po.id = ol.purchase_order_id
 
 			GROUP BY po.id
@@ -61,7 +62,7 @@ class Grocery < ActiveRecord::Base
 
 	def get_categories
 		Category.find_by_sql("select distinct c.id,c.name from categories
-     as c, products as p where p.grocery_id = #{self.id} and c.id = p.category_id");		
+     as c, products as p where p.grocery_id = #{self.id} and c.id = p.category_id");
 	end
 
 	def  get_tags

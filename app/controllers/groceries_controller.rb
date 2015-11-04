@@ -107,7 +107,7 @@ class GroceriesController < ApplicationController
   end
 
   def new
-    return unless check_user_logged_in   
+    return unless check_user_logged_in
 
     @grocery = Grocery.new
     @submit_message = "Create grocery";
@@ -124,24 +124,25 @@ class GroceriesController < ApplicationController
       if(filtered_params[:image])
 
         @grocery.grocery_image = GroceryImage.create(
-            grocery_image: filtered_params[:image], 
+            grocery_image: filtered_params[:image],
             grocery_id: @grocery.id)
       end
 
       Privilege.create(
         user_id: @logged_user.id,
-        grocery_id: @grocery.id, 
+        grocery_id: @grocery.id,
         privilege: :administrator)
 
       redirect_to grocery_path(@grocery)
-    else 
+    else
       render 'new'
     end
   end
 
   def show
     return unless check_grocery_exists
-    @products = @grocery.products.paginate(page: 1, per_page: 10)     
+    @products = @grocery.products.paginate(page: 1, per_page: 10)
+    @reports = @grocery.reports.paginate(page: 1, per_page: 5)
     @grocery_categories = @grocery.get_categories
     @grocery_tags = @grocery.get_tags
   end
@@ -171,13 +172,13 @@ class GroceriesController < ApplicationController
           @grocery.grocery_image.update(grocery_image: filtered_params[:image])
         else
           @grocery.grocery_image = GroceryImage.create(
-            grocery_image: filtered_params[:image], 
+            grocery_image: filtered_params[:image],
             grocery_id: @grocery.id)
         end
       end
 
       redirect_to grocery_path(@grocery)
-    else 
+    else
       render 'edit'
     end
   end
@@ -191,7 +192,7 @@ class GroceriesController < ApplicationController
     def set_privilege_on_grocery
       if(@logged_user)
         @privilege = @logged_user.privileges.find {|x| x.grocery_id.to_s == params[:id]}
-        if(@privilege) 
+        if(@privilege)
           @privilege = @privilege.privilege.to_sym
         end
       else

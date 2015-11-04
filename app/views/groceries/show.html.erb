@@ -18,7 +18,7 @@
   <%= @grocery.name %>
 </p>
 
-<p> 
+<p>
   <strong>Address:</strong>
   <%= @grocery.address %>
 </p>
@@ -40,7 +40,7 @@
   <div class="stack-horizontal">
     <label>Filter by tags (AND)</label>
     <%= select_tag :tags, options_from_collection_for_select(@grocery_tags,"id","name"), multiple: true, class: 'awesome-select' %>
-  </div>  
+  </div>
   <div id="search_submit_div">
   <%= submit_tag "Search", :name => nil , :class => "stack-horizontal" %>
   </div>
@@ -50,29 +50,50 @@
 		<%= render 'shared/grocery_products_pagination' %>
 </div>
 
+<hr>
+
+<div id="reports_pagination">
+  <%= render 'shared/reports_pagination' %>
+</div>
 
 <script type="text/javascript">
 
   var refreshProductLinks = false;
+  var refreshReportsLinks = false;
   var searchSubmitDivContent;
 
   function refreshProductsPagination() {
-    $('#products_pagination .pagination a').click(function () {  
+    $('#products_pagination .pagination a').click(function () {
         refreshProductLinks = true;
-        $('#products_pagination .pagination').html('Loading products...');  
-        $.get(this.href, null, null, 'script');  
-        return false;  
-    }); 
+        $('#products_pagination .pagination').html('Loading products...');
+        $.get(this.href, null, null, 'script');
+        return false;
+    });
     refreshProductLinks = false;
+  }
+
+  function refreshReportsPagination() {
+    $('#reports_pagination .pagination a').click(function () {
+        refreshReportsLinks = true;
+        $('#reports_pagination .pagination').html('Loading news...');
+        $.get(this.href, null, null, 'script');
+        return false;
+    });
+    refreshReportsLinks = false;
   }
 
   $(document).ajaxStop(function() {
     if(refreshProductLinks)
       refreshProductsPagination();
+
+    if(refreshReportsLinks)
+      refreshReportsPagination();
   });
 
-  $(document).ready(function() {  
+  $(document).ready(function() {
     refreshProductsPagination();
+    refreshReportsPagination();
+
     $(".awesome-select").select2({
       width: "150px",
       placeholder: "No filter"
@@ -82,10 +103,10 @@
       refreshProductsPagination();
       $('#search_submit_div').html(searchSubmitDivContent);
     });
-   $('#products_search').bind('ajax:before', function(evt, data, status, xhr){
+    $('#products_search').bind('ajax:before', function(evt, data, status, xhr){
       var search_div = $('#search_submit_div');
       searchSubmitDivContent = search_div.html();
       search_div.html("<label>Searching ... </label>");
     });
-  });  
+  });
 </script>

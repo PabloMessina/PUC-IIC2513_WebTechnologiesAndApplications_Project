@@ -244,3 +244,41 @@ div.field {
 .stars-row.front {
   color: yellow;
 }
+
+#news-table {
+  max-width: inherit;
+}
+
+.align-top {
+  vertical-align: top;
+}
+
+.report-text-cell {
+  word-wrap: break-word;
+}
+
+div.report-container {
+  position: relative;
+  background-color: #f0f0ff;
+  padding: 10px;  /* argh, problemas con padding vertical por margin collapse... */
+  border-radius: 5px;
+}
+
+span.link-spanner {
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0;
+  left: 0;
+  z-index: 1;
+}
+
+table.report-admin {
+  float: right;
+  border-spacing: 10px;
+}
+
+clear-fix {
+  display: table;
+  clear: both;
+}

@@ -3,6 +3,7 @@ class CommentsController < ApplicationController
 
   before_action :set_logged_user_by_cookie
   before_action :set_grocery_by_id
+  before_action :set_report_by_id
   before_action :set_comment_by_id, only:[:show, :edit, :update, :destroy]
 
   def index
@@ -30,6 +31,10 @@ class CommentsController < ApplicationController
 
   private
 
+  def set_report_by_id
+    @report = Report.find_by_id(params[:report_id])
+  end
+
   def set_comment_by_id
     @comment = Comment.find_by_id(params[:id])
   end
@@ -37,6 +42,7 @@ class CommentsController < ApplicationController
   def comment_params
     p = params.require(:comment).permit(:text);
     p[:report_id] = params[:report_id]
+    p[:user_id] = @logged_user.id
     return p
   end
 

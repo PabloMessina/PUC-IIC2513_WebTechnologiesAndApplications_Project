@@ -6,7 +6,7 @@
 		<br>
 		<br>
 	<% end %>
-	<%= will_paginate @reports, params: {action: 'index', grocery_id: @grocery.id} %>
+	<%= will_paginate @reports, params: {controller: 'reports', action: 'index', grocery_id: @grocery.id} %>
 	<% @reports.each do |report| %>
 
 		<div class="report-container">

@@ -6,6 +6,7 @@ RANGE_PRODUCTS  = 3..15
 MAX_PRODUCTS    = 15
 MAX_TAGS        = 3
 RANGE_REPORTS   = 3..15
+RANGE_REPORT_COMMENTS = 0..3
 
 
 puts "Seeding..."
@@ -113,7 +114,13 @@ def create_grocery(owner_id)
     if rand(0..1) == 1
       params[:product_id] = Product.where(grocery_id: g.id).order("RANDOM()").first.id
     end
-    Report.create!(params)
+    r = Report.create!(params)
+
+    rand(RANGE_REPORT_COMMENTS).times do
+      Comment.create!(text: Faker::Lorem.sentence,
+        user_id: rand(1..NUM_USERS),
+        report_id: r.id)
+    end
   end
 end
 

@@ -1,16 +1,12 @@
 <header>  
-  <!-- como mas puedo hacer que esten separados horizontalmente? -->
-  <table id="header-table">
-    <tr>
-
+  <ul>
+    <li class = "left"><%= link_to "Home", root_path %></li>
     <% if signed_in? %>
-      <td><%= link_to(@logged_user.username, user_path(@logged_user)) %></td>
-      <td><%= link_to('Sign out', signout_path, :method => :delete) %></td>
+      <li class = "right"><%= link_to(@logged_user.username, user_path(@logged_user)) %></li>
+      <li class = "right"><%= link_to('Sign out', signout_path, :method => :delete) %></li>
     <% else %>
-      <td><%= link_to('Sign in', signin_path)  %></td>
-      <td><%= link_to('Sign up', signup_path)  %></td>
+      <li class = "right"><%= link_to('Sign in', signin_path)  %></li>
+      <li class = "right"><%= link_to('Sign up', signup_path)  %></li>
     <% end %>
-
-    </tr>
-  </table>
+  </ul>
 </header>

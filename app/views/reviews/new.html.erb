@@ -1,0 +1,54 @@
+<%= render partial: 'shared/product_with_rating_bars', locals: {product: @product, grocery: @product.grocery} %>
+
+<h3>New Review</h3>
+
+<%= render 'shared/error_messages', object: @review %>
+
+<% 
+    rating = @logged_user.get_rating_for(@product.id)
+    rating_titles = ["Excelent","Pretty Good","Acceptable","Kinda bad","Very bad"]
+%>
+
+<%= form_for @review, url: product_reviews_path(@product) do |f| %>
+	
+	<% if rating.nil? %>
+
+		<fieldset class="rating-fieldset">
+	    <legend>rate this product!</legend> 
+	    <div class = "rating-stars-container active">      
+		    <% (0..rating_titles.size-1).each do |i|
+		      j = rating_titles.size - i %>
+		      <%= f.radio_button :rating, j.to_s, checked: false %>
+	        <%= label_tag("review_rating_#{j}".to_sym, "", title: rating_titles[i]) %>
+		    <% end %>
+	    </div>
+	  </fieldset>
+
+  <% else %>
+
+   <fieldset class="rating-fieldset">
+      <legend>your rating for this product</legend>
+      <div class = "rating-stars-container">
+	      <% (0..rating_titles.size-1).each do |i| 
+	        j = rating_titles.size - i %>
+	        <%= f.radio_button :rating, j.to_s, checked: j == rating.value, disabled: true %>
+	        <%= label_tag("review_rating_#{j}".to_sym, "", title: rating_titles[i]) %>
+	      <% end %>
+      </div>
+    </fieldset>
+    <%= f.hidden_field :rating, value: rating.value %>
+
+  <% end %>
+
+  <br/>
+  <br/>
+
+	<%= f.label :title, "Title (max 100 characters):" %> <br/>
+	<%= f.text_field :title %> <br/> 
+	<br/>
+	<%= f.label :content, "Content (max 1000 characters):" %> <br/>
+  <%= f.text_area :content, size: '50x10' %> <br/>
+
+	<%= f.submit "Submit Review" %>
+
+<% end %>

@@ -10,23 +10,24 @@ class Product < ActiveRecord::Base
   has_one :product_image
   has_one :inventory
   has_and_belongs_to_many :tags
+
+  has_many :stars
+  has_many :reviews
+  has_one :star_count
   has_many :reports
 
   accepts_nested_attributes_for :product_image, update_only: true, reject_if: proc { |attributes| attributes[:product_image].blank? }
   accepts_nested_attributes_for :inventory, update_only: true
 
-  # ojo: debe estar en orden 0,1,2,...
-  enum unit: {item: 0, kg:1, g:2, L:3, mL:4, m:5}
-
   validates :grocery, presence: true
   validates :name, presence: true, length: {minimum: 1, maximum: 30}
-  # validates :stock, numericality: { greater_than_or_equal_to: 0, only_integer: true }, if: "unit == 'item'"
-  # validates :stock, numericality: { greater_than_or_equal_to: 0 }, unless: "unit == 'item'"
-  validates :unit, inclusion: { in: Product.units.keys }
-  validates :price, numericality: { only_integer: true, greater_than: 0 }
+  validates :price, presence: true, numericality: {only_integer: true, allow_nil: false, greater_than: 0}
+  validates :description, length: {maximum: 200}
   validates_uniqueness_of :name, allow_blank: false, scope: :grocery
   validate :validate_new_category
   validate :validate_new_tags
+
+  after_create :create_associated_star_count
 
   def setup_attributes_new
     #defaults
@@ -138,5 +139,11 @@ class Product < ActiveRecord::Base
       end
     end
   end
+
+  private 
+
+    def create_associated_star_count
+      self.create_star_count
+    end
 
 end

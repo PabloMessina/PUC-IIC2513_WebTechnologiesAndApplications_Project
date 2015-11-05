@@ -1,0 +1,6 @@
+<strong>Products</strong>
+<%= will_paginate products, params: {controller: 'products', action: 'index'} %>  
+<div class = "products_container">
+	<%= render products %>
+</div>
+<%= will_paginate products, params: {controller: 'products', action: 'index'} %>  

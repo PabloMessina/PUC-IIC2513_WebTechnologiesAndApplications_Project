@@ -1,0 +1,55 @@
+<%#=
+  parameters: product, grocery
+%> 
+
+<div class="product-container clearfix">
+
+  <% percentages = product.star_count.get_percentages %>
+
+  <div class="rating-container">
+    Customer Reviews <br/>
+
+    <span class="stars-container">
+      <span class="stars-row back">
+         <label>★</label><label>★</label><label>★</label><label>★</label><label>★</label>
+      </span>
+      <span class="stars-row front" style="width: <%= product.star_count.get_rating_percentage_average %>%">
+         <label>★</label><label>★</label><label>★</label><label>★</label><label>★</label>
+      </span>
+    </span>
+    (<%= product.stars.count %>)
+    <br/>
+
+    <%= product.star_count.get_rating_average.round(1) %> out of  5 stars
+    <br/>
+    <div class="rating-bars-container">
+      5 star <div class="rating-bar"><span style="width: <%= percentages[4] %>%"></span></div> <%= percentages[4].round %>% <br/>
+      4 star <div class="rating-bar"><span style="width: <%= percentages[3] %>%"></span> </div> <%= percentages[3].round %>% <br/>
+      3 star <div class="rating-bar"> <span style="width: <%= percentages[2] %>%"></span> </div> <%= percentages[2].round %>% <br/>
+      2 star <div class="rating-bar"> <span style="width: <%= percentages[1] %>%"></span></div> <%= percentages[1].round %>% <br/>
+      1 star  <div class="rating-bar"><span style="width: <%= percentages[0] %>%"></span></div> <%= percentages[0].round %>% <br/>
+    </div>
+  </div>
+
+  <div class = "left-floatme middle">
+    <%= link_to grocery_product_path(grocery,product) do %>
+      <strong><%= product.name %></strong>
+    <% end %> <br/>
+    by <%= link_to grocery.name, grocery_path(grocery) %> <br/>
+    <% if product.has_image? %>
+      <%= image_tag product.product_image.product_image_url %>
+    <% else %>
+      <%= image_tag "products-icon-basket.gif" %>
+    <% end %>
+  </div>
+
+  <div class="left-floatme right">    
+    Price: $ <%= product.price %> <br/>
+    IN STOCK: <%= product.inventory.stock %> <br/>
+    <strong>Category:</strong>
+    <%= @product.category ? @product.category.name : "none" %> <br/>
+    <strong>Tags:</strong>
+    <%= @product.tags.any? ? @product.tags.map{|x| x.name}.join(', ') : 'none'%> <br/>
+  </div>
+
+</div>

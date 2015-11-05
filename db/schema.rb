@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
+ActiveRecord::Schema.define(version: 20151104063905) do
+=======
 ActiveRecord::Schema.define(version: 20151104182412) do
+>>>>>>> origin/dev_tomas
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -112,12 +116,13 @@ ActiveRecord::Schema.define(version: 20151104182412) do
 
   create_table "products", force: :cascade do |t|
     t.string   "name"
-    t.integer  "unit"
     t.integer  "price"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "grocery_id"
     t.integer  "category_id"
+    t.text     "description"
+    t.boolean  "visible",     default: true
   end
 
   add_index "products", ["category_id"], name: "index_products_on_category_id", using: :btree
@@ -142,16 +147,66 @@ ActiveRecord::Schema.define(version: 20151104182412) do
   add_index "purchase_orders", ["grocery_id"], name: "index_purchase_orders_on_grocery_id", using: :btree
   add_index "purchase_orders", ["user_id"], name: "index_purchase_orders_on_user_id", using: :btree
 
+<<<<<<< HEAD
+  create_table "review_comments", force: :cascade do |t|
+    t.text     "content"
+    t.integer  "review_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "review_comments", ["review_id"], name: "index_review_comments_on_review_id", using: :btree
+  add_index "review_comments", ["user_id"], name: "index_review_comments_on_user_id", using: :btree
+
+  create_table "reviews", force: :cascade do |t|
+    t.text     "content"
+    t.integer  "product_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "title"
+  end
+
+  add_index "reviews", ["product_id", "user_id"], name: "index_reviews_on_product_id_and_user_id", unique: true, using: :btree
+  add_index "reviews", ["product_id"], name: "index_reviews_on_product_id", using: :btree
+  add_index "reviews", ["user_id"], name: "index_reviews_on_user_id", using: :btree
+
+  create_table "star_counts", force: :cascade do |t|
+    t.integer  "one",        default: 0
+    t.integer  "two",        default: 0
+    t.integer  "three",      default: 0
+    t.integer  "four",       default: 0
+    t.integer  "five",       default: 0
+    t.integer  "product_id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "star_counts", ["product_id"], name: "index_star_counts_on_product_id", using: :btree
+
+  create_table "stars", force: :cascade do |t|
+    t.integer  "value"
+    t.integer  "product_id"
+    t.integer  "user_id"
+=======
   create_table "reports", force: :cascade do |t|
     t.string   "title"
     t.text     "text"
     t.integer  "grocery_id"
     t.integer  "product_id"
+>>>>>>> origin/dev_tomas
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+<<<<<<< HEAD
+  add_index "stars", ["product_id", "user_id"], name: "index_stars_on_product_id_and_user_id", unique: true, using: :btree
+  add_index "stars", ["product_id"], name: "index_stars_on_product_id", using: :btree
+  add_index "stars", ["user_id"], name: "index_stars_on_user_id", using: :btree
+=======
   add_index "reports", ["grocery_id"], name: "index_reports_on_grocery_id", using: :btree
+>>>>>>> origin/dev_tomas
 
   create_table "tags", force: :cascade do |t|
     t.string   "name"
@@ -191,6 +246,16 @@ ActiveRecord::Schema.define(version: 20151104182412) do
   add_foreign_key "products", "groceries"
   add_foreign_key "purchase_orders", "groceries"
   add_foreign_key "purchase_orders", "users"
+<<<<<<< HEAD
+  add_foreign_key "review_comments", "reviews"
+  add_foreign_key "review_comments", "users"
+  add_foreign_key "reviews", "products"
+  add_foreign_key "reviews", "users"
+  add_foreign_key "star_counts", "products"
+  add_foreign_key "stars", "products"
+  add_foreign_key "stars", "users"
+=======
   add_foreign_key "reports", "groceries"
   add_foreign_key "reports", "products"
+>>>>>>> origin/dev_tomas
 end

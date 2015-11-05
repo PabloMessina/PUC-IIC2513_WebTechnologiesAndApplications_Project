@@ -1,0 +1,8 @@
+<%#= 
+	parameters: reviews, rating_titles
+%>
+<%= will_paginate reviews %> 
+<% @reviews.each do |review| %>
+	<%= render partial: "review", locals: {rating_titles: rating_titles, rating: review.get_associated_rating, review: review} %>
+<% end %>
+<%= will_paginate reviews %> 

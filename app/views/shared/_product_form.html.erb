@@ -30,17 +30,18 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :unit, "Unit" %>
-    <%= f.select :unit,
-      options_for_select(
-        Product.units.keys.map{ |k| [k,k] },
-        product.unit
-      ) %>
+    <%= f.label :price, "Price" %>
+    <%= f.number_field :price %>
   </div>
 
   <div class="field">
-    <%= f.label :price, "Price" %>
-    <%= f.number_field :price %>
+    <%= f.label :description, "Description" %>
+    <%= f.text_field :description %>
+  </div>
+
+  <div class="field">
+    <%= f.label :visible, "Visible" %>
+    <%= f.check_box :visible %>
   </div>
 
 

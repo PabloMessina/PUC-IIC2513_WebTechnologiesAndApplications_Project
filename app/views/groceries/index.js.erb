@@ -1,0 +1,48 @@
+$("#pagination_div").html("<%= escape_javascript(render(partial: "groceries/groceries_pagination", 
+  locals: {groceries: @groceries, pagination_data: @pagination_data})) %> ");  
+
+<%
+
+  appended_parameters = "&page_count=" << @page_count.to_s
+  #appended_parameters << "&search=" << params[:search] if @has_search_string
+
+  #puts "----------------------------------------"
+  #puts "----------------------------------------"
+  #puts "@has_search_string = #{@has_search_string}"
+  #puts "params[:search] = #{params[:search]}"
+#
+  #if @has_tags
+  #  tags = params[:tags]
+  #  tags.each do |tag|      
+  #    next unless tag.is_a?(String) && tag.is_i?
+  #    appended_parameters << "&tags[]=" << tag
+  #  end
+  #end
+  #if @has_categories
+  #  categories = params[:categories]
+  #  categories.each do |cat|
+  #    next unless  cat.is_a?(String) && cat.is_i?
+  #    appended_parameters << "&categories[]=" << cat
+  #  end
+  #end
+#
+  #puts "appended_parameters = #{appended_parameters}"
+  #puts "----------------------------------------"
+  #puts "----------------------------------------"
+
+
+  
+%>
+
+appended_parameters = "<%= appended_parameters.html_safe %>";
+
+$('.pagination a').each(function() {
+  var _href = $(this).attr("href");
+  $(this).attr("href", _href + appended_parameters);
+});
+
+$('.pagination a').click(function () {  
+    $('.pagination').html('Loading groceries...');  
+    $.get(this.href, null, null, 'script');  
+    return false;  
+});

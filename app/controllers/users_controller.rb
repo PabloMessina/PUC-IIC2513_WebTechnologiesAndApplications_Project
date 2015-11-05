@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 	def new
 		@user = User.new
   	@submit_message = "Create my account";
-  	@dontShowHeader = true;
+  	@dont_show_header = true;
 	end
 
 	def create

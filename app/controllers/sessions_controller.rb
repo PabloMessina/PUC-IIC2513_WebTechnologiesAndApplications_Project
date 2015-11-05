@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
   before_action :set_logged_user_by_cookie, only: [:destroy]
 
 	def new
-    @dontShowHeader = true;
+    @dont_show_header = true;
 	end
 
 	def create

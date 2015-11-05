@@ -8,7 +8,7 @@ module SessionsHelper
   end
 
   def signed_in?
-  	@logged_user
+  	!!@logged_user
   end
 
   def user_id_matches_logged_user?

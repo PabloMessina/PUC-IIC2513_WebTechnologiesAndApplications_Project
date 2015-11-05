@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  one: 1
+  two: 1
+  three: 1
+  four: 1
+  five: 1
+  product_id: 
+
+two:
+  one: 1
+  two: 1
+  three: 1
+  four: 1
+  five: 1
+  product_id: 

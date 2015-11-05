@@ -4,13 +4,14 @@ class GroceryProductsController < ApplicationController
 	before_action :set_logged_user_by_cookie
 	before_action :set_privilege_on_grocery
 	before_action :set_grocery_by_id
-	before_action :set_product_by_id, only:[:show, :edit, :update, :destroy]
+	before_action :set_product_by_id, only:[:show, :edit, :update, :destroy, :rate_product]
 
   before_action :check_grocery_exists
-  before_action :check_user_logged_in, only: [:new, :create, :update, :destroy]
-  before_action only: [:new, :create, :update, :destroy] do check_privilege_on_grocery(:administrator) end
-  before_action :check_product_exists, only: [:show, :edit, :update, :destroy]
-  before_action :check_product_belongs_to_grocery, only: [:show, :edit, :update, :destroy]
+  before_action :check_user_logged_in, only: [:new, :create, :edit, :update, :destroy, :rate_product]
+  before_action only: [:new, :create, :edit, :update, :destroy] do check_privilege_on_grocery(:administrator) end
+  before_action :check_product_exists, only: [:show, :edit, :update, :destroy, :rate_product]
+  before_action :check_product_belongs_to_grocery, only: [:show, :edit, :update, :destroy, :rate_product]
+  before_action :check_product_is_visible, only: [:show, :rate_product]
 
   def index
 
@@ -19,9 +20,11 @@ class GroceryProductsController < ApplicationController
     tags = filtered_params[:tags]
     search_string = filtered_params[:search]
 
-    @products = @grocery.products
+
+    @products = @grocery.products.where("products.visible = true")   
+
     if search_string && !search_string.blank?
-      @products = @products.where("products.name LIKE ?","%#{search_string}%")
+      @products = @products.where("products.name ILIKE ?","%#{search_string}%")
     end
     if categories && categories.count > 0
       @products = @products.where('products.category_id IN (?)',categories.map{|x|x.to_i} )
@@ -66,7 +69,7 @@ class GroceryProductsController < ApplicationController
 
   def update
     filtered_params = product_params
-    if @product.update(filtered_params)
+    if @product.update_attributes(filtered_params)     
       @product.update_category
       @product.update_tags
       flash[:success] = 'Product updated successfully!'
@@ -82,6 +85,17 @@ class GroceryProductsController < ApplicationController
     flash[:success] = 'Product deleted successfully!'
     redirect_to grocery_path(@grocery)
   end
+
+  def rate_product
+    begin
+      @logged_user.stars.create(value: params[:value].to_i, product_id: @product.id)
+    rescue ActiveRecord::RecordNotUnique => e
+      render plain: e.message, status: :not_acceptable
+      return
+    end
+    head :ok, content_type: "text/html"
+  end
+
 
   private
 
@@ -116,13 +130,21 @@ class GroceryProductsController < ApplicationController
       end
   	end
 
+    def check_product_is_visible
+      unless @privilege == :administrator || @product.visible == true
+        raise ActionController::RoutingError.new("This product has been set as invisible by the grocery's administrators")
+      end
+    end
+
   	def product_params
       p = params.require(:product).permit(
-        :image, :name, :stock, :unit, :price, :category_mode, :existing_category,
-        :new_category, {:existing_tags => []}, :new_tags, inventory_attributes: [:stock], product_image_attributes: [:product_image]);
-      if(p[:unit])
-      	p[:unit] = p[:unit].to_sym
+        :image, :name, :stock, :price, :category_mode, :existing_category, :description, :visible,
+        :new_category, {:existing_tags => []}, :new_tags, inventory_attributes: [:stock], product_image_attributes: [:product_image])
+
+      if(p.has_key?(:product_image_attributes) && p[:product_image_attributes][:product_image].blank?)
+        p.except!(:product_image_attributes)
       end
+
       return p
   	end
 

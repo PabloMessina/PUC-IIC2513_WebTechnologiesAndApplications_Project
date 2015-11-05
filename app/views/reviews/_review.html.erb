@@ -1,0 +1,27 @@
+<%#=
+	parameters: rating_titles, rating, review
+%>
+<div class="review-container clearfix">
+
+	<div class = "rating-stars-container">
+		<% (0..rating_titles.size-1).each do |i| 
+		  j = rating_titles.size - i %>
+		  <input type="radio" disabled="disabled" <%= (j == rating.value) ? 'checked=checked' : '' %>>
+		  <label title="<%= rating_titles[i]%>"></label>
+		<% end %>
+	</div>
+
+	<%= link_to review.title, product_review_path(review.product,review) %>
+	<br/>
+
+	By <%= link_to review.user.username, user_path(review.user)%> on <%= review.created_at.to_date %>
+	<br/>
+
+	<div class="text-container">
+		<%= review.content %>
+	</div>
+	<br/>
+
+	<%= link_to "#{review.review_comments.count} Comments", product_review_path(review.product,review) %>
+
+</div>

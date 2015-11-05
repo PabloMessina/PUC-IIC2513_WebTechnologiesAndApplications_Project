@@ -1,0 +1,10 @@
+<div class="grocery_div">
+	<%= link_to grocery_path(grocery) do %>
+		<strong><%= grocery.name %></strong>
+		<% if grocery.has_image? %>
+		  <%= image_tag grocery.grocery_image.grocery_image_url, :style => "width: 120px; height: 120px;"  %>
+		<% else %>
+		  <%= image_tag "Springfield_grocery_store.png", :style => "width: 120px; height: 120px;"  %>
+		<% end %>
+	<% end %>
+</div>

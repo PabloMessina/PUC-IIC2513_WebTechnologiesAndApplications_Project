@@ -1,11 +1,12 @@
 class PurchaseOrder < ActiveRecord::Base
 	attr_accessor :order_lines_data
 	attr_accessor :filtered_order_lines_data
+  attr_accessor :skip_check_order_lines
 
   belongs_to :user
   belongs_to :grocery
   has_many :order_lines
-  validate :check_order_lines
+  validate :check_order_lines, unless: :skip_check_order_lines
 
   def self.total_price(purchase_order_id)
 

@@ -89,7 +89,7 @@ def create_grocery(owner_id)
   n_products.times do
     p = Product.create!(
       name: Faker::Commerce.product_name,
-      unit: rand(1..Product.units.values.max),
+      description: Faker::Lorem.word,
       price: rand(1..100) * 50,
       grocery_id: g.id,
       category_id: rand_id(Category))
@@ -138,7 +138,7 @@ NUM_GROCERIES.times do
   g = create_grocery(rand(1..NUM_USERS))    # owners: random users
 
   NUM_PURCHASE_ORDERS.times do
-    po = g.purchase_orders.create!(user_id: rand_id(User))
+    po = g.purchase_orders.create!(user_id: rand_id(User), order_lines_data: "[]", skip_check_order_lines: true)
     NUM_ORDER_LINES.times do
       p = Product.find_by_id(rand_id(Product))
       po.order_lines.create!(product_id: p.id, amount: 11 + rand(100), product_price: p.price)

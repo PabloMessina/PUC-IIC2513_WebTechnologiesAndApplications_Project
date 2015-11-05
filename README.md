@@ -22,4 +22,4 @@ Pueden revisar el feedback y evaluación recibida después de cada entrega en la
 - Reviews
 
 # Aplicación en Heroku
-[Alma2](alma2.herokuapp.com)
+[Alma2](http://alma2.herokuapp.com)

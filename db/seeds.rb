@@ -129,14 +129,6 @@ def create_grocery(owner_id)
     end
   end
 
-  return g
-end
-
-create_grocery(User.find_by_username('a').id)
-
-NUM_GROCERIES.times do
-  g = create_grocery(rand(1..NUM_USERS))    # owners: random users
-
   NUM_PURCHASE_ORDERS.times do
     po = g.purchase_orders.create!(user_id: rand_id(User), order_lines_data: "[]", skip_check_order_lines: true)
     NUM_ORDER_LINES.times do
@@ -177,4 +169,11 @@ NUM_GROCERIES.times do
 
   end
 
+  return g
+end
+
+create_grocery(User.find_by_username('a').id)
+
+NUM_GROCERIES.times do
+  g = create_grocery(rand(1..NUM_USERS))    # owners: random users
 end

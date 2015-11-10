@@ -79,7 +79,7 @@ class Grocery < ActiveRecord::Base
 			else
 				json_str << ","
 			end
-			json_str << %Q["#{p.id}" : {"name": "#{p.name}", "stock": #{p.stock} }]
+			json_str << %Q["#{p.id}" : {"name": "#{p.name}", "stock": #{p.inventory.stock} }]
 		end
 		json_str << "}"
 		return json_str.html_safe

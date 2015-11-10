@@ -7,7 +7,7 @@ class PurchaseOrdersController < ApplicationController
 	before_action :set_grocery_by_id
 	before_action :set_purchase_order_by_id, only: [:show, :edit, :update, :destroy]
 
-	def index			
+	def index
 		unless (check_grocery_exists &&
 		        check_user_logged_in &&
 		        check_privilege_on_grocery(:administrator))
@@ -89,7 +89,7 @@ class PurchaseOrdersController < ApplicationController
 	  						amount: 				x[:amount],
 	  						product_price: 	x[:product_price])
 	  		product = Product.find_by_id(x[:product_id])
-	  		product.update_attribute(:stock, product.stock - x[:amount])
+	  		product.inventory.update_attribute(:stock, product.inventory.stock - x[:amount])
 	  	end
 
 	  	redirect_to grocery_purchase_orders_path(@grocery)
@@ -111,7 +111,7 @@ class PurchaseOrdersController < ApplicationController
   				next
   			end
   			@selected_ids << prid
-  			@order_lines_data << {product_name: product.name, product_id: prid, amount: amount, stock: product.stock }
+  			@order_lines_data << {product_name: product.name, product_id: prid, amount: amount, stock: product.inventory.stock }
   		end
 
 	  	render 'new'

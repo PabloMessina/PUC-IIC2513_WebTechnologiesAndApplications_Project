@@ -11,8 +11,8 @@ class PurchaseOrder < ActiveRecord::Base
   def self.total_price(purchase_order_id)
 
   	query = PurchaseOrder.find_by_sql(
-  		"SELECT sum(ol.amount * ol.product_price) as total_price 
-  		FROM order_lines as ol 
+  		"SELECT sum(ol.amount * ol.product_price) as total_price
+  		FROM order_lines as ol
   		WHERE ol.purchase_order_id = #{purchase_order_id}")
 
   	(query.first.total_price.nil?) ? '0' : query.first.total_price.to_s
@@ -27,9 +27,9 @@ class PurchaseOrder < ActiveRecord::Base
   		rescue
   			errors.add(:order_lines_data, " submitted does not meet JSON format")
   			return
-  		end  		  		  		
+  		end
 
-  		if(!array.kind_of?(Array)) 
+  		if(!array.kind_of?(Array))
   			errors.add(:order_lines_data, " must be an array")
   			return
   		end
@@ -58,8 +58,8 @@ class PurchaseOrder < ActiveRecord::Base
   				next
   			end
 
-  			unless 0 < amount && amount <= product.stock
-  				errors.add(:order_lines_data,": #{product.name}'s amount must be > 0 and <= #{product.stock}")
+  			unless 0 < amount && amount <= product.inventory.stock
+  				errors.add(:order_lines_data,": #{product.name}'s amount must be > 0 and <= #{product.inventory.stock}")
   				next
   			end
 
@@ -73,4 +73,3 @@ class PurchaseOrder < ActiveRecord::Base
   	end
 
 end
-	

@@ -16,10 +16,10 @@ Pueden revisar el feedback y evaluación recibida después de cada entrega en la
 
 - Homepage con búsqueda por productos y almacenes
 - Mejor navegación
-- Más CSS
+- Más CSS, aunque faltan algunas partes
 - Noticias con comentarios
 - Órdenes de compra
 - Reviews
 
-# Aplicación en Heroku
-[Alma2](http://alma2.herokuapp.com)
+
+#### Aplicación en Heroku: [Alma2](http://alma2.herokuapp.com)

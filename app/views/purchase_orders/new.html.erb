@@ -17,7 +17,7 @@
 			<th>In Stock</th>
 		</tr>
 		<% @order_lines_data.each do |x| %>
-			<%= %Q[<tr id = "row_#{x[:product_id]}"><td>#{x[:product_name]}</td><td><input class="stock" id="#{x[:product_id]}" type = "number" min="0" max="#{x[:stoke]}" required/></td><td>#{x[:stock]}</td>].html_safe %>
+			<%= %Q[<tr id = "row_#{x[:product_id]}"><td>#{x[:product_name]}</td><td><input class="stock" id="#{x[:product_id]}" type = "number" min="0" max="#{x[:stock]}" value = "#{x[:amount]}" required/></td><td>#{x[:stock]}</td>].html_safe %>
 		<% end %>
 	</table>
 	<%= f.submit "Submit Purchase Order" %>

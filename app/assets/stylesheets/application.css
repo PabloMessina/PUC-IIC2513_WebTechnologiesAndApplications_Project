@@ -18,6 +18,10 @@
   float: left;
 }
 
+.right-floatme {
+  float: right;
+}
+
 .inline-blockme {
   display: inline-block;
 }

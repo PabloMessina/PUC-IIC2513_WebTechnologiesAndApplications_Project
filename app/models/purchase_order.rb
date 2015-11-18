@@ -58,8 +58,8 @@ class PurchaseOrder < ActiveRecord::Base
   				next
   			end
 
-  			unless 0 < amount && amount <= product.stock
-  				errors.add(:order_lines_data,": #{product.name}'s amount must be > 0 and <= #{product.stock}")
+  			unless 0 < amount && amount <= product.inventory.stock
+  				errors.add(:order_lines_data,": #{product.name}'s amount must be > 0 and <= #{product.inventory.stock}")
   				next
   			end
 

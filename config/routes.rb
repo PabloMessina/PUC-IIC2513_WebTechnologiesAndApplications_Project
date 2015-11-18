@@ -20,13 +20,17 @@ Rails.application.routes.draw do
 
   resources :sessions, only: [:new, :create, :destroy]
   resources :products, only: [:index] do 
-    resources :reviews, only: [:new, :create, :index, :edit, :update, :destroy]
+    resources :reviews, only: [:show, :new, :create, :index, :edit, :update, :destroy]
   end
+
 
   match '/signup',    to: 'users#new',            via: 'get'
   match '/signin',    to: 'sessions#new',         via: 'get'
   match '/signout',   to: 'sessions#destroy',     via: 'delete'
   match '/groceries/:grocery_id/rate_product/:id', to: 'grocery_products#rate_product', via: 'post', as: 'rate_product'
+
+  match '/reviews/:review_id/comments/new', to: 'review_comments#create', via: 'post', as: 'post_new_comment'
+  match '/reviews/:review_id/comments', to: 'review_comments#index', via: 'get', as: 'review_comments'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

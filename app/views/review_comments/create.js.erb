@@ -1,0 +1,23 @@
+<% if @saved %>
+
+	$("#comments_div").prepend("<%= escape_javascript(render(partial: 'review_comment', 
+  locals: {comment: @comment})) %> <hr>");
+  hideNewCommentForm();
+  refreshCommentsCount();
+  addShowMoreLessToComment(<%= @comment.id %>);
+
+<% else %>
+
+	<%
+
+		errors = "<ul>";
+		@comment.errors.full_messages.each do |msg| 
+			errors << "<li>" << msg << "</li>"
+		end
+		errors << "</ul>"
+
+	%>
+
+	$("#post_comment_div #errors").html("<%= errors.html_safe %>")
+
+<% end %>		

@@ -1,0 +1,95 @@
+<%#=
+  parameters: product, grocery, reviewer
+%> 
+
+
+<div class="review-details">
+  <h3 class="title">Review Details</h3>
+
+  <div class="body">
+    <div class="subtitle">Item</div> 
+    <br>
+
+    <table>
+    <tbody>
+    <tr>
+    <td>
+      <div>
+        <%= link_to grocery_product_path(grocery,product) do %>
+          <% if product.has_image? %>
+            <%= image_tag product.product_image.product_image_url, class: 'product-image' %>
+          <% else %>
+            <%= image_tag "products-icon-basket.gif", class: 'product-image' %>
+          <% end %>
+        <% end %>
+      </div>
+    </td>
+    <td>
+      <div class="left-floatme">
+        <%= link_to grocery_product_path(grocery,product) do %>
+          <%= product.name %>
+        <% end %> <br/>
+        by <%= link_to grocery.name, grocery_path(grocery) %> <br/>
+
+        <span class="stars-container">
+          <span class="stars-row back">
+            <label>★</label><label>★</label><label>★</label><label>★</label><label>★</label>
+          </span>
+          <span class="stars-row front" style="width: <%= product.star_count.get_rating_percentage_average %>%">
+            <label>★</label><label>★</label><label>★</label><label>★</label><label>★</label>
+          </span>
+        </span>
+        <span>
+          (<%= link_to product_reviews_path(product) do %>
+            <label><%= product.reviews.count %> customer reviews</label>
+          <% end %>)
+        </span>
+        <br>
+
+        <% percentages = product.star_count.get_percentages %>
+
+        <div class="rating-bars-container">
+          5 star <div class="rating-bar"><span style="width: <%= percentages[4] %>%"></span></div> <%= percentages[4].round %>% <br/>
+          4 star <div class="rating-bar"><span style="width: <%= percentages[3] %>%"></span> </div> <%= percentages[3].round %>% <br/>
+          3 star <div class="rating-bar"> <span style="width: <%= percentages[2] %>%"></span> </div> <%= percentages[2].round %>% <br/>
+          2 star <div class="rating-bar"> <span style="width: <%= percentages[1] %>%"></span></div> <%= percentages[1].round %>% <br/>
+          1 star  <div class="rating-bar"><span style="width: <%= percentages[0] %>%"></span></div> <%= percentages[0].round %>% <br/>
+        </div>
+      </div>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+
+    <div class='dotted-line'></div>
+
+    <div class="subtitle">Reviewer</div>
+
+    <table>
+    <tbody>
+    <tr>
+    <td>
+      <div>
+        <%= link_to user_path(reviewer) do %> 
+          <% if reviewer.has_image? %>
+            <%= image_tag reviewer.user_image.user_image_url, class: 'reviewer-image' %>
+          <% else %>
+            <%= image_tag "default_profile.jpg", class: 'reviewer-image' %>
+          <% end %>
+        <% end %>
+      </div>  
+    </td>
+    <td>
+      <div>
+        <%= link_to reviewer.username, user_path(reviewer) %><br>
+        <strong>First name:</strong> <%= reviewer.first_name %><br>
+        <strong>Last name:</strong> <%= reviewer.last_name %><br>
+        <strong>Email:</strong> <%= reviewer.email %><br>
+        <strong>Address:</strong> <%= reviewer.address %>  
+      </div>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+  </div>
+</div>

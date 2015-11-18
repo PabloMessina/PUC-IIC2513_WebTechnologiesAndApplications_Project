@@ -1,7 +1,7 @@
 <%#=
 	parameters: rating_titles, rating, review
 %>
-<div class="review-container clearfix" id="<%= review.id %>">
+<div class="review-container">
 
 	<div class = "rating-stars-container">
 		<% (0..rating_titles.size-1).each do |i| 
@@ -21,7 +21,5 @@
 		<%= review.content %>
 	</div>
 	<br/>
-
-	<%= link_to "#{review.comments.count} Comments", product_review_path(review.product,review) %>
 
 </div>

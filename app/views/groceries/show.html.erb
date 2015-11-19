@@ -23,6 +23,16 @@
   <%= @grocery.address %>
 </p>
 
+<% if @logged_user %>
+  <div id="follow" class=<%= (current_user_following_grocery ? "hidden" : "") %> >
+    <button id="follow" onclick="follow(true)">Follow this grocery!</button>
+  </div>
+  <div id="unfollow" class=<%= (current_user_following_grocery ? "" : "hidden") %> >
+    <span>You are following this grocery</span>
+    <button id="unfollow" onclick="follow(false)">Unfollow</button>
+  </div>
+<% end %>
+
 <% if @privilege == :administrator %>
   <%= link_to 'Create a new product', new_grocery_product_path(@grocery) %>
 <% end %>
@@ -109,4 +119,8 @@
       search_div.html("<label>Searching ... </label>");
     });
   });
+</script>
+
+<script>
+  grocery_id = <%= @grocery.id %>;
 </script>

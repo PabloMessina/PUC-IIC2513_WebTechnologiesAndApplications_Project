@@ -1,3 +1,12 @@
+<div>
+	<% @following_groceries.each do |grocery| %>
+		<div>
+			<%= link_to grocery.name, grocery_path(grocery.id) %>
+		</div>
+	<% end %>
+</div>
+
+
 <div id = "search_outer_container">
 	<div>
 		<button id = "toggle_search_button" onClick="toggleSearchContainer(this)">Show search box</button>
@@ -12,7 +21,7 @@
   </div>
 	<div id = "search_fields_div" class="hide-element">
 	  <div id="groceries_search_div">
-	  	
+
 	  	<%= form_tag groceries_path, method: 'get', remote: true, id: "groceries_search_form" do %>
 		  	<fieldset>
 				  <div>
@@ -26,7 +35,7 @@
 				  <div>
 				    <label>Filter by tags (AND)</label>
 				    <%= select_tag :tags, options_from_collection_for_select(Tag.all,"id","name"), multiple: true, class: 'awesome-select' %>
-				  </div>  
+				  </div>
 				  <div>
 				  <%= submit_tag "Search", :name => nil %>
 				  </div>
@@ -34,7 +43,7 @@
 			<% end %>
    	</div>
 	  <div id="products_search_div" class="hide-element">
-	  
+
 	  	<%= form_tag products_path, method: 'get', remote: true, id: "products_search_form" do %>
 		  	<fieldset>
 				  <div>
@@ -48,7 +57,7 @@
 				  <div>
 				    <label>Filter by tags (AND)</label>
 				    <%= select_tag :tags, options_from_collection_for_select(Tag.all,"id","name"), multiple: true, class: 'awesome-select' %>
-				  </div>  
+				  </div>
 				  <div>
 				  <%= submit_tag "Search", :name => nil %>
 				  </div>
@@ -62,6 +71,5 @@
 <br/>
 
 <div id="pagination_div">
-	<%= render partial: 'groceries/groceries_pagination', locals: {groceries: @groceries, pagination_data: @groceries} %>	
+	<%= render partial: 'groceries/groceries_pagination', locals: {groceries: @groceries, pagination_data: @groceries} %>
 </div>
-

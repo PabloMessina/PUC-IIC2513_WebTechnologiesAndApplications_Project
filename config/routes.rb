@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
 
   resources :sessions, only: [:new, :create, :destroy]
-  resources :products, only: [:index] do 
+  resources :products, only: [:index] do
     resources :reviews, only: [:show, :new, :create, :index, :edit, :update, :destroy]
   end
 
@@ -27,7 +27,10 @@ Rails.application.routes.draw do
   match '/signup',    to: 'users#new',            via: 'get'
   match '/signin',    to: 'sessions#new',         via: 'get'
   match '/signout',   to: 'sessions#destroy',     via: 'delete'
+
   match '/groceries/:grocery_id/rate_product/:id', to: 'grocery_products#rate_product', via: 'post', as: 'rate_product'
+
+  match '/groceries/:grocery_id/follow', to: 'groceries#follow', via: 'post', as: 'follow'
 
   match '/reviews/:review_id/comments/new', to: 'review_comments#create', via: 'post', as: 'post_new_comment'
   match '/reviews/:review_id/comments', to: 'review_comments#index', via: 'get', as: 'review_comments'

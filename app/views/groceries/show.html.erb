@@ -62,60 +62,6 @@
   <%= render 'shared/reports_pagination' %>
 </div>
 
-<!-- <script type="text/javascript">
-
-  var refreshProductLinks = false;
-  var refreshReportsLinks = false;
-  var searchSubmitDivContent;
-
-  function refreshProductsPagination() {
-    $('#products_pagination .pagination a').click(function () {
-        refreshProductLinks = true;
-        $('#products_pagination .pagination').html('Loading products...');
-        $.get(this.href, null, null, 'script');
-        return false;
-    });
-    refreshProductLinks = false;
-  }
-
-  function refreshReportsPagination() {
-    $('#reports_pagination .pagination a').click(function () {
-        refreshReportsLinks = true;
-        $('#reports_pagination .pagination').html('Loading news...');
-        $.get(this.href, null, null, 'script');
-        return false;
-    });
-    refreshReportsLinks = false;
-  }
-
-  $(document).ajaxStop(function() {
-    if(refreshProductLinks)
-      refreshProductsPagination();
-
-    if(refreshReportsLinks)
-      refreshReportsPagination();
-  });
-
-  $(document).ready(function() {
-    refreshProductsPagination();
-    refreshReportsPagination();
-
-    $(".awesome-select").select2({
-      width: "150px",
-      placeholder: "No filter"
-    });
-    $('#products_search').bind('ajax:success', function(evt, data, status, xhr){
-      eval(xhr.responseText);
-      refreshProductsPagination();
-      $('#search_submit_div').html(searchSubmitDivContent);
-    });
-    $('#products_search').bind('ajax:before', function(evt, data, status, xhr){
-      var search_div = $('#search_submit_div');
-      searchSubmitDivContent = search_div.html();
-      search_div.html("<label>Searching ... </label>");
-    });
-  });
-</script> -->
 
 <script>
   grocery_id = <%= @grocery.id %>;

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 $(document).ready(function() {
   $(".awesome-select").select2({
@@ -35,5 +34,3 @@ function follow(set_to) {
       $("div"+follow_id(!set_to)).removeClass("hidden");
     });
 }
-
->>>>>>> origin/development_pablo

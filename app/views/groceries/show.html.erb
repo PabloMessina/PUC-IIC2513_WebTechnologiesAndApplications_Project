@@ -1,17 +1,12 @@
-<% if @privilege == :administrator %>
-  <%= link_to 'Edit Grocery', edit_grocery_path(@grocery) %>
-  <br>
-  <%= link_to 'Manage Purchase Orders', grocery_purchase_orders_path(@grocery) %>
-  <br>
-<% end %>
+<h1> Grocery Informtion </h1>
 
-<% if @grocery.has_image? %>
-  <%= image_tag @grocery.grocery_image.grocery_image_url, :style => "width: 250px; height: 120px;"  %>
-<% else %>
-  <%= image_tag "Springfield_grocery_store.png", :style => "width: 250px; height: 120px;"  %>
-<% end %>
-
-
+<div class='big-img-container left-floatme'>
+  <% if @grocery.has_image? %>
+    <%= image_tag @grocery.grocery_image.grocery_image_url %>
+  <% else %>
+    <%= image_tag "Springfield_grocery_store.png" %>
+  <% end %>
+</div>  
 
 <p>
   <strong>Name:</strong>
@@ -23,90 +18,4 @@
   <%= @grocery.address %>
 </p>
 
-<% if @privilege == :administrator %>
-  <%= link_to 'Create a new product', new_grocery_product_path(@grocery) %>
-<% end %>
 
-
-<%= form_tag grocery_products_path(@grocery), method: 'get', remote: true, id: "products_search" do %>
-  <div class="stack-horizontal">
-    <label>Filter by name</label>
-    <%= text_field_tag :search %>
-  </div>
-  <div class="stack-horizontal">
-    <label>Filter by category (OR)</label>
-    <%= select_tag :categories, options_from_collection_for_select(@grocery_categories, "id", "name"), multiple: true, class: 'awesome-select' %>
-  </div>
-  <div class="stack-horizontal">
-    <label>Filter by tags (AND)</label>
-    <%= select_tag :tags, options_from_collection_for_select(@grocery_tags,"id","name"), multiple: true, class: 'awesome-select' %>
-  </div>
-  <div id="search_submit_div">
-  <%= submit_tag "Search", :name => nil , :class => "stack-horizontal" %>
-  </div>
-<% end %>
-
-<div id = "products_pagination">
-		<%= render 'shared/grocery_products_pagination' %>
-</div>
-
-<hr>
-
-<div id="reports_pagination">
-  <%= render 'shared/reports_pagination' %>
-</div>
-
-<script type="text/javascript">
-
-  var refreshProductLinks = false;
-  var refreshReportsLinks = false;
-  var searchSubmitDivContent;
-
-  function refreshProductsPagination() {
-    $('#products_pagination .pagination a').click(function () {
-        refreshProductLinks = true;
-        $('#products_pagination .pagination').html('Loading products...');
-        $.get(this.href, null, null, 'script');
-        return false;
-    });
-    refreshProductLinks = false;
-  }
-
-  function refreshReportsPagination() {
-    $('#reports_pagination .pagination a').click(function () {
-        refreshReportsLinks = true;
-        $('#reports_pagination .pagination').html('Loading news...');
-        $.get(this.href, null, null, 'script');
-        return false;
-    });
-    refreshReportsLinks = false;
-  }
-
-  $(document).ajaxStop(function() {
-    if(refreshProductLinks)
-      refreshProductsPagination();
-
-    if(refreshReportsLinks)
-      refreshReportsPagination();
-  });
-
-  $(document).ready(function() {
-    refreshProductsPagination();
-    refreshReportsPagination();
-
-    $(".awesome-select").select2({
-      width: "150px",
-      placeholder: "No filter"
-    });
-    $('#products_search').bind('ajax:success', function(evt, data, status, xhr){
-      eval(xhr.responseText);
-      refreshProductsPagination();
-      $('#search_submit_div').html(searchSubmitDivContent);
-    });
-    $('#products_search').bind('ajax:before', function(evt, data, status, xhr){
-      var search_div = $('#search_submit_div');
-      searchSubmitDivContent = search_div.html();
-      search_div.html("<label>Searching ... </label>");
-    });
-  });
-</script>

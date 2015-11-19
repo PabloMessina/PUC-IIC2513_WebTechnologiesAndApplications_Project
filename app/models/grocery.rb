@@ -85,4 +85,19 @@ class Grocery < ActiveRecord::Base
 		return json_str.html_safe
 	end
 
+	def get_users_per_privilege
+		users = User.joins(:privileges).where('privileges.grocery_id = ?',self.id).select('privilege, users.*')
+		inv_privileges = Privilege.privileges.invert
+		priv_users = {}
+
+		users.each do |user|
+			priv = inv_privileges[user.privilege]
+			next if priv.nil?			
+			priv_users[priv] ||= []
+			priv_users[priv] << user
+		end
+
+		return priv_users
+	end
+
 end

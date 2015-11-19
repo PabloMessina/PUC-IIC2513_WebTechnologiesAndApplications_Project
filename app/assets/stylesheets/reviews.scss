@@ -4,16 +4,18 @@
 	background-color: rgb(220, 252, 188);
 	border-radius: 10px;
 	display: inline-block;
+	max-width: 720px;
+}
+.review-container.header {
+	max-width: 500px;
 }
 
 .review-container .text-container{
 	padding: 10px;
 	border-radius: 8px;
 	background-color: white;
-	word-wrap: break-word;
 	display: inline-block;
 	font-size: 12px;
-	max-width: 400;
 }
 
 .review-details {

@@ -1,0 +1,25 @@
+<%#=
+  parameters: grocery
+%> 
+<div id="grocery_sidebar">
+
+	<%#= name + image %>
+	<%= link_to grocery_path(grocery) do %>
+		<div>
+			<span><%= grocery.name %></span> <br>			
+			<% if @grocery.has_image? %>
+			  <%= image_tag @grocery.grocery_image.grocery_image_url %>
+			<% else %>
+			  <%= image_tag "Springfield_grocery_store.png" %>
+			<% end %>
+		</div>
+	<% end %> <br>
+
+	<% if is_administrator? %>
+		<%#= edit groceries%>
+		<%= link_to "edit grocery", edit_grocery_path(grocery)%>
+		<%#= purchase orders %>
+		<%= link_to "Manage purchase orders", grocery_purchase_orders_path(grocery) %>
+	<% end %>
+
+</div>

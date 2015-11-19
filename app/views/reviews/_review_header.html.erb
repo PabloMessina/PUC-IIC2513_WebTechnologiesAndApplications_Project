@@ -1,7 +1,7 @@
 <%#=
 	parameters: rating_titles, rating, review
 %>
-<div class="review-container">
+<div class="review-container header">
 
 	<div class = "rating-stars-container">
 		<% (0..rating_titles.size-1).each do |i| 
@@ -10,16 +10,10 @@
 		  <label title="<%= rating_titles[i]%>"></label>
 		<% end %>
 	</div>
-
 	<%= link_to review.title, product_review_path(review.product,review) %>
 	<br/>
-
 	By <%= link_to review.user.username, user_path(review.user)%> on <%= review.created_at.to_date %>
 	<br/>
-
-	<div class="text-container">
-		<%= review.content %>
-	</div>
-	<br/>
+	<pre class="text-container"><%= review.content %></pre><br/>
 
 </div>

@@ -32,6 +32,8 @@ Rails.application.routes.draw do
   match '/reviews/:review_id/comments/new', to: 'review_comments#create', via: 'post', as: 'post_new_comment'
   match '/reviews/:review_id/comments', to: 'review_comments#index', via: 'get', as: 'review_comments'
 
+  match '/groceries/:id/search_products', to: 'groceries#search_products', via: 'get', as: 'search_products'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

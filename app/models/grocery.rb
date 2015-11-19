@@ -1,11 +1,11 @@
 class Grocery < ActiveRecord::Base
 	attr_accessor :image
 
-	has_many :privileges
-	has_many :users, through: :privileges
+	has_many :privileges 	
+	has_many :privileged_users, through: :privileges, source: :user
 
 	has_many :followers
-	has_many :users, through: :followers
+	has_many :follower_users, through: :followers, source: :user
 
 	has_many :products, :dependent => :destroy
 	has_many :reports
@@ -79,7 +79,7 @@ class Grocery < ActiveRecord::Base
 			else
 				json_str << ","
 			end
-			json_str << %Q["#{p.id}" : {"name": "#{p.name}", "stock": #{p.stock} }]
+			json_str << %Q["#{p.id}" : {"name": "#{p.name}", "stock": #{p.inventory.stock} }]
 		end
 		json_str << "}"
 		return json_str.html_safe

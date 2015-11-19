@@ -20,14 +20,11 @@ class CommentsController < ApplicationController
     if @comment.save
       flash[:success] = "Comment posted successfully!"
       redirect_to grocery_path(@grocery)
-      return
+        
     else
       render 'new'
     end
   end
-
-
-
 
   private
 

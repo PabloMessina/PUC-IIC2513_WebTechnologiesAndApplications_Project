@@ -8,6 +8,15 @@ class ApplicationController < ActionController::Base
   	render status: 401, text: message
   end 
 
+  def title(text)
+    content_for :title, text
+  end
+
+  helper_method :is_administrator? 
+  def is_administrator? 
+    @privilege == :administrator
+  end
+
   def check_user_logged_in
   	unless signed_in?
   		permission_denied("You must be logged in to perform this action")

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> <%= if content_for?(:title) then yield(:title) + ' | ' end %>Alma</title>
+  <%= stylesheet_link_tag    'application', params[:controller], media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', params[:controller], 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+	<%= render partial: 'layouts/groceries/header', locals: {grocery: @grocery, logged_user: @logged_user, grocery_categories: @grocery_categories, grocery_tags: @grocery_tags} %>
+
+  <%= render partial: 'layouts/groceries/sidebar', locals:{grocery: @grocery} %>
+
+  <div id="grocery-page-wrap">
+  	<%= yield %>
+  </div>
+
+</body>
+</html>

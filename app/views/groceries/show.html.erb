@@ -1,17 +1,12 @@
-<% if @privilege == :administrator %>
-  <%= link_to 'Edit Grocery', edit_grocery_path(@grocery) %>
-  <br>
-  <%= link_to 'Manage Purchase Orders', grocery_purchase_orders_path(@grocery) %>
-  <br>
-<% end %>
+<h1> Grocery Informtion </h1>
 
-<% if @grocery.has_image? %>
-  <%= image_tag @grocery.grocery_image.grocery_image_url, :style => "width: 250px; height: 120px;"  %>
-<% else %>
-  <%= image_tag "Springfield_grocery_store.png", :style => "width: 250px; height: 120px;"  %>
-<% end %>
-
-
+<div class='big-img-container left-floatme'>
+  <% if @grocery.has_image? %>
+    <%= image_tag @grocery.grocery_image.grocery_image_url %>
+  <% else %>
+    <%= image_tag "Springfield_grocery_store.png" %>
+  <% end %>
+</div>
 
 <p>
   <strong>Name:</strong>
@@ -23,6 +18,7 @@
   <%= @grocery.address %>
 </p>
 
+<<<<<<< HEAD
 <% if @logged_user %>
   <div id="follow" class=<%= (current_user_following_grocery ? "hidden" : "") %> >
     <button id="follow" onclick="follow(true)">Follow this grocery!</button>
@@ -66,7 +62,7 @@
   <%= render 'shared/reports_pagination' %>
 </div>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 
   var refreshProductLinks = false;
   var refreshReportsLinks = false;
@@ -119,8 +115,11 @@
       search_div.html("<label>Searching ... </label>");
     });
   });
-</script>
+</script> -->
 
 <script>
   grocery_id = <%= @grocery.id %>;
 </script>
+=======
+
+>>>>>>> origin/development_pablo

@@ -3,6 +3,9 @@ class GroceriesController < ApplicationController
   before_action :set_grocery_by_id, only: [:show, :edit, :update, :destroy]
   before_action :set_privilege_on_grocery, only: [:show, :edit, :update, :destroy]
 
+  before_action :check_grocery_exists, only: [:search_products]
+
+
   def index
 
     filtered_params = search_params
@@ -145,6 +148,7 @@ class GroceriesController < ApplicationController
     @reports = @grocery.reports.paginate(page: 1, per_page: 5)
     @grocery_categories = @grocery.get_categories
     @grocery_tags = @grocery.get_tags
+    @privileged_users = @grocery.get_users_per_privilege
   end
 
   def edit
@@ -204,7 +208,9 @@ class GroceriesController < ApplicationController
     @logged_user.following_groceries.exists?(@grocery.id)
   end
 
+  def search_products
 
+  end
   private
 
     def set_grocery_by_id

@@ -1,12 +1,12 @@
-<header>  
+<header class="default-header">  
   <ul>
-    <li class = "left"><%= link_to "Home", root_path %></li>
+    <li class = "left-floatme"><%= link_to "Home", root_path %></li>
     <% if signed_in? %>
-      <li class = "right"><%= link_to(@logged_user.username, user_path(@logged_user)) %></li>
-      <li class = "right"><%= link_to('Sign out', signout_path, :method => :delete) %></li>
+      <li class = "right-floatme"><%= link_to(@logged_user.username, user_path(@logged_user)) %></li>
+      <li class = "right-floatme"><%= link_to('Sign out', signout_path, :method => :delete) %></li>
     <% else %>
-      <li class = "right"><%= link_to('Sign in', signin_path)  %></li>
-      <li class = "right"><%= link_to('Sign up', signup_path)  %></li>
+      <li class = "right-floatme"><%= link_to('Sign in', signin_path)  %></li>
+      <li class = "right-floatme"><%= link_to('Sign up', signup_path)  %></li>
     <% end %>
   </ul>
 </header>

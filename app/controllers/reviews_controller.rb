@@ -7,6 +7,7 @@ class ReviewsController < ApplicationController
   #checks
   before_action :check_product_exists
   before_action :check_user_logged_in, only: [:new, :create, :edit, :update, :destroy]
+  before_action :check_review_exists, only: [:show, :edit, :update, :destroy]
   before_action :check_user_is_author, only: [:edit, :update, :destroy]
   before_action :check_first_review, only: [:new]
 
@@ -51,7 +52,13 @@ class ReviewsController < ApplicationController
 
     def check_product_exists
       unless @product
-        raise ActionController::RoutingError.new("Product with id #{params[:id]} not found")
+        raise ActionController::RoutingError.new("Product with id #{params[:product_id]} not found")
+      end
+    end
+
+    def check_review_exists
+      unless @review
+        raise ActionController::RoutingError.new("Review with id #{params[:id]} not found")
       end
     end
 

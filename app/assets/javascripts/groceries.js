@@ -1,5 +1,4 @@
-
-$(document).ready(function() {
+var ready = function() {
   $(".awesome-select").select2({
     width: "100%",
     placeholder: "No filter"
@@ -17,6 +16,7 @@ $(document).ready(function() {
       btn.html("Show advanced fields");
     }
   });
+};
 
 });
 
@@ -33,4 +33,16 @@ function follow(set_to) {
       $("button"+follow_id(!set_to)).prop('disabled', false);
       $("div"+follow_id(!set_to)).removeClass("hidden");
     });
+}
+
+
+$(document).ready(ready);
+$(document).on('page:load', ready);
+
+function refreshProductsPagination() {
+  $('#grocery_products_pagination .pagination a').click(function () {
+      $('#grocery_products_pagination .pagination').html('Loading products...');
+      $.get(this.href, null, null, 'script');
+      return false;
+  });
 }

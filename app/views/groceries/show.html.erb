@@ -1,4 +1,4 @@
-<h1> Grocery Informtion </h1>
+<h1> Grocery Information </h1>
 
 <div class='big-img-container left-floatme'>
   <% if @grocery.has_image? %>
@@ -8,15 +8,55 @@
   <% end %>
 </div>
 
-<p>
-  <strong>Name:</strong>
-  <%= @grocery.name %>
-</p>
+<div class="grocery-info left-floatme">
 
-<p>
-  <strong>Address:</strong>
-  <%= @grocery.address %>
-</p>
+  <p>
+    <strong>Name:</strong>
+    <%= @grocery.name %>
+  </p>
+
+  <p>
+    <strong>Address:</strong>
+    <%= @grocery.address %>
+  </p>
+
+  <div class="privileges">
+  <% @users_per_privilege.keys.each do |key| %>
+    
+    <% users = @users_per_privilege[key] %>
+    
+    <strong><%= ((users.count > 1) ? key.pluralize : key).titleize %></strong>
+
+    <div class="privilege-group">
+      <% users.each do |user| %>
+        <%= link_to user_path(user.id) do %>
+          <div class='user-container left-floatme'>          
+
+            <% if user.has_image? %>
+              <%= image_tag user.user_image.user_image_url, class: 'left-floatme' %>
+            <% else %>
+              <%= image_tag "default_profile.jpg", class: 'left-floatme' %>
+            <% end %>
+            <span class='right-floatme'> <%= user.username %> </span>
+
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+  </div>
+</div>
+
+<div class="float-separator"></div>
+
+<div id = "grocery_products_pagination">
+    <%= render partial: 'products/products_pagination_inside_grocery', locals: {products: @products, grocery: @grocery} %>
+</div>
+
+<script>
+  refreshProductsPagination();
+</script>
+
 
 <% if @logged_user %>
   <div id="follow" class=<%= (current_user_following_grocery ? "hidden" : "") %> >

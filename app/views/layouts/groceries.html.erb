@@ -2,8 +2,12 @@
 <html>
 <head>
   <title> <%= if content_for?(:title) then yield(:title) + ' | ' end %>Alma</title>
-  <%= stylesheet_link_tag    'application', params[:controller], media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', params[:controller], 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    'application', 'groceries', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'groceries', 'data-turbolinks-track' => true %>
+  <% unless params[:controller] == 'groceries' %>
+	  <%= stylesheet_link_tag params[:controller], media: 'all', 'data-turbolinks-track' => true %>
+	  <%= javascript_include_tag params[:controller], 'data-turbolinks-track' => true %>
+  <% end %>
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -17,10 +21,9 @@
   <%= render partial: 'layouts/groceries/sidebar', locals:{grocery: @grocery} %>
 
   <div id="grocery-page-wrap">
-    <% flash.each do |key, value| %>
+	  <% flash.each do |key, value| %>
   		<div class="alert alert-<%= key %>"><%= value %></div>
   	<% end %>
-
   	<%= yield %>
   </div>
 

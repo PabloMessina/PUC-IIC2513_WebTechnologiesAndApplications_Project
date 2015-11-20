@@ -1,14 +1,20 @@
 class GroceriesController < ApplicationController
+  include GroceryHelper
+
   before_action :set_logged_user_by_cookie
-  before_action :set_grocery_by_id, only: [:show, :edit, :update, :destroy]
+  before_action only: [:show, :edit, :update, :destroy, :search_products] do set_grocery_by_id(:id) end
   before_action :set_privilege_on_grocery, only: [:show, :edit, :update, :destroy]
 
-  before_action :check_grocery_exists, only: [:search_products]
+  before_action :check_user_logged_in, only: [:new, :create, :edit, :update, :destroy]
+  before_action only: [:search_products, :edit, :update, :destroy] do check_grocery_exists(:id) end
+  before_action only: [:edit, :update, :destroy] do check_privilege_on_grocery(:administrator, :id) end
 
+  before_action :set_grocery_categories
+  before_action :set_grocery_tags
 
   def index
 
-    filtered_params = search_params
+    filtered_params = global_search_params
     categories = filtered_params[:categories]
     tags = filtered_params[:tags]
     search_string = filtered_params[:search]
@@ -110,14 +116,11 @@ class GroceriesController < ApplicationController
   end
 
   def new
-    return unless check_user_logged_in
-
     @grocery = Grocery.new
     @submit_message = "Create grocery";
   end
 
   def create
-    return unless check_user_logged_in
 
     filtered_params = grocery_params
     @grocery = Grocery.new(filtered_params.except(:image))
@@ -143,28 +146,14 @@ class GroceriesController < ApplicationController
   end
 
   def show
-    return unless check_grocery_exists
     @products = @grocery.products.paginate(page: 1, per_page: 10)
-    @reports = @grocery.reports.paginate(page: 1, per_page: 5)
-    @grocery_categories = @grocery.get_categories
-    @grocery_tags = @grocery.get_tags
-    @privileged_users = @grocery.get_users_per_privilege
+    @users_per_privilege = @grocery.get_users_per_privilege
   end
 
   def edit
-    unless (check_grocery_exists &&
-            check_user_logged_in &&
-            check_privilege_on_grocery(:administrator))
-      return
-    end
   end
 
   def update
-    unless (check_grocery_exists &&
-            check_user_logged_in &&
-            check_privilege_on_grocery(:administrator))
-      return
-    end
 
     filtered_params = grocery_params
 
@@ -209,49 +198,44 @@ class GroceriesController < ApplicationController
   end
 
   def search_products
-    # TODO
+
+    filtered_params = grocery_search_params
+    categories = filtered_params[:categories]
+    tags = filtered_params[:tags]
+    search_string = filtered_params[:search]
+
+    @products = @grocery.products.where("products.visible = true")
+
+    if search_string && !search_string.blank?
+      @products = @products.where("products.name ILIKE ?","%#{search_string}%")
+    end
+    if categories && categories.count > 0
+      @products = @products.where('products.category_id IN (?)',categories.map{|x|x.to_i} )
+    end
+    if tags && tags.count > 0
+      @products = @products.where("(SELECT COUNT(*) FROM products_tags as pt WHERE
+       pt.product_id = products.id AND pt.tag_id in (?)) = ?",tags.map{|x|x.to_i},tags.count)
+    end
+    if params[:page]
+      @products = @products.paginate(page: params[:page], per_page: 10)
+    else
+      @products = @products.paginate(page: 1, per_page: 10)
+    end
+
   end
 
-
   private
-
-    def set_grocery_by_id
-      @grocery = Grocery.find_by_id(params[:id])
-    end
-
-    def set_privilege_on_grocery
-      if(@logged_user)
-        @privilege = @logged_user.privileges.find {|x| x.grocery_id.to_s == params[:id]}
-        if(@privilege)
-          @privilege = @privilege.privilege.to_sym
-        end
-      else
-        @privilege = nil
-      end
-    end
-
-    def check_grocery_exists
-      unless @grocery
-        permission_denied ("Grocery with id #{params[:id]} not found")
-        return false;
-      end
-      return true;
-    end
-
-    def check_privilege_on_grocery(privilege)
-      unless @privilege == privilege
-        permission_denied ("You (user_id = #{@logged_user.id}) need a privilege of #{privilege} on this grocery (id = #{params[:id]}) to perform this action")
-        return false;
-      end
-      return true;
-    end
 
     def grocery_params
       params.require(:grocery).permit(:name, :address,:image)
     end
 
-    def search_params
+    def grocery_search_params
       params.permit(:search, {categories: []}, {tags: []}, :page, :page_count)
+    end
+
+    def global_search_params
+      params.permit(:search, {categories: []}, {tags: []}, :page)
     end
 
 end

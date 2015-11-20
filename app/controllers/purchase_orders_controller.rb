@@ -2,17 +2,23 @@ require 'will_paginate/array'
 require 'pagination_data.rb'
 
 class PurchaseOrdersController < ApplicationController
+	include GroceryHelper
+	layout 'groceries'
+
 	before_action :set_logged_user_by_cookie
+	before_action do set_grocery_by_id(:grocery_id) end
 	before_action :set_privilege_on_grocery
-	before_action :set_grocery_by_id
 	before_action :set_purchase_order_by_id, only: [:show, :edit, :update, :destroy]
 
+	before_action do check_grocery_exists(:grocery_id) end
+	before_action :check_user_logged_in
+	before_action do check_privilege_on_grocery(:administrator, :grocery_id) end
+	before_action :check_purchase_order_exists, only: [:show, :edit, :update, :destroy]
+
+	before_action :set_grocery_categories
+  before_action :set_grocery_tags
+
 	def index
-		unless (check_grocery_exists &&
-		        check_user_logged_in &&
-		        check_privilege_on_grocery(:administrator))
-	    return
-	  end
 
 	  page = 1
 	  per_page = 20
@@ -46,31 +52,15 @@ class PurchaseOrdersController < ApplicationController
 	end
 
 	def show
-		unless (check_grocery_exists &&
-						check_purchase_order_exists &&
-		        check_user_logged_in &&
-		        check_privilege_on_grocery(:administrator))
-	    return
-	  end
 	end
 
 	def new
-		unless (check_grocery_exists &&
-	        check_user_logged_in &&
-	        check_privilege_on_grocery(:administrator))
-	    return
-	  end
 	  @purchase_order = PurchaseOrder.new
 	  @order_lines_data = []
 	  @selected_ids = []
 	end
 
 	def create
-		unless (check_grocery_exists &&
-			      check_user_logged_in &&
-			      check_privilege_on_grocery(:administrator))
-  		return
-	  end
 
 	  filtered_params = purchase_order_params
 
@@ -93,7 +83,7 @@ class PurchaseOrdersController < ApplicationController
 	  		product.inventory.update_attributes(stock: product.inventory.stock - x[:amount])
 	  	end
 
-	  	redirect_to grocery_purchase_orders_path(@grocery)
+	  	redirect_to grocery_purchase_order_path(@grocery,@purchase_order)
 	  else
 	  	begin
   			aux_array = JSON.parse(order_lines_data)
@@ -131,48 +121,14 @@ class PurchaseOrdersController < ApplicationController
 	  end
 	end
 
-	def set_grocery_by_id
-		@grocery = Grocery.find_by_id(params[:grocery_id])
-	end
-
 	def set_purchase_order_by_id
 		@purchase_order = PurchaseOrder.find_by_id(params[:id])
 	end
 
-	def set_privilege_on_grocery
-		if(@logged_user)
-		  @privilege = @logged_user.privileges.find {|x| x.grocery_id.to_s == params[:grocery_id]}
-		  if(@privilege)
-		  	@privilege = @privilege.privilege.to_sym
-		  end
-		else
-			@privilege = nil
-		end
-	end
-
-
-  def check_grocery_exists
-    unless @grocery
-      permission_denied ("Grocery with id #{params[:grocery_id]} not found")
-      return false;
-    end
-    return true;
-  end
-
   def check_purchase_order_exists
     unless @purchase_order
-      permission_denied ("Purchase Order with id #{params[:id]} not found")
-      return false;
+    	raise ActionController::RoutingError.new("Purchase Order with id #{params[:id]} not found")
     end
-    return true;
-  end
-
-  def check_privilege_on_grocery(privilege)
-    unless @privilege == privilege
-      permission_denied ("You (user_id = #{@logged_user.id}) need a privilege of #{privilege} on this grocery (id = #{params[:grocery_id]}) to perform this action")
-      return false;
-    end
-    return true;
   end
 
   def purchase_order_params

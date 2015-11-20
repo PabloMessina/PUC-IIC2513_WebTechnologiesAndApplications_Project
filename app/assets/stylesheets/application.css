@@ -185,6 +185,7 @@ div.field {
 .stars-container {
   position: relative;
   display: inline-block;
+  word-wrap: normal;
   width: 123px;
   height: 25px;
 }
@@ -245,9 +246,9 @@ table.report-admin {
   border-spacing: 10px;
 }
 
-clear-fix {
-  display: table;
+.float-separator {
   clear: both;
+  height: 25px;
 }
 
 div.comment {

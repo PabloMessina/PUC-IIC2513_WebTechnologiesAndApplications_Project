@@ -3,6 +3,8 @@
 %> 
 <div id="grocery_sidebar">
 
+	<strong>You are in Grocery:</strong> <br>
+
 	<%#= name + image %>
 	<%= link_to grocery_path(grocery) do %>
 		<div>
@@ -16,10 +18,14 @@
 	<% end %> <br>
 
 	<% if is_administrator? %>
-		<%#= edit groceries%>
-		<%= link_to "edit grocery", edit_grocery_path(grocery)%>
-		<%#= purchase orders %>
-		<%= link_to "Manage purchase orders", grocery_purchase_orders_path(grocery) %>
+		<fieldset>
+			<legend>Administrator options:</legend>
+			<ul>
+				<li><%= link_to "edit grocery", edit_grocery_path(grocery)%></li>
+				<li><%= link_to "Manage purchase orders", grocery_purchase_orders_path(grocery) %></li>
+				<li><%= link_to 'Create a new product', new_grocery_product_path(@grocery) %></li>
+			</ul>
+		</fieldset>
 	<% end %>
 
 </div>

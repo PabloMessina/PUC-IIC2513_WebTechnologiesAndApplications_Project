@@ -1,0 +1,31 @@
+#pagination_div a:link, 
+#pagination_div a:visited {
+    font-weight: bold;
+    color: blue;
+    text-align: center;
+}
+
+
+.groceries_container {
+  max-width: 900px;
+  padding: 10px;
+  background-color: #303030;
+  overflow: auto;
+  display: inline-block;
+  margin-left:auto;
+	margin-right:auto;
+	border-radius: 8px;
+}
+.grocery_div {
+	border-radius: 4px;
+	margin: 5px;
+	padding: 3px;
+  background-color: #CCFFFF;
+  float: left;
+}
+.grocery_div > a > * {
+	text-align: center;
+	display:block;
+  margin-left:auto;
+  margin-right:auto;
+}

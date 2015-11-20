@@ -18,7 +18,6 @@
   <%= @grocery.address %>
 </p>
 
-<<<<<<< HEAD
 <% if @logged_user %>
   <div id="follow" class=<%= (current_user_following_grocery ? "hidden" : "") %> >
     <button id="follow" onclick="follow(true)">Follow this grocery!</button>
@@ -34,38 +33,14 @@
 <% end %>
 
 
-<%= form_tag grocery_products_path(@grocery), method: 'get', remote: true, id: "products_search" do %>
-  <div class="stack-horizontal">
-    <label>Filter by name</label>
-    <%= text_field_tag :search %>
-  </div>
-  <div class="stack-horizontal">
-    <label>Filter by category (OR)</label>
-    <%= select_tag :categories, options_from_collection_for_select(@grocery_categories, "id", "name"), multiple: true, class: 'awesome-select' %>
-  </div>
-  <div class="stack-horizontal">
-    <label>Filter by tags (AND)</label>
-    <%= select_tag :tags, options_from_collection_for_select(@grocery_tags,"id","name"), multiple: true, class: 'awesome-select' %>
-  </div>
-  <div id="search_submit_div">
-  <%= submit_tag "Search", :name => nil , :class => "stack-horizontal" %>
-  </div>
-<% end %>
 
-<div id = "products_pagination">
-		<%= render 'shared/grocery_products_pagination' %>
-</div>
 
-<hr>
 
-<div id="reports_pagination">
-  <%= render 'shared/reports_pagination' %>
-</div>
+
+
+
 
 
 <script>
   grocery_id = <%= @grocery.id %>;
 </script>
-=======
-
->>>>>>> origin/development_pablo

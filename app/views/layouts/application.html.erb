@@ -3,14 +3,14 @@
 <head>
 
   <title> <%= if content_for?(:title) then yield(:title) + ' | ' end %>Alma</title>
-  
+
   <%= stylesheet_link_tag    'application', params[:controller], media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', params[:controller], 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
-	<%= render 'layouts/header' unless @dont_show_header%>
+	<%= render 'layouts/header' %>
 
   <div id="page-wrap">
   	<% flash.each do |key, value| %>

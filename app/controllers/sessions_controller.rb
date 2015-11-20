@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
   before_action :set_logged_user_by_cookie, only: [:destroy]
 
 	def new
-    @dont_show_header = true;
+
 	end
 
 	def create
@@ -12,7 +12,6 @@ class SessionsController < ApplicationController
       redirect_back_or user
     else
       flash.now[:error] = 'Invalid username/password combination'
-      @dontShowHeader = true;
       render 'new'
     end
   end

@@ -1,12 +1,33 @@
-<header class="default-header">  
-  <ul>
-    <li class = "left-floatme"><%= link_to "Home", root_path %></li>
-    <% if signed_in? %>
-      <li class = "right-floatme"><%= link_to(@logged_user.username, user_path(@logged_user)) %></li>
-      <li class = "right-floatme"><%= link_to('Sign out', signout_path, :method => :delete) %></li>
-    <% else %>
-      <li class = "right-floatme"><%= link_to('Sign in', signin_path)  %></li>
-      <li class = "right-floatme"><%= link_to('Sign up', signup_path)  %></li>
+<%#= parameters: grocery, logged_user, grocery_categories, grocery_tags %>
+
+<header>
+
+  <table>
+  <tr>
+
+  <td>
+    <%= link_to root_path, class: 'left-floatme' do %>
+      <span>ALMA</span>
     <% end %>
-  </ul>
+  </td>
+
+  <td style="width:100%">
+    <% if @grocery %>
+      <%= render 'layouts/groceries/grocery_search' %>
+    <% else %>
+      <%= render 'layouts/global_search' %>
+    <% end %>
+  </td>
+
+  <% if signed_in? %>
+    <td><%= link_to(@logged_user.username, user_path(@logged_user), class: 'right-floatme') %></td>
+    <td><%= link_to('Sign out', signout_path, :method => :delete, class: 'right-floatme') %></td>
+  <% else %>
+    <td><%= link_to('Sign in', signin_path, class: 'right-floatme')  %></td>
+    <td><%= link_to('Sign up', signup_path, class: 'right-floatme')  %></td>
+  <% end %>
+
+  </tr>
+  </table>
+
 </header>

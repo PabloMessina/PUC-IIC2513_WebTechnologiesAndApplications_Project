@@ -1,71 +1,13 @@
-<div>
-	<% @following_groceries.each do |grocery| %>
-		<div>
-			<%= link_to grocery.name, grocery_path(grocery.id) %>
-		</div>
-	<% end %>
-</div>
-
-
-<div id = "search_outer_container">
+<% unless @following_groceries.empty? %>
+	<h4>Following groceries</h4>
 	<div>
-		<button id = "toggle_search_button" onClick="toggleSearchContainer(this)">Show search box</button>
-		<div id = "radios_div" class = "hide-element">
-			<label for="grocery_search">
-		    <input type="radio" name="search_mode" id="grocery_search" onclick="showGroceriesSearchDiv()" checked="checked"> <span>groceries</span>
-		  </label>
-		  <label for="products_search">
-		    <input type="radio" name="search_mode" id="products_search" onclick="showProductsSearchDiv()"> <span>products</span>
-		  </label>
-	  </div>
-  </div>
-	<div id = "search_fields_div" class="hide-element">
-	  <div id="groceries_search_div">
-
-	  	<%= form_tag groceries_path, method: 'get', remote: true, id: "groceries_search_form" do %>
-		  	<fieldset>
-				  <div>
-				    <label>Filter by name</label>
-				    <%= text_field_tag :search %>
-				  </div>
-				  <div>
-				    <label>Filter by category (OR)</label>
-				    <%= select_tag :categories, options_from_collection_for_select(Category.all, "id", "name"), multiple: true, class: 'awesome-select' %>
-				  </div>
-				  <div>
-				    <label>Filter by tags (AND)</label>
-				    <%= select_tag :tags, options_from_collection_for_select(Tag.all,"id","name"), multiple: true, class: 'awesome-select' %>
-				  </div>
-				  <div>
-				  <%= submit_tag "Search", :name => nil %>
-				  </div>
-			  </fieldset>
-			<% end %>
-   	</div>
-	  <div id="products_search_div" class="hide-element">
-
-	  	<%= form_tag products_path, method: 'get', remote: true, id: "products_search_form" do %>
-		  	<fieldset>
-				  <div>
-				    <label>Filter by name</label>
-				    <%= text_field_tag :search %>
-				  </div>
-				  <div>
-				    <label>Filter by category (OR)</label>
-				    <%= select_tag :categories, options_from_collection_for_select(Category.all, "id", "name"), multiple: true, class: 'awesome-select' %>
-				  </div>
-				  <div>
-				    <label>Filter by tags (AND)</label>
-				    <%= select_tag :tags, options_from_collection_for_select(Tag.all,"id","name"), multiple: true, class: 'awesome-select' %>
-				  </div>
-				  <div>
-				  <%= submit_tag "Search", :name => nil %>
-				  </div>
-			  </fieldset>
-			<% end %>
-	  </div>
+		<% @following_groceries.each do |grocery| %>
+			<div>
+				<%= link_to grocery.name, grocery_path(grocery.id) %>
+			</div>
+		<% end %>
 	</div>
-</div>
+<% end %>
 
 <br/>
 <br/>

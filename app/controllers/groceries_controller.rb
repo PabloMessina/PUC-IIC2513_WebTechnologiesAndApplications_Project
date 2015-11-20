@@ -209,8 +209,10 @@ class GroceriesController < ApplicationController
   end
 
   def search_products
-
+    # TODO
   end
+
+
   private
 
     def set_grocery_by_id

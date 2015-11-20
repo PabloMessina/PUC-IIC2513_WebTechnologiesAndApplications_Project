@@ -11,12 +11,12 @@ Rails.application.routes.draw do
   resources :users, only: [:show, :new, :create, :edit, :update]
   resources :groceries do
     resources :products, controller: 'grocery_products'
-    resources :reports do
-      resources :comments
-    end
     resources :purchase_orders
   end
 
+  resources :reports, only: [] do
+    resources :comments
+  end
 
   resources :sessions, only: [:new, :create, :destroy]
   resources :products, only: [:index] do
@@ -36,6 +36,9 @@ Rails.application.routes.draw do
   match '/reviews/:review_id/comments', to: 'review_comments#index', via: 'get', as: 'review_comments'
 
   match '/groceries/:id/search_products', to: 'groceries#search_products', via: 'get', as: 'search_products'
+
+  match '/search_groceries', to: 'search#groceries', via: 'get'
+  match '/search_products',  to: 'search#products',  via: 'get'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

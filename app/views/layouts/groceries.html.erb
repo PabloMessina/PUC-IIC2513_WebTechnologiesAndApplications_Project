@@ -8,11 +8,19 @@
 </head>
 <body>
 
-	<%= render partial: 'layouts/groceries/header', locals: {grocery: @grocery, logged_user: @logged_user, grocery_categories: @grocery_categories, grocery_tags: @grocery_tags} %>
+  <% if false %>
+  	<%= render partial: 'layouts/groceries/header', locals: {grocery: @grocery, logged_user: @logged_user, grocery_categories: @grocery_categories, grocery_tags: @grocery_tags} %>
+    <%= render partial: 'layouts/groceries/sidebar', locals:{grocery: @grocery} %>
+  <% end %>
 
+  <%= render 'layouts/header' %>
   <%= render partial: 'layouts/groceries/sidebar', locals:{grocery: @grocery} %>
 
   <div id="grocery-page-wrap">
+    <% flash.each do |key, value| %>
+  		<div class="alert alert-<%= key %>"><%= value %></div>
+  	<% end %>
+
   	<%= yield %>
   </div>
 

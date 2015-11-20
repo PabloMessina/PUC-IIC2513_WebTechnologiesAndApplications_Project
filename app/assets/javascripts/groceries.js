@@ -6,8 +6,8 @@ $(document).ready(function() {
   });
 
   $("#advanced_button").on('click', function() {
-    $("#advanced_fields #categories").val('').trigger('change');
-    $("#advanced_fields #tags").val('').trigger('change');
+    $("#advanced_fields#categories").val('').trigger('change');
+    $("#advanced_fields#tags").val('').trigger('change');
     $("#advanced_fields").toggleClass('hide-element');
     var btn = $("#advanced_button");
     var content = btn.html();

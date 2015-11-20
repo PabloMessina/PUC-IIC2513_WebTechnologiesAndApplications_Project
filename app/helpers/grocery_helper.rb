@@ -6,22 +6,22 @@ module GroceryHelper
 
   def set_privilege_on_grocery
     @privilege = nil
-    return if(@grocery.nil?) 
+    return if(@grocery.nil?)
 
     if(@logged_user)
       @privilege = @logged_user.privileges.where('privileges.grocery_id = ?',@grocery.id).first
       if(@privilege)
         @privilege = @privilege.privilege.to_sym
-      end      
+      end
     end
   end
 
   def set_grocery_categories
-    @grocery_categories = @grocery.get_categories
+    @grocery_categories = @grocery.get_categories if @grocery_categories
   end
 
-  def set_grocery_tags      
-    @grocery_tags = @grocery.get_tags
+  def set_grocery_tags
+    @grocery_tags = @grocery.get_tags if @grocery_tags
   end
 
   def check_grocery_exists(grocery_key)

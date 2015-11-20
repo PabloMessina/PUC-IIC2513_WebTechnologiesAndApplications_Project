@@ -18,7 +18,6 @@ var ready = function() {
   });
 };
 
-});
 
 function follow_id(set_to) {
   return "#" + (set_to ? "" : "un") + "follow";

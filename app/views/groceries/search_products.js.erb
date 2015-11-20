@@ -1,0 +1,3 @@
+$("#grocery_products_pagination").html("<%= escape_javascript(render partial: 'products/products_pagination_inside_grocery', locals: {products: @products, grocery: @grocery}) %> ");  
+
+refreshProductsPagination();

@@ -2,8 +2,8 @@ class ReportsController < ApplicationController
   include GroceryHelper
 
 	before_action :set_logged_user_by_cookie
-	before_action :set_privilege_on_grocery
 	before_action :set_grocery_by_id
+  before_action :set_privilege_on_grocery
 	before_action :set_report_by_id, only:[:show, :edit, :update, :destroy]
 
   def index

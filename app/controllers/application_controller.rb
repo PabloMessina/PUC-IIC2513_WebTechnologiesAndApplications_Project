@@ -19,10 +19,8 @@ class ApplicationController < ActionController::Base
 
   def check_user_logged_in
   	unless signed_in?
-  		permission_denied("You must be logged in to perform this action")
-  		return false;
+      raise ActionController::RoutingError.new("You must be logged in to perform this action")
   	end
-  	return true;
   end
 
 end

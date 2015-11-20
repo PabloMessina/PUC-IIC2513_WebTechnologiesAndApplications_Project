@@ -1,17 +1,21 @@
 class GroceryProductsController < ApplicationController
-	include GroceryHelper
+	include GroceryHelper  
+  layout 'groceries'
 
 	before_action :set_logged_user_by_cookie
-	before_action :set_privilege_on_grocery
-	before_action :set_grocery_by_id
+	before_action do set_grocery_by_id(:grocery_id) end
+  before_action :set_privilege_on_grocery
 	before_action :set_product_by_id, only:[:show, :edit, :update, :destroy, :rate_product]
 
-  before_action :check_grocery_exists
+  before_action do check_grocery_exists(:grocery_id) end
   before_action :check_user_logged_in, only: [:new, :create, :edit, :update, :destroy, :rate_product]
-  before_action only: [:new, :create, :edit, :update, :destroy] do check_privilege_on_grocery(:administrator) end
+  before_action only: [:new, :create, :edit, :update, :destroy] do check_privilege_on_grocery(:administrator, :grocery_id) end
   before_action :check_product_exists, only: [:show, :edit, :update, :destroy, :rate_product]
   before_action :check_product_belongs_to_grocery, only: [:show, :edit, :update, :destroy, :rate_product]
   before_action :check_product_is_visible, only: [:show, :rate_product]
+
+  before_action :set_grocery_categories
+  before_action :set_grocery_tags
 
   def index
 
@@ -108,21 +112,9 @@ class GroceryProductsController < ApplicationController
       end
   	end
 
-  	def check_grocery_exists
-  		unless @grocery
-        raise ActionController::RoutingError.new("Grocery with id #{params[:grocery_id]} not found")
-    	end
-  	end
-
   	def check_product_exists
       unless @product
         raise ActionController::RoutingError.new("Product with id #{params[:id]} not found")
-      end
-  	end
-
-  	def check_privilege_on_grocery(privilege)
-      unless @privilege == privilege
-        raise ActionController::RoutingError.new("You (user_id = #{@logged_user.id}) need a privilege of #{privilege} on this grocery (id = #{params[:grocery_id]}) to perform this action")
       end
   	end
 

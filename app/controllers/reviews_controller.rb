@@ -1,4 +1,7 @@
 class ReviewsController < ApplicationController
+  include GroceryHelper
+  layout 'groceries'
+
   #sets
   before_action :set_logged_user_by_cookie
   before_action :set_product_by_id
@@ -10,6 +13,11 @@ class ReviewsController < ApplicationController
   before_action :check_review_exists, only: [:show, :edit, :update, :destroy]
   before_action :check_user_is_author, only: [:edit, :update, :destroy]
   before_action :check_first_review, only: [:new]
+
+  before_action :set_grocery
+  before_action :set_privilege_on_grocery
+  before_action :set_grocery_categories
+  before_action :set_grocery_tags
 
   def new
     @review = Review.new
@@ -44,6 +52,10 @@ class ReviewsController < ApplicationController
 
     def set_review_by_id
       @review = Review.find_by_id(params[:id])
+    end
+
+    def set_grocery
+      @grocery = @product.grocery
     end
 
     def set_rating_titles

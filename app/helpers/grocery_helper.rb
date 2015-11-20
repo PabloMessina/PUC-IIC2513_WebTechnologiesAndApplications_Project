@@ -1,34 +1,39 @@
 module GroceryHelper
 
-  def set_grocery_by_id
-    @grocery = Grocery.find_by_id(params[:grocery_id])
+  def set_grocery_by_id(grocery_key)
+    @grocery = Grocery.find_by_id(params[grocery_key])
   end
 
   def set_privilege_on_grocery
+    @privilege = nil
+    return if(@grocery.nil?) 
+
     if(@logged_user)
-      @privilege = @logged_user.privileges.find {|x| x.grocery_id.to_s == params[:grocery_id]}
+      @privilege = @logged_user.privileges.where('privileges.grocery_id = ?',@grocery.id).first
       if(@privilege)
         @privilege = @privilege.privilege.to_sym
-      end
-    else
-      @privilege = nil
+      end      
     end
   end
 
-  def check_grocery_exists
+  def set_grocery_categories
+    @grocery_categories = @grocery.get_categories
+  end
+
+  def set_grocery_tags      
+    @grocery_tags = @grocery.get_tags
+  end
+
+  def check_grocery_exists(grocery_key)
     unless @grocery
-      permission_denied ("Grocery with id #{params[:grocery_id]} not found")
-      return false;
+      raise ActionController::RoutingError.new("Grocery with id #{params[grocery_key]} not found")
     end
-    return true;
   end
 
-  def check_privilege_on_grocery(privilege)
+  def check_privilege_on_grocery(privilege, grocery_key)
     unless @privilege == privilege
-      permission_denied ("You (user_id = #{@logged_user.id}) need a privilege of #{privilege} on this grocery (id = #{params[:grocery_id]}) to perform this action")
-      return false;
+      raise ActionController::RoutingError.new("You (user_id = #{@logged_user.id}) need a privilege of #{privilege} on this grocery (id = #{params[grocery_key]}) to perform this action")
     end
-    return true;
   end
 
 end

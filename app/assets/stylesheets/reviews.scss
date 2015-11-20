@@ -16,6 +16,7 @@
 	background-color: white;
 	display: inline-block;
 	font-size: 12px;
+	white-space: pre-wrap;
 }
 
 .review-details {
@@ -78,4 +79,5 @@ td {
 
 .review-comment-container .text-container {
 	word-wrap: break-word;
+	white-space: pre-wrap;
 }

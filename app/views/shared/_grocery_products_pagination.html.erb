@@ -1,7 +1,6 @@
 <% if @products.any? %>
-	<br>
 	<strong>Products</strong>
-	<%= will_paginate @products, params: {controller: 'grocery_products', action: 'index', grocery_id: @grocery.id} %>  
+	<%= will_paginate @products, params: {controller: 'groceries', action: 'search_products', grocery_id: @grocery.id} %>  
 
   <table border>
     <tr>
@@ -32,5 +31,7 @@
 	<% end %>  	
   </table>
 
-	<%= will_paginate @products, params: {controller: 'grocery_products', action: 'index', grocery_id: @grocery.id} %>  
+	<%= will_paginate @products, params: {controller: 'groceries', action: 'search_products', grocery_id: @grocery.id} %>  
+<% else %>
+	<span>No products found</span>
 <% end %>

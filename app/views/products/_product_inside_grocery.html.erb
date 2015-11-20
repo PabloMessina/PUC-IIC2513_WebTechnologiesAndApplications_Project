@@ -1,0 +1,41 @@
+<%#= parameter: product %>
+
+<div class="grocery-product-container">
+
+  <%= link_to grocery_product_path(product.grocery_id, product) do %>
+    <% if product.has_image? %>
+      <%= image_tag product.product_image.product_image_url  %>
+    <% else %>
+      <%= image_tag "products-icon-basket.gif" %>
+    <% end %>
+  <% end %>
+
+  <br>
+
+  <%= link_to product.name, grocery_product_path(product.grocery_id, product) %>
+  <br>
+
+   <span class="stars-container">
+      <span class="stars-row back">
+         <label>★</label><label>★</label><label>★</label><label>★</label><label>★</label>
+      </span>
+      <span class="stars-row front" style="width: <%= product.star_count.get_rating_percentage_average %>%">
+         <label>★</label><label>★</label><label>★</label><label>★</label><label>★</label>
+      </span>
+    </span>
+    <br>
+    <span><%= product.star_count.get_rating_average.round(1) %> out of  5 stars</span>
+    <br>
+
+    <%= link_to "see all reviews (#{product.reviews.count})",product_reviews_path(product) %>
+    <br> 
+    <br>
+    Price: $ <%= product.price %> <br/>
+    IN STOCK: <%= product.inventory.stock %> <br/>
+    <br>
+    <strong>Category:</strong>
+    <%= product.category ? product.category.name : "none" %>
+    <br>
+    <strong>Tags:</strong>
+    <%= product.tags.any? ? product.tags.map{|x| x.name}.join(', ') : 'none'%>
+</div>

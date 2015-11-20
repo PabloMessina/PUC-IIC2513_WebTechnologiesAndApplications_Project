@@ -1,0 +1,21 @@
+<%#= parameters: products, grocery %>
+
+<%  if products.any? %>
+	<strong>Products</strong>
+	<%= will_paginate products, params: {controller: 'groceries', action: 'search_products', grocery_id: grocery.id} %>  
+	<div class="float-separator" style="height=35px;"></div>
+	<div class = "products_container">
+		<% count = 0 %>
+		<% products.each do |product| %>
+			<% if count > 0 && count % 3 == 0 %>
+				<div class="float-separator"></div>
+			<% end %>
+			<%= render partial: 'products/product_inside_grocery', locals: {product: product} %>
+			<% count+=1 %>
+		<% end %>
+	</div>
+	<div class="float-separator" style="height=35px;"></div>
+	<%= will_paginate products, params: {controller: 'groceries', action: 'search_products', grocery_id: grocery.id} %>
+<% else %>
+	No products found
+<% end %>

@@ -1,10 +1,9 @@
 #grocery-page-wrap {
 	max-width: 960px;
 	min-width: 600px;
-	margin-left: 150px;
-	margin-top: -10px;
+	margin-left: 195px;
+  margin-top: -13px;
 	padding: 30px;
-	/* border-radius: 15px; */
 	background-color: #fafafa;
 	overflow: auto;
 }
@@ -14,10 +13,13 @@
   position: fixed;
   top: 55px;
   left: 3px;
-  width: 135px;
-  height: 200px;
+  width: 185px;
+  min-height: 300px;
   background-color: white;
   box-shadow: 0 0 10px 0 black;
+  text-align: center;
+  word-wrap: break-word;
+  font-size: 15px;
 }
 
 #grocery_sidebar > * {
@@ -27,6 +29,22 @@
 #grocery_sidebar img{
 	width: 80px;
 	height: 80px;
+}
+
+#grocery_sidebar a:link {
+  text-decoration: none;
+}
+#grocery_sidebar a:hover { 
+  color: rgb(149,30,17);
+  text-decoration: underline;
+}
+
+#grocery_sidebar fieldset {
+  padding: 0px;
+}
+
+#grocery_sidebar ul {
+  text-align: left;
 }
 
 #products_search {
@@ -98,6 +116,52 @@ header a:active {
 }
 
 .big-img-container img {
-	width: 300px;
+	width: 250px;
 	height: 200px;
+}
+
+.user-container {	
+  border: 1px solid black;
+  border-radius: 2px;
+  padding: 2px;
+  background-color: beige;
+  margin: 4px;
+}
+
+.user-container img {
+	width: 40px;
+	height: 40px;
+}
+
+.user-container span {
+	margin-left: 2px;
+	max-width: 100px;
+	word-wrap: break-word;
+}
+
+.privilege-group {
+	margin-top: 5px;
+	margin-bottom: 5px,
+}
+
+.grocery-info {
+	margin-left: 15px;
+}
+
+.grocery-product-container {
+  max-width: 240px;
+  text-align: center;
+  word-wrap: break-word;
+  padding: 4px;
+  background-color: #FDFDFE;
+  border: 1px solid #949494;
+  border-radius: 2px;
+  float: left;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.grocery-product-container img {
+  width: 230px;
+  height: 230px;
 }

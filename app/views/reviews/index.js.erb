@@ -1,7 +1,4 @@
 $("#pagination_div").html("<%= escape_javascript(render partial: "reviews_pagination", locals: {reviews: @reviews, rating_titles: @rating_titles}) %> ");  
 
-$('.pagination a').click(function () {  
-    $('.pagination').html('Loading reviews...');  
-    $.get(this.href, null, null, 'script');  
-    return false;  
-});
+setupPaginationLinksForAjax();
+addShowMoreLessToReviews();

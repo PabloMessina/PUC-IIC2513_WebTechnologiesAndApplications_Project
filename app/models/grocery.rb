@@ -1,11 +1,11 @@
 class Grocery < ActiveRecord::Base
 	attr_accessor :image
 
-	has_many :privileges
-	has_many :users, through: :privileges
+	has_many :privileges 	
+	has_many :privileged_users, through: :privileges, source: :user
 
 	has_many :followers
-	has_many :users, through: :followers
+	has_many :follower_users, through: :followers, source: :user
 
 	has_many :products, :dependent => :destroy
 	has_many :reports
@@ -83,6 +83,21 @@ class Grocery < ActiveRecord::Base
 		end
 		json_str << "}"
 		return json_str.html_safe
+	end
+
+	def get_users_per_privilege
+		users = User.joins(:privileges).where('privileges.grocery_id = ?',self.id).select('privilege, users.*')
+		inv_privileges = Privilege.privileges.invert
+		priv_users = {}
+
+		users.each do |user|
+			priv = inv_privileges[user.privilege]
+			next if priv.nil?			
+			priv_users[priv] ||= []
+			priv_users[priv] << user
+		end
+
+		return priv_users
 	end
 
 end

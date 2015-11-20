@@ -9,6 +9,7 @@ RANGE_REPORTS         = 3..15
 RANGE_REPORT_COMMENTS = 0..3
 NUM_PURCHASE_ORDERS   = 25
 NUM_ORDER_LINES       = 5
+RANGE_FOLLOWERS       = 0..6
 
 
 puts "Seeding..."
@@ -176,4 +177,10 @@ create_grocery(User.find_by_username('a').id)
 
 NUM_GROCERIES.times do
   g = create_grocery(rand(1..NUM_USERS))    # owners: random users
+end
+
+User.find_each do |user|
+  Follower.create(
+    user_id: user.id,
+    grocery_id:  Grocery.order("RANDOM()").first.id)
 end

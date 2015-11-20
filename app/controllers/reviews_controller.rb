@@ -3,9 +3,11 @@ class ReviewsController < ApplicationController
   before_action :set_logged_user_by_cookie
   before_action :set_product_by_id
   before_action :set_review_by_id, only: [:show, :edit, :update, :destroy]
+  before_action :set_rating_titles, only: [:show, :index]
   #checks
   before_action :check_product_exists
   before_action :check_user_logged_in, only: [:new, :create, :edit, :update, :destroy]
+  before_action :check_review_exists, only: [:show, :edit, :update, :destroy]
   before_action :check_user_is_author, only: [:edit, :update, :destroy]
   before_action :check_first_review, only: [:new]
 
@@ -26,12 +28,12 @@ class ReviewsController < ApplicationController
   end
 
   def index
-    if(params.has_key?(:page))
-      @reviews = @product.reviews.paginate(page: params[:page], per_page: 10)
-    else
-      @reviews = @product.reviews.paginate(page: 1, per_page: 10)
-    end 
-    @rating_titles = ["Excelent","Pretty Good","Acceptable","Kinda bad","Very bad"]
+    page = params.has_key?(:page) ? params[:page] : 1
+    @reviews = @product.reviews.order(created_at: :desc).paginate(page: page, per_page: 10)
+  end
+
+  def show   
+    @comments = @review.comments.order(id: :desc).paginate(page: 1, per_page: 10)
   end
 
   private
@@ -44,9 +46,19 @@ class ReviewsController < ApplicationController
       @review = Review.find_by_id(params[:id])
     end
 
+    def set_rating_titles
+      @rating_titles = ["Excelent","Pretty Good","Acceptable","Kinda bad","Very bad"] 
+    end
+
     def check_product_exists
       unless @product
-        raise ActionController::RoutingError.new("Product with id #{params[:id]} not found")
+        raise ActionController::RoutingError.new("Product with id #{params[:product_id]} not found")
+      end
+    end
+
+    def check_review_exists
+      unless @review
+        raise ActionController::RoutingError.new("Review with id #{params[:id]} not found")
       end
     end
 

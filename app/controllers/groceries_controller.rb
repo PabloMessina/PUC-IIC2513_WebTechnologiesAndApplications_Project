@@ -3,6 +3,9 @@ class GroceriesController < ApplicationController
   before_action :set_grocery_by_id, only: [:show, :edit, :update, :destroy]
   before_action :set_privilege_on_grocery, only: [:show, :edit, :update, :destroy]
 
+  before_action :check_grocery_exists, only: [:search_products]
+
+
   def index
 
     filtered_params = search_params
@@ -14,7 +17,7 @@ class GroceriesController < ApplicationController
     per_page = 3
     @page_count = nil
 
-    if filtered_params.has_key?(:page) 
+    if filtered_params.has_key?(:page)
       page = filtered_params[:page].to_i if filtered_params[:page].is_i?
       page = 1 if page < 1
     end
@@ -24,7 +27,7 @@ class GroceriesController < ApplicationController
       @page_count = nil unless @page_count >= 0
     end
 
-    @has_search_string = !search_string.blank?    
+    @has_search_string = !search_string.blank?
     @has_categories = categories && categories.count > 0
     @has_tags = tags && tags.count > 0
 
@@ -49,7 +52,7 @@ class GroceriesController < ApplicationController
 
       if @has_tags
         query << "," unless first
-        query << 
+        query <<
         "gids#{i} as (
           SELECT p.grocery_id as id
           FROM products as p, products_tags as pt #{first ? "" : ", gids#{i-1}"}
@@ -63,7 +66,7 @@ class GroceriesController < ApplicationController
 
       if @has_categories
         query << "," unless first
-        query << 
+        query <<
         "gids#{i} as (SELECT p.grocery_id as id
           FROM products as p #{first ? "" : ", gids#{i-1}"}
           WHERE #{first ? "" : "gids#{i-1}.id = p.grocery_id AND "} p.category_id IN (#{categories.join(',')})
@@ -87,7 +90,7 @@ class GroceriesController < ApplicationController
           @page_count = (total_entries / per_page.to_f).ceil
         else
           @page_count = 1
-        end        
+        end
       else
         query << "SELECT g.*
         FROM groceries as g, #{with_tab}
@@ -145,6 +148,7 @@ class GroceriesController < ApplicationController
     @reports = @grocery.reports.paginate(page: 1, per_page: 5)
     @grocery_categories = @grocery.get_categories
     @grocery_tags = @grocery.get_tags
+    @privileged_users = @grocery.get_users_per_privilege
   end
 
   def edit
@@ -182,6 +186,32 @@ class GroceriesController < ApplicationController
       render 'edit'
     end
   end
+
+  def follow
+    head :ok
+
+    begin
+      if params[:to] == 'true'
+        Follower.create(
+          user_id: @logged_user.id,
+          grocery_id: params[:grocery_id])
+      else
+        # ??? Follower.destroy_all({ user_id: @logged_user.id, grocery_id: params[:grocery_id] })
+        @logged_user.following_groceries.destroy(params[:grocery_id])
+      end
+    rescue ActiveRecord::RecordNotFound
+    end
+  end
+
+  helper_method :current_user_following_grocery
+  def current_user_following_grocery
+    @logged_user.following_groceries.exists?(@grocery.id)
+  end
+
+  def search_products
+    # TODO
+  end
+
 
   private
 

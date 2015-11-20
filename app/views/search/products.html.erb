@@ -1,0 +1,7 @@
+<DIV>TODO: render nicely :)</DIV>
+
+<% @products.each do |product| %>
+  <div>
+    <%= link_to product.name, grocery_products_path(product.grocery, product) %>
+</div>
+<% end %>

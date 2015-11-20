@@ -96,10 +96,6 @@ class GroceryProductsController < ApplicationController
     head :ok, content_type: "text/html"
   end
 
-
-  private
-
-
   private
 
   	def set_product_by_id

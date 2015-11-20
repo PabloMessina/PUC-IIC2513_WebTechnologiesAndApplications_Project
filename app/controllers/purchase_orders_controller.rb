@@ -79,6 +79,7 @@ class PurchaseOrdersController < ApplicationController
 	  	order_lines_data = filtered_params[:order_lines_data]
 	  end
 
+
 	  @purchase_order = PurchaseOrder.new(grocery_id: @grocery.id, order_lines_data: order_lines_data)
 
 	  if(@purchase_order.save)
@@ -89,7 +90,7 @@ class PurchaseOrdersController < ApplicationController
 	  						amount: 				x[:amount],
 	  						product_price: 	x[:product_price])
 	  		product = Product.find_by_id(x[:product_id])
-	  		product.inventory.update_attribute(:stock, product.inventory.stock - x[:amount])
+	  		product.inventory.update_attributes(stock: product.inventory.stock - x[:amount])
 	  	end
 
 	  	redirect_to grocery_purchase_orders_path(@grocery)
@@ -101,9 +102,17 @@ class PurchaseOrdersController < ApplicationController
   			aux_array = []
   		end
 
+  		puts "------------------------------------"
+
+  		puts aux_array.inspect
+
   		@order_lines_data = []
   		@selected_ids = []
   		aux_array.each do |x|
+
+  			puts "----"
+  			puts x.inspect
+
   			prid = x["product_id"]
   			amount = x["amount"]
   			product = Product.find_by_id(prid)
@@ -113,6 +122,10 @@ class PurchaseOrdersController < ApplicationController
   			@selected_ids << prid
   			@order_lines_data << {product_name: product.name, product_id: prid, amount: amount, stock: product.inventory.stock }
   		end
+
+  		puts "-------------"
+  		puts @order_lines_data
+
 
 	  	render 'new'
 	  end

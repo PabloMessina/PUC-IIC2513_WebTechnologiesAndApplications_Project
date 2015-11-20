@@ -1,0 +1,57 @@
+<%= form_tag '/search_products', id: 'search_form', method: 'get' do %>
+
+  <table style="width:100%">
+  <tr>
+
+    <td style="width:100%"><%= text_field_tag :search, nil, style: "width:100%"%></td>
+    <td><%= submit_tag "Search products", :name => nil, id: "search_button", class: 'button-with-image' %></td>
+
+  </tr>
+  </table>
+
+  <button type="button" id="advanced_button_global">Show advanced fields</button>
+
+  <div id="radius_container">
+    <label for="grocery_search">
+      <input type="radio" name="search_mode" id="grocery_search" onclick="groceriesSearchSelected()"><span>Groceries</span>
+    </label>
+    <label for="products_search">
+      <input type="radio" name="search_mode" id="products_search" onclick="productsSearchSelected()" checked="checked"><span>Products</span>
+    </label>
+  </div>
+
+  <div id="advanced_fields" style="width:100%" class="hidden">
+
+    <!-- <div>
+      <label>Filter by category (OR)</label>
+      <%= select_tag :categories, options_from_collection_for_select(Category.all, "id", "name"), multiple: true, class: 'awesome-select' %>
+    </div>
+    <div>
+      <label>Filter by tags (AND)</label>
+      <%= select_tag :tags, options_from_collection_for_select(Tag.all,"id","name"), multiple: true, class: 'awesome-select' %>
+    </div> -->
+
+    <table style="width:100%">
+
+    <tr>
+      <td>
+        <label>Filter by category (OR)</label>
+      </td>
+      <td>
+        <label>Filter by tags (AND)</label>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <%= select_tag :categories, options_from_collection_for_select(Category.all, "id", "name"), multiple: true, class: 'awesome-select', style:"width:100%" %>
+      </td>
+      <td>
+        <%= select_tag :tags, options_from_collection_for_select(Tag.all,"id","name"), multiple: true,   class: 'awesome-select', style:"width:100%" %>
+      </td>
+    </tr>
+
+    </table>
+  </div>
+
+<% end %>

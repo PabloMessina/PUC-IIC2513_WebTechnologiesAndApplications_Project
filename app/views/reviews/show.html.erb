@@ -1,0 +1,169 @@
+<table>
+<tbody>
+<tr>
+
+	<td>
+		<h3>Review</h3>
+
+		<%= render partial: 'review_header', locals: {rating_titles: @rating_titles, rating: @review.get_associated_rating, review: @review} %>
+
+		<% if signed_in? %>
+
+			<div id="new_comment_div">
+				<div id="add_comment_div">
+					<button onclick="showNewCommentForm()">Add a comment</button>
+				</div>
+				<div id="post_comment_div" class="hide-element">
+					
+					<%= form_tag post_new_comment_path(@review), method: 'post', remote: true, id: 'new_comment_form', onsubmit:  'commentFormSubmit_clicked()' do %>
+						<fieldset>
+							<div id="errors"></div>
+							<%= text_area_tag :content, nil, required: true %>
+							<br>
+							<%= submit_tag "Post comment" %>
+							<button type="button" name="cancel" onclick="cancelNewComment()">Cancel</button>
+						</fieldset>
+					<% end %>		
+
+				</div>
+			</div>
+
+		<% end %>
+
+	</td>
+	<td>
+		<%= render partial: 'review_details', locals: {product: @product, grocery: @product.grocery, reviewer: @review.user } %>
+	</td>
+
+</tr>
+</tbody>
+</table>
+
+<hr>
+<h3 id="comment-section-title"> Comments (<%= @review.comments.count %>)</h3>
+
+<div id = "comments_div">
+	<%= render partial: 'review_comments/review_comments_pagination', locals: {comments: @comments} %>
+</div>
+
+<br>
+<button id = "more_comments_button" onclick="showMoreComments()"> Show more comments </button>
+
+<script type="text/javascript">
+
+
+	var comments_count = 0;
+
+  $(document).ready(function(){
+    $('#new_comment_form')
+    .on('ajax:success', handleSuccess)
+    .on('ajax:error', handleError);    
+    refreshCommentsCount();
+    addShowMoreLessToAllComments();
+  });
+
+  function refreshCommentsCount() {
+  	comments_count = $('#comments_div .review-comment-container').size();
+  	$('#comment-section-title').html("Comments ("+comments_count+")");
+  }
+
+  function commentFormSubmit_clicked() {
+  	$("#new_comment_form fieldset *").prop('readonly',true);
+  	$("#new_comment_form [name=commit]").attr('value','Posting comment, please wait ...');
+  	$("#new_comment_form [name=commit]").prop('disabled',true);
+  	$("#new_comment_form [name=cancel]").prop('disabled',true);
+  }
+
+  function handleSuccess() {
+  	$("#new_comment_form fieldset *").prop('readonly',false);
+  	$("#new_comment_form [name=commit]").attr('value','Post comment');
+  	$("#new_comment_form [name=commit]").prop('disabled',false);
+  	$("#new_comment_form [name=cancel]").prop('disabled',false);
+  	$("#new_comment_form textarea").val('');
+  }
+
+  function handleError(e, xhr, status, error) {
+    alert("e = "+e+"\nxhr = "+xhr+"\nstatus = "+status+"\nerror = "+error);
+    $("#new_comment_form fieldset *").prop('readonly',false);
+  	$("#new_comment_form [name=commit]").attr('value','Post comment');
+  	$("#new_comment_form [name=commit]").prop('disabled',false);
+  	$("#new_comment_form [name=cancel]").prop('disabled',false);
+  }
+
+	function hideNewCommentForm() {
+		$('#add_comment_div').removeClass('hide-element');
+		$('#post_comment_div').addClass('hide-element');
+	}
+
+	function showNewCommentForm() {
+		$('#add_comment_div').addClass('hide-element');
+		$('#post_comment_div').removeClass('hide-element');	
+	}
+
+	function cancelNewComment() {
+		hideNewCommentForm();
+		$("#new_comment_form textarea").val('');
+	}
+
+	function getLastCommentId() {
+		return $('.review-comment-container:last').attr('id');
+	}
+
+	function showMoreComments() {		
+		var last_id = getLastCommentId();
+		var data = (last_id == undefined) ? null : "last_id="+last_id;
+    $.get("<%= escape_javascript(review_comments_url(@review))%>",
+    	data,/*
+    	function(data) {
+    		alert(data);
+    		console.log(data);
+    	}*/null,
+    	'script');
+
+    $("#more_comments_button").html("Loading more comments ...");
+    $("#more_comments_button").prop('disabled',true);
+	}
+
+	var comments_data = {};
+	var MAX_LENGTH = 100;
+
+	function addShowMoreLessToAllComments() {
+		$('.review-comment-container').each(function() {
+			var id = $(this).attr('id');
+			var txt_container = $(this).find('.text-container');
+			var content = txt_container.html();
+
+			if(content.length > MAX_LENGTH) {
+				var less_content = content.substring(0,MAX_LENGTH) +"...<a href='javascript:void(0)' onclick='showMore("+id+")'>show more</a>";
+				var more_content = content+" <a href='javascript:void(0)' onclick='showLess("+id+")'>show less</a>";
+				comments_data[id] = {more: more_content, less: less_content};
+				txt_container.html(less_content);
+			}
+		});
+	}
+
+	function addShowMoreLessToComment(id) {
+
+		var container = $('#'+id+'.review-comment-container');
+		var txt_container = container.find('.text-container');
+		var content = txt_container.html();
+
+		if(content.length > MAX_LENGTH) {
+			var less_content = content.substring(0,MAX_LENGTH) +"...<a href='javascript:void(0)' onclick='showMore("+id+")'>show more</a>";
+			var more_content = content+" <a href='javascript:void(0)' onclick='showLess("+id+")'>show less</a>";
+			comments_data[id] = {more: more_content, less: less_content};
+			txt_container.html(less_content);
+		}
+
+	}
+
+	function showMore(id) {
+		$('#'+id+'.review-comment-container .text-container').html(comments_data[id].more);
+	}
+
+	function showLess(id) {
+		$('#'+id+'.review-comment-container .text-container').html(comments_data[id].less);
+	}
+
+
+</script>

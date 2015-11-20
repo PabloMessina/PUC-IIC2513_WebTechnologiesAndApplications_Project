@@ -1,0 +1,15 @@
+<%#=
+	parameters: comment
+%>
+<div class="review-comment-container clearfix" id="<%= comment.id %>">
+
+	<div class="date">
+		On <%=  comment.created_at.to_date %> at <%= comment.created_at.strftime("%H:%M:%S") %>
+	</div>
+
+	<%= link_to comment.user.username, user_path(comment.user_id) %> says:
+	<br/>
+	
+	<pre class="text-container"><%= comment.content %></pre>
+
+</div>

@@ -1,0 +1,11 @@
+<%#=
+	parameters: comments
+%>
+<% i = 0 %>
+<% comments.each do |comment| %>
+	<% if i > 0 %>
+		<hr> 
+	<% end %>
+	<% i+= 1%>
+	<%= render partial: 'report_comments/report_comment', locals: {comment: comment} %>
+<% end %>

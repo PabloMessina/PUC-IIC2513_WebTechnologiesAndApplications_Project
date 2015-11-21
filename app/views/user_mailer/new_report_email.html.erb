@@ -1,0 +1,13 @@
+Hello <%= @user.username %> ! <br>
+
+A new news has been posted by <%= @grocery.name %> <br>
+
+<strong>title:</strong> <%= @report.title %> <br>
+<strong>content:</strong> <%= @report.text %> <br>
+
+<% if @report.product %>
+
+Attached product: <%= link_to @report.product.name, grocery_product_url(@grocery,@report.product) %>
+	
+<% end %>
+

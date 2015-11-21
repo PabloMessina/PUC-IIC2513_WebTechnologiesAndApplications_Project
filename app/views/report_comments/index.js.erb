@@ -1,0 +1,25 @@
+<% if @comments.count > 0 %>
+
+	<%
+			html = @comments.map {|x| render(partial: 'report_comment', locals: {comment: x}) }.join('<hr>')
+	%>
+
+	if(comments_count > 0) {
+		$('#comments_div').append('<hr>');
+	}
+	$('#comments_div').append('<%= escape_javascript(html.html_safe) %>');
+
+	<% @comments.each do |c| %>
+		addShowMoreLessToComment(<%= c.id  %>);
+	<% end %>
+
+	refreshCommentsCount();
+
+	$("#more_comments_button").html('Show more comments');
+	$("#more_comments_button").prop('disabled',false);
+
+<% else %>
+
+	$("#more_comments_button").html('No more comments available');
+
+<% end %>

@@ -41,7 +41,7 @@ class ReviewsController < ApplicationController
   end
 
   def show   
-    @comments = @review.comments.order(id: :desc).paginate(page: 1, per_page: 10)
+    @comments = @review.comments.order(id: :desc).limit(10)
   end
 
   private

@@ -15,8 +15,7 @@
 				</div>
 				<div id="post_comment_div" class="hide-element">
 					
-					<%#= <%= form_tag post_new_comment_path(@review), method: 'post', remote: true, id: 'new_comment_form' , onsubmit:  'commentFormSubmit_clicked()' do %>
-					<%= form_tag post_new_comment_path(@review), method: 'post', remote: true, id: 'new_comment_form' do %>
+					<%= form_tag post_new_comment_path(@review), method: 'post', remote: true, id: 'new_comment_form' , onsubmit:  'commentFormSubmit_clicked()' do %>
 						<fieldset>
 							<div id="errors"></div>
 							<%= text_area_tag :content, nil, required: true %>
@@ -41,7 +40,7 @@
 </table>
 
 <hr>
-<h3 id="comment-section-title"> Comments (<%= @review.comments.count %>)</h3>
+<h3 id="comment-section-title"> Comments (<%= @comments.count %>)</h3>
 
 <div id = "comments_div">
 	<%= render partial: 'review_comments/review_comments_pagination', locals: {comments: @comments} %>
@@ -73,7 +72,6 @@
   	$("#new_comment_form [name=commit]").attr('value','Posting comment, please wait ...');
   	$("#new_comment_form [name=commit]").prop('disabled',true);
   	$("#new_comment_form [name=cancel]").prop('disabled',true);
-  	alert("from commentFormSubmit_clicked()!!!");
   }
 
   function handleSuccess() {

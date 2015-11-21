@@ -12,10 +12,11 @@ Rails.application.routes.draw do
   resources :groceries do
     resources :products, controller: 'grocery_products'    
     resources :purchase_orders
+    resources :reports
   end
 
   resources :reports, only:[] do
-    resources :comments
+    resources :comments, only:[:index,:create], controller: 'report_comments'
   end
 
   resources :sessions, only: [:new, :create, :destroy]

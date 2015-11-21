@@ -7,7 +7,7 @@ class Grocery < ActiveRecord::Base
 	has_many :followers
 	has_many :follower_users, through: :followers, source: :user
 
-	has_many :products, :dependent => :destroy
+	has_many :products, :dependent => :delete_all
 	has_many :reports
 
 	has_many :purchase_orders

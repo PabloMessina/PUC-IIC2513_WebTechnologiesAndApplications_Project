@@ -1,0 +1,41 @@
+<h3>News</h3>
+
+<%= render partial: 'report', locals: {report:  @report, grocery: @grocery, show_comments_link: false} %>
+
+
+<% if signed_in? %>
+
+	<div id="new_comment_div">
+		<div id="add_comment_div">
+			<button onclick="showNewCommentForm()">Add a comment</button>
+		</div>
+		<div id="post_comment_div" class="hide-element">
+			
+			<%= form_tag report_comments_path(@report), method: 'post', remote: true, id: 'new_comment_form' , onsubmit:  'commentFormSubmit_clicked()' do %>
+				<fieldset>
+					<div id="errors"></div>
+					<%= text_area_tag :content, nil, required: true %>
+					<br>
+					<%= submit_tag "Post comment" %>
+					<button type="button" name="cancel" onclick="cancelNewComment()">Cancel</button>
+				</fieldset>
+			<% end %>		
+
+		</div>
+	</div>
+
+<% end %>
+
+
+
+
+<hr>
+<h3 id="comment-section-title"> Comments (<%= @comments.count %>)</h3>
+
+<div id = "comments_div">
+	<%= render partial: 'report_comments/report_comments_pagination', locals: {comments: @comments } %>
+</div>
+
+<br>
+<button id = "more_comments_button" onclick="showMoreComments(this)" data-url = "<%= report_comments_url(@report) %>" > Show more comments </button>
+

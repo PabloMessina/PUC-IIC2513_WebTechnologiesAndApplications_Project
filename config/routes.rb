@@ -41,6 +41,8 @@ Rails.application.routes.draw do
   match '/search_groceries', to: 'search#groceries', via: 'get'
   match '/search_products',  to: 'search#products',  via: 'get'
 
+  match '/users/:id/feed', to: 'users#get_news_feed', via: 'get', as:'user_feed'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

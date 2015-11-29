@@ -61,6 +61,15 @@ class User < ActiveRecord::Base
 		self.first_name+' '+self.last_name
 	end
 
+	def get_next_reports_feed_chunk(id_ref, limit)		
+		reports = Report.joins('INNER JOIN groceries ON groceries.id = reports.grocery_id').joins('INNER JOIN followers ON followers.grocery_id = groceries.id').where('followers.user_id = ?', self.id)
+		reports = reports.where('reports.id < ?',id_ref) unless id_ref.nil?
+		reports = reports.order('reports.id desc')
+		reports = reports.limit(limit) unless limit.nil?
+		return reports
+	end
+
+
 	private
 
 	  def create_remember_token

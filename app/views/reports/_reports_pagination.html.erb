@@ -1,15 +1,6 @@
-<% if @reports.any? %>
+<%= will_paginate @reports, params: {controller: 'reports', action: 'index', grocery_id: @grocery.id} %>
+<% @reports.each do |report| %>
+	<%= render partial: 'report', locals: {report: report, grocery: @grocery, show_comments_link: true} %>
 	<br>
-	<h2>News</h2>
-	<% if @privilege == :administrator %>
-	  <%= link_to 'Create a news', new_grocery_report_path(@grocery) %>
-		<br>
-		<br>
-	<% end %>
-	<%= will_paginate @reports, params: {controller: 'reports', action: 'index', grocery_id: @grocery.id} %>
-	<% @reports.each do |report| %>
-		<%= render partial: 'report', locals: {report: report, grocery: @grocery, show_comments_link: true} %>
-		<br>
-	<% end %>
-	<%= will_paginate @reports, params: {action: 'index', grocery_id: @grocery.id} %>
 <% end %>
+<%= will_paginate @reports, params: {action: 'index', grocery_id: @grocery.id} %>

@@ -2,12 +2,9 @@
 <html>
 <head>
   <title> <%= if content_for?(:title) then yield(:title) + ' | ' end %>Alma</title>
-  <%= stylesheet_link_tag    'application', 'groceries', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'groceries', 'data-turbolinks-track' => true %>
-  <% unless params[:controller] == 'groceries' %>
-	  <%= stylesheet_link_tag params[:controller], media: 'all', 'data-turbolinks-track' => true %>
-	  <%= javascript_include_tag params[:controller], 'data-turbolinks-track' => true %>
-  <% end %>
+  <%= stylesheet_link_tag    'application', 'groceries', media: 'all' %>
+  <%= javascript_include_tag 'application', 'groceries' %>
+  <%=  yield(:head) if content_for?(:head) %>  
   <%= csrf_meta_tags %>
 </head>
 <body>

@@ -1,12 +1,13 @@
 class UsersController < ApplicationController
-	before_action :set_namespace
+  before_action :set_namespace
   before_action :set_logged_user_by_cookie
-  before_action :set_user_by_id, only:[:show]
+  before_action :set_user_by_id, only:[:show, :edit, :get_news_feed]
+  before_action :check_user_exists, only:[:show, :edit, :update,:destroy]
+  before_action :check_user_logged_in, only:[:edit,:update,:destroy]
+  before_action :check_user_matches_logged_user, only: [:edit,:update,:destroy]
 
   def show
-    unless @user
-      permission_denied ("ERROR: user with id #{params[:id]} could not be found")
-    end
+    @reports = @user.get_next_reports_feed_chunk(nil,10)
   end
 
 	def new
@@ -27,16 +28,9 @@ class UsersController < ApplicationController
 	end
 
 	def edit
-    unless user_id_matches_logged_user?
-      permission_denied ("You are not allowed to edit this user's profile")
-    end
 	end
 
   def update
-
-    unless user_id_matches_logged_user?
-      permission_denied ("You are not allowed to edit this user's profile")
-    end
 
 		filtered_params = edit_user_params
 
@@ -70,7 +64,28 @@ class UsersController < ApplicationController
 
   end
 
+  def get_news_feed
+    @per_page = 10
+    if(params.has_key?(:last_id))
+      @reports = @user.get_next_reports_feed_chunk(params[:last_id].to_i,@per_page)
+    else
+      @reports = @user.get_next_reports_feed_chunk(nil,@per_page)
+    end    
+  end
+
 	private
+
+    def check_user_exists
+      unless @user 
+        ActionController::RoutingError.new("User with id #{params[:id]} not found")
+      end
+    end
+
+    def check_user_matches_logged_user
+      unless user_id_matches_logged_user?
+        ActionController::RoutingError.new("You are not allowed to edit this user's profile")
+      end
+    end
 
 		def user_params
       params.require(:user).permit(:first_name, :last_name,:username,:password,:password_confirmation,:email, :address);

@@ -15,7 +15,7 @@
 		<%= simple_format(report.text) %>
 
 		<% if report.product %>
-			<a href="<%= grocery_product_path(@grocery, report.product) %>">
+			<a href="<%= grocery_product_path(grocery, report.product) %>">
 				<span class="link-spanner"></span>
 			</a>
 		<% end %>
@@ -32,8 +32,7 @@
 	<% end %>
 	
 	<% if show_comments_link %>
-		<% message = report.comments.any? ? "All Comments (#{report.comments.count})" : 'Write a comment' %>
-		<%= link_to message, grocery_report_path(grocery, report) %>
+		<%= link_to "All Comments (#{report.comments.count})", grocery_report_path(grocery, report) %>
 	<% end %>
 
 </div>

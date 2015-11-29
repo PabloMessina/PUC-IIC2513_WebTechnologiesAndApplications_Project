@@ -1,0 +1,35 @@
+<%#=  parameters: report, grocery, show_comments_link %>
+
+<div class="report-container" id = '<%= report.id %>'>
+	<div>
+	
+		<%= link_to grocery_report_path(grocery,report) do %>
+			<strong><%= report.title %></strong>
+		<% end %>
+		by <%= link_to grocery_path(grocery) do %>
+			<% if grocery.has_image? %>
+				<%= image_tag grocery.grocery_image.grocery_image_url, style: "width: 40; height: 40px;"  %>
+			<% else %>
+				<%= image_tag "Springfield_grocery_store.png", :style => "width: 40px; height: 40px;"  %>
+			<% end %>
+			<span><%= grocery.name %></span>
+		<% end %>
+		<br>
+
+		<% if report.product %>
+			<% if report.product.has_image? %>
+				<%= image_tag report.product.product_image.product_image_url, style: "width: 50; height: 50px;"  %>
+			<% else %>
+				<%= image_tag "products-icon-basket.gif", :style => "width: 50px; height: 50px;"  %>
+			<% end %>
+		<% end %>
+
+		<pre class="text-container"><%= report.text %></pre>
+	
+	</div>
+	
+	<% if show_comments_link %>
+		<%= link_to "All Comments (#{report.comments.count})", grocery_report_path(grocery, report) %>
+	<% end %>
+
+</div>

@@ -1,0 +1,6 @@
+<%#= parameters: reports %>
+
+<% reports.each do |report| %>
+	<%= render partial: 'reports/report_for_feed', locals: {report: report, grocery: report.grocery, show_comments_link: true} %>
+	<br>
+<% end %>

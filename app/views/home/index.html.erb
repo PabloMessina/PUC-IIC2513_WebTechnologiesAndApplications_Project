@@ -1,3 +1,8 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag 'home', media: :all %>
+  <%= javascript_include_tag 'home' %>
+<% end %>
+
 <% unless @following_groceries.empty? %>
 	<h4>Following groceries</h4>
 	<div>

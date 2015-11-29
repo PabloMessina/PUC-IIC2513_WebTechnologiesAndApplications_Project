@@ -1,4 +1,4 @@
-var ready = function() {
+var grocery_ready = function() {
   $(".awesome-select").select2({
     width: "100%",
     placeholder: "No filter"
@@ -35,8 +35,8 @@ function follow(set_to) {
 }
 
 
-$(document).ready(ready);
-$(document).on('page:load', ready);
+$(document).ready(grocery_ready);
+$(document).on('page:load', grocery_ready);
 
 function refreshProductsPagination() {
   $('#grocery_products_pagination .pagination a').click(function () {

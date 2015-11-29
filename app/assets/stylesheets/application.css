@@ -299,10 +299,6 @@ header a:active {
 	position: relative;
 }
 
-.select2-container {
-	width: 100%;
-}
-
 #advanced_fields {
 	position: absolute;
 	top: 50px;

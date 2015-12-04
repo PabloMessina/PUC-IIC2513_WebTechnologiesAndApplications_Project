@@ -21,6 +21,12 @@ class SearchController < ApplicationController
       .where("pt.tag_id IN (?)", tags.map{ |x| x.to_i })
       .group("products.id").having("SUM(DISTINCT pt.tag_id) = ?", tags.count).select("products.*")
     end
+
+	if params[:page]
+	  @products = @products.paginate(page: params[:page], per_page: 10)
+	else
+	  @products = @products.paginate(page: 1, per_page: 10)
+	end
   end
 
 

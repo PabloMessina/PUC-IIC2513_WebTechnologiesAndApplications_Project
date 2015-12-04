@@ -1,9 +1,9 @@
 <% content_for :head do %>
-  <%= javascript_include_tag 'users_show' %>
+  <%= javascript_include_tag 'users_show', 'users' %>
 <% end %>
 
 <% if user_id_matches_logged_user? %>
-  <%= link_to 'Edit Profile', edit_user_path(@user) %> 
+  <%= link_to 'Edit Profile', edit_user_path(@user) %>
   <br>
   <%= link_to 'Create a new grocery', new_grocery_path %>
   <br>
@@ -46,7 +46,7 @@
     <tr>
       <th>Name</th>
       <th>Privilege</th>
-    </tr>   
+    </tr>
     <% @user.privileges.each do |privilege| %>
       <% grocery = privilege.grocery %>
       <tr>
@@ -64,4 +64,3 @@
 </div>
 
 <button id='more_feed_button' data-url="<%= user_feed_url(@user) %>">Load more news</button>
-

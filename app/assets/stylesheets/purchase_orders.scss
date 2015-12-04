@@ -1,3 +1,96 @@
 // Place all the styles related to the PurchaseOrders controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#sales_container .radio-container, #custom_period_container {
+	display: inline-block;
+}
+
+#custom_period_container input[type='text'] {
+	width: 70px;
+}
+
+#chart_wrapper {
+	background-color: white;
+	border: 2px solid red;	
+	display: inline-block;
+}
+
+#chartdiv {
+	width: 500px;
+	height: 400px;
+}
+
+#purchase_orders_container a {
+  text-decoration: none;
+  margin: 3px 4px;
+	color: blue;
+}
+
+#purchase_orders_container a:hover {
+	color: darkblue;
+	text-decoration: underline;
+}
+
+#purchase_orders_container .selected {
+  color: green;
+}
+
+#sales_outer_container {
+	position: relative;
+}
+
+#loading_div {
+	position: absolute;
+	display: none;
+	z-index: 1000;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: rgba(200,200,200,.8);
+}
+
+#loading_div .content {
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	margin: -100px -100px;	
+	top: 50%;
+	left: 50%;
+	text-align: center;
+	vertical-align: top;
+}
+
+#loading_div .content img {
+	width: 40px;
+	height: 40px;
+}
+
+#menu_nav a {
+	text-decoration: none;	
+	color: darkgreen;
+}
+
+#menu_nav a.clickable:hover {
+	text-decoration: underline;
+	color: green;
+}
+
+#menu_nav a.selected {
+	color: orange;
+}
+
+#menu_nav a, #menu_nav span {
+	margin: 3px;
+	padding: 2px;
+}
+
+#menu_nav span {
+	color: darkgreen;
+}
+
+#details_container img {
+	width: 40px;
+	height: 40px;
+}

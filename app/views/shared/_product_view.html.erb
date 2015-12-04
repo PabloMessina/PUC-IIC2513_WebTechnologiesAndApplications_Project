@@ -1,6 +1,6 @@
 <!--
   parameters: product, grocery
- --> 
+ -->
 
 <div class="product-container clearfix">
 
@@ -55,4 +55,9 @@
     </p>
   </div>
 
+</div>
+
+<div>
+    <div>Recipe: <%= link_to @recipe_title, @recipe_url %></div>
+    <%= image_tag(@recipe_image, alt: 'Recipe picture') %>
 </div>

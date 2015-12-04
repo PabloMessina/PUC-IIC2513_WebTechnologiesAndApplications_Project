@@ -18,40 +18,68 @@ class PurchaseOrdersController < ApplicationController
 	before_action :set_grocery_categories
   before_action :set_grocery_tags
 
-	def index
+	def index		  
 
-	  page = 1
-	  per_page = 20
-	  @page_count = nil
+		from_date = nil
+		to_date = nil
+		period = nil
 
-	  if(params.has_key?(:page))
-  		page = params[:page].to_i
-  		page = 1 unless page > 0
+  	if(params.has_key?(:period))
+  		period = params[:period]
   	end
 
-  	if(params.has_key?(:page_count))
-  		@page_count = params[:page_count].to_i
-  		@page_count = nil unless @page_count > 0
-  	end
+  	puts "period = #{period}"
 
-  	if(@page_count.nil?)
-	  	@purchases_data = @grocery.purchases_data_with_count(page: page, per_page: per_page)
-	  	if(@purchases_data.count > 0)
-	  		@total_entries = @purchases_data[0][:total_count];
-	  		@page_count = (@total_entries / per_page.to_f).ceil
-	  	else
-	  		@page_count = 1
-	  		@total_entries = 0
+  	if period == 'last_year'
+  		from_date = (Date.today - 365).to_s
+  		puts "period = last_year"
+  	elsif period == 'last_month'
+  		from_date = (Date.today - 30).to_s
+  		puts "period = last_month"
+  	elsif period == 'last_week'
+  		from_date = (Date.today - 7).to_s
+  		puts "period = last_week"
+  	elsif period == 'custom_period'  		
+  		puts "period = custom_period"
+
+  		if(params.has_key?(:from_date))
+		  	begin
+		  		from_date = Date.strptime(params[:from_date], '%Y-%m-%d').to_s
+		  	rescue ArgumentError
+		  		from_date = nil
+		  	end
 	  	end
-	  else
-	  	@purchases_data = @grocery.purchases_data_without_count(page: page, per_page: per_page)
-	  	@total_entries = @page_count * per_page
+
+	  	if(params.has_key?(:to_date))
+		  	begin
+		  		to_date = Date.strptime(params[:to_date], '%Y-%m-%d').to_s
+		  	rescue ArgumentError
+		  		to_date = nil
+		  	end
+	  	end
+
 	  end
 
-	  @pagination_data = PaginationData.new(@page_count, page)
+	  puts "............."
+	  puts "from_date = #{from_date}"
+	  puts "to_date = #{to_date}"
+	  puts "............."
+
+	  @purchases_data = @grocery.purchases_data(from_date,to_date)
+
+		respond_to do |format|
+			format.html
+			format.json { 
+			  render json: @purchases_data
+			} 
+   	end
+
 	end
 
 	def show
+		respond_to do |format|
+			format.js
+		end
 	end
 
 	def new

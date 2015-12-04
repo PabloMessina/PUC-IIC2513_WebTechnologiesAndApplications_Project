@@ -1,0 +1,41 @@
+<%# parameters: purchase_order %>
+
+<p> 
+  <strong>Total Order Price:</strong>
+  $ <%= PurchaseOrder.total_price(purchase_order.id)%>
+</p>
+
+<h3> Order Lines (<%= purchase_order.order_lines.count %>)</h3>
+
+<table border>
+  <tr>
+    <th>Product</th>
+    <th>Amount</th>
+    <th>Price (at the moment)</th>
+    <th>Total Price</th>
+  </tr>
+
+  <% purchase_order.order_lines.each do |order_line| %>
+   <tr>
+      <% product = order_line.product %>
+      <% if product.nil? %>
+        <td> (deleted) </td>
+      <% else %>
+        <td>
+          <%= link_to grocery_product_path(product.grocery_id, product) do %>
+            <% if product.has_image? %>
+              <%= image_tag product.product_image.product_image_url, class: "left-floatme"%>
+            <% else %>
+              <%= image_tag "products-icon-basket.gif", class: "left-floatme" %>
+            <% end %>
+            <%= product.name %>
+          <% end %>
+        </td>
+      <% end %>
+      <td><%= order_line.amount %></td>   
+      <td> $ <%= order_line.product_price %></td>
+      <td> $ <%= order_line.amount * order_line.product_price %></td>
+    </tr>
+  <% end %>
+
+</table>

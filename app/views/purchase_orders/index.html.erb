@@ -1,38 +1,88 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag 'purchase_orders', media: :all %>
+  <%= javascript_include_tag 'purchase_orders' %>
+<% end %>
+
 <%= link_to 'Create a new purchase order', new_grocery_purchase_order_path(@grocery) %>
 <br>
 
-<strong>Purchase Orders</strong>
+<fieldset id="period_selection">
+    <legend>Sales period</legend>
 
-<div id = "pagination_div">
-<%= render 'shared/purchase_orders_pagination' %>
+    <div class="radio-container">
+      <input type="radio" name="period" value="all" id="all" checked/>
+      <label for="all">All time</label>
+    </div>
+
+    <div class="radio-container">
+      <input type="radio" name="period" value="last_year" id="last_year"/>
+      <label for="last_year">Last year</label>
+    </div>
+
+    <div class="radio-container">
+      <input type="radio" name="period" value="last_month" id="last_month"/>
+      <label for="last_month">Last month</label>
+    </div>
+
+    <div class="radio-container">
+      <input type="radio" name="period" value="last_week" id="last_week"/>
+      <label for="last_week">Last week</label>
+    </div>
+
+    <div class="radio-container">
+      <input type="radio" name="period" value="custom_period" id="custom_period"/>
+      <label for="custom_period">Custom period</label>
+      <div id="custom_period_container">
+        <input type="text" id="from_date">
+        <input type="text" id="to_date">
+      </div>
+    </div>
+    <br>
+    <button id="refresh_sales_button">Refresh</button>
+  </fieldset>
+
+<nav id="menu_nav">
+  <a id = "sales_link" href='javascript:void(0)'>Sales</a>
+  <span class="separator hidden">&gt; </span>
+  <a id = "details_link" class="hidden" href='javascript:void(0)'>Details</a>
+</nav>
+
+<div id='sales_outer_container'>
+
+  <div id="sales_container">  
+    <div id="sales_summary">
+      <h2>Summary</h2>
+      <div id="chart_wrapper">
+        <div id="chartdiv"></div>
+      </div>
+    </div>
+    <div id="purchase_orders_container">
+      <h2>Purchase Orders</h2>
+      <div id="pagination"></div>
+      <div id="rows"></div>
+    </div>
+  </div>
+
+  <div id="details_container">  
+  </div>
+
+  <div id="no_found">    
+  </div> 
+
+  <div id="loading_div">
+    <div class="content">
+      <%= image_tag "pIkfp.gif", class: 'feedback-image' %>
+      <br>
+      <span class='feedback-message'></span>
+    </div>
+  </div>
+
 </div>
 
-<script type="text/javascript">
+<script>
 
-  var page_count = <%= @page_count %>;
-  var page_count_str = "&page_count="+page_count;
-
-  function refreshPagination() {
-    //set click function
-    $('.pagination a').click(function () {
-        $('.pagination').html('Loading page...');
-        $.get(this.href, null, null, 'script');
-        return false;
-    });
-    //append page_count
-    $('.pagination a').each(function() {
-      var _href = $(this).attr("href");
-      $(this).attr("href", _href + page_count_str);
-    });
-
-  }
-
-  $(document).ajaxStop(function() {
-    refreshPagination();
-  });
-
-  $(document).ready(function() {
-    refreshPagination();
-  });
+  var purchases_raw_data = <%= (@purchases_data.to_json).html_safe %>;
+  purchases_raw_data.sortBy(function(o){return new Date(o.date);});
+  var grocery_id = <%= @grocery.id %>;
 
 </script>

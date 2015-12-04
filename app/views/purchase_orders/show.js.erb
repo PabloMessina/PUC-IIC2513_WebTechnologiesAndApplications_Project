@@ -1,0 +1,5 @@
+(function() {
+	var html = "<%= escape_javascript(render(partial: 'purchase_order_details', locals:{purchase_order: @purchase_order})) %>";
+	purchase_orders_details.set(<%= @purchase_order.id %>, html);
+	$("#details_container").html(html);
+})();

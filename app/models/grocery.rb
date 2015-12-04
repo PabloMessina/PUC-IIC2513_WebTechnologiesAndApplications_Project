@@ -21,43 +21,19 @@ class Grocery < ActiveRecord::Base
 		return self.grocery_image && !self.grocery_image.grocery_image.blank?
 	end
 
-	def purchases_data_with_count (args)
-		Grocery.find_by_sql("
-			SELECT 	po.id as order_id,
-							po.created_at as purchase_date,
-							count(ol.*) as products_count,
-							sum(ol.amount *  ol.product_price) as total_price,
-							count(*) over() as total_count
+	def purchases_data (from_date, to_date)
+		query = self.purchase_orders.joins(:order_lines).select('purchase_orders.id, purchase_orders.created_at as date, count(order_lines.*) as order_lines_count, sum(order_lines.amount * order_lines.product_price) as total_price').group('purchase_orders.id').order('purchase_orders.id desc')
 
-			FROM 	purchase_orders as po,
-						order_lines as ol
+		unless from_date.nil?
+			query = query.where('purchase_orders.created_at >= ?',from_date)
+		end
 
-			WHERE	po.grocery_id = #{self.id} AND
-						po.id = ol.purchase_order_id
+		unless to_date.nil?
+			to_date = (Date.parse(to_date) + 1).to_s
+			query = query.where('purchase_orders.created_at < ?',to_date)
+		end
 
-			GROUP BY po.id
-			ORDER BY purchase_date DESC
-			LIMIT #{args[:per_page]}
-			OFFSET #{args[:per_page] * (args[:page]-1)}")
-	end
-
-	def purchases_data_without_count (args)
-		 Grocery.find_by_sql("
-			SELECT 	po.id as order_id,
-							po.created_at as purchase_date,
-							count(ol.*) as products_count,
-							sum(ol.amount *  ol.product_price) as total_price
-
-			FROM 	purchase_orders as po,
-						order_lines as ol
-
-			WHERE	po.grocery_id = #{self.id} AND
-						po.id = ol.purchase_order_id
-
-			GROUP BY po.id
-			ORDER BY purchase_date DESC
-			LIMIT #{args[:per_page]}
-			OFFSET #{args[:per_page] * (args[:page]-1)}")
+		return query
 	end
 
 	def get_categories

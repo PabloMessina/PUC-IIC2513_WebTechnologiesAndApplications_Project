@@ -316,3 +316,7 @@ header a:active {
 #advanced_fields {
   padding: 5px;
 }
+
+.w100 {
+    width: 100%;
+}

@@ -65,12 +65,17 @@ class GroceryProductsController < ApplicationController
   end
 
   def show
-	  query = @product.name.split.last
-	  j = ActiveSupport::JSON.decode(HTTParty.get("https://api.edamam.com/search?q=#{query}&to=1&app_id=c8dd31c8&app_key=c8171c7200ca6f626ceb1e8cacea6010").response.body)
-	  recipe = j["hits"][0]["recipe"]
-	  @recipe_title = recipe["label"]
-	  @recipe_url = recipe["url"]
-	  @recipe_image = recipe["image"]
+	  # if @product.is_food
+	  begin
+		  query = @product.name.split.last
+		  response = HTTParty.get("https://api.edamam.com/search?q=#{query}&to=1&app_id=c8dd31c8&app_key=c8171c7200ca6f626ceb1e8cacea6010")
+		  j = ActiveSupport::JSON.decode(response.body)
+		  recipe = j["hits"][0]["recipe"]
+		  @recipe_title = recipe["label"]
+		  @recipe_url = recipe["url"]
+		  @recipe_image = recipe["image"]
+	rescue
+	end
   end
 
   def edit

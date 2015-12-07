@@ -11,9 +11,9 @@ Rails.application.config.assets.version = '1.0'
 # Rails.application.config.assets.precompile += %w( search.js )
 
 #css
-Rails.application.config.assets.precompile += 
+Rails.application.config.assets.precompile +=
 %w(home users groceries purchase_orders reviews reports search).map {|x| "#{x}.css"}
 
 #javascript
-Rails.application.config.assets.precompile += 
+Rails.application.config.assets.precompile +=
 %w(home users groceries purchase_orders reviews reports search users_show).map {|x| "#{x}.js"}

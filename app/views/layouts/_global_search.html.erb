@@ -1,9 +1,9 @@
 <%= form_tag '/search_products', id: 'search_form', method: 'get' do %>
 
-  <table style="width:100%">
+  <table class="w100">
   <tr>
 
-    <td style="width:100%"><%= text_field_tag :search, nil, style: "width:100%"%></td>
+    <td class="w100"><%= text_field_tag :search, nil, class: 'w100' %></td>
     <td><%= submit_tag "Search products", :name => nil, id: "search_button", class: 'button-with-image' %></td>
 
   </tr>
@@ -20,7 +20,7 @@
     </label>
   </div>
 
-  <div id="advanced_fields" style="width:100%" class="hidden">
+  <div id="advanced_fields" class="w100 hidden">
 
     <!-- <div>
       <label>Filter by category (OR)</label>
@@ -31,7 +31,7 @@
       <%= select_tag :tags, options_from_collection_for_select(Tag.all,"id","name"), multiple: true, class: 'awesome-select' %>
     </div> -->
 
-    <table style="width:100%">
+    <table class="w100">
 
     <tr>
       <td>
@@ -44,10 +44,10 @@
 
     <tr>
       <td>
-        <%= select_tag :categories, options_from_collection_for_select(Category.all, "id", "name"), multiple: true, class: 'awesome-select', style:"width:100%" %>
+        <%= select_tag :categories, options_from_collection_for_select(Category.all, "id", "name"), multiple: true, class: 'awesome-select w100' %>
       </td>
       <td>
-        <%= select_tag :tags, options_from_collection_for_select(Tag.all,"id","name"), multiple: true,   class: 'awesome-select', style:"width:100%" %>
+        <%= select_tag :tags, options_from_collection_for_select(Tag.all,"id","name"), multiple: true,   class: 'awesome-select w100' %>
       </td>
     </tr>
 

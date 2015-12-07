@@ -1,8 +1,8 @@
 <strong>Products</strong>
-<%= will_paginate products, params: {controller: 'products', action: 'index'} %>  
+<%= will_paginate products, params: {controller: 'products', action: 'index'} %>
 <div class = "products_container">
-	<% products.each.do |product| %>
+	<% products.each do |product| %>
 		<%= render partial: 'products/product_outside_grocery', locals: {product: product} %>
 	<% end %>
 </div>
-<%= will_paginate products, params: {controller: 'products', action: 'index'} %>  
+<%= will_paginate products, params: {controller: 'products', action: 'index'} %>

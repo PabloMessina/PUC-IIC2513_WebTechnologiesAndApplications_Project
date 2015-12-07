@@ -40,6 +40,7 @@ gem 'faker'
 
 gem 'json'
 
+gem 'httparty'
 gem "js-routes"
 
 group :development, :test do

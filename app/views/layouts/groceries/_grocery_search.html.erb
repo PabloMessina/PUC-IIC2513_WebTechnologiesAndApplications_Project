@@ -1,18 +1,18 @@
-<%= form_tag search_products_path(@grocery), method: 'get', id: "products_search", style: "width:100%" do %>
+<%= form_tag search_products_path(@grocery), method: 'get', id: "products_search", class: 'w100' do %>
 
-  <table style="width:100%">
+  <table class="w100">
   <tr>
 
-    <td style="width:100%"><%= text_field_tag :search, nil, style: "width:100%"%></td>
+    <td class="w100"><%= text_field_tag :search, nil, class: 'w100' %></td>
     <td><%= submit_tag "Search in grocery", :name => nil, class: 'button-with-image' %></td>
 
   </tr>
   </table>
 
   <button type="button" id='advanced_button'>Show advanced fields</button>
-  <div id="advanced_fields" style="width:100%" class="hide-element">
+  <div id="advanced_fields" class="w100 hide-element">
 
-    <table style="width:100%">
+    <table class="w100">
 
     <tr>
       <td>
@@ -25,10 +25,10 @@
 
     <tr>
       <td>
-        <%= select_tag :categories, options_from_collection_for_select(@grocery.get_categories, "id", "name"), multiple: true, class: 'awesome-select', style:"width:100%" %>
+        <%= select_tag :categories, options_from_collection_for_select(@grocery.get_categories, "id", "name"), multiple: true, class: 'awesome-select w100' %>
       </td>
       <td>
-        <%= select_tag :tags, options_from_collection_for_select(@grocery.get_tags,"id","name"), multiple: true,   class: 'awesome-select', style:"width:100%" %>
+        <%= select_tag :tags, options_from_collection_for_select(@grocery.get_tags,"id","name"), multiple: true,   class: 'awesome-select w100' %>
       </td>
     </tr>
 

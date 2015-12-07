@@ -12,7 +12,7 @@ function togglePasswordDiv(checkbox) {
 }
 
 var users_ready = function() {
-	
+
   $("#advanced_button").on('click', function() {
     $("#advanced_fields#categories").val('').trigger('change');
     $("#advanced_fields#tags").val('').trigger('change');
@@ -42,17 +42,3 @@ function follow(set_to) {
       $("div"+follow_id(!set_to)).removeClass("hidden");
     });
 }
-
-
-$(document).ready(grocery_ready);
-$(document).on('page:load', grocery_ready);
-
-function refreshProductsPagination() {
-  $('#grocery_products_pagination .pagination a').click(function () {
-      $('#grocery_products_pagination .pagination').html('Loading products...');
-      $.get(this.href, null, null, 'script');
-      return false;
-  });
-}
-
-

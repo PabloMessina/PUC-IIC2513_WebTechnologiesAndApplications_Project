@@ -1,5 +1,5 @@
 class GroceryProductsController < ApplicationController
-	include GroceryHelper  
+	include GroceryHelper
   layout 'groceries'
 
 	before_action :set_logged_user_by_cookie
@@ -25,7 +25,7 @@ class GroceryProductsController < ApplicationController
     search_string = filtered_params[:search]
 
 
-    @products = @grocery.products.where("products.visible = true")   
+    @products = @grocery.products.where("products.visible = true")
 
     if search_string && !search_string.blank?
       @products = @products.where("products.name ILIKE ?","%#{search_string}%")
@@ -65,6 +65,17 @@ class GroceryProductsController < ApplicationController
   end
 
   def show
+	  # if @product.is_food
+	  begin
+		  query = @product.name.split.last
+		  response = HTTParty.get("https://api.edamam.com/search?q=#{query}&to=1&app_id=c8dd31c8&app_key=c8171c7200ca6f626ceb1e8cacea6010")
+		  j = ActiveSupport::JSON.decode(response.body)
+		  recipe = j["hits"][0]["recipe"]
+		  @recipe_title = recipe["label"]
+		  @recipe_url = recipe["url"]
+		  @recipe_image = recipe["image"]
+	rescue
+	end
   end
 
   def edit
@@ -73,7 +84,7 @@ class GroceryProductsController < ApplicationController
 
   def update
     filtered_params = product_params
-    if @product.update_attributes(filtered_params)     
+    if @product.update_attributes(filtered_params)
       @product.update_category
       @product.update_tags
       flash[:success] = 'Product updated successfully!'

@@ -12,14 +12,12 @@ Pueden revisar el feedback y evaluación recibida después de cada entrega en la
 | 12638188     | Tomás Andrighetti   | taandrighetti@uc.cl |
 | 11637072   | Pablo Messina       | pamessina@uc.cl        |
 
-# Entrega 4
+# Entrega 6
 
-- Homepage con búsqueda por productos y almacenes
-- Mejor navegación
-- Más CSS, aunque faltan algunas partes
-- Noticias con comentarios
-- Órdenes de compra
-- Reviews
-
+- La API usada es [Edamam's Recipe Search API](https://developer.edamam.com/recipe-api), muestra una receta de cocina del producto mostrado.
+- No ofrecemos API REST.
+- Dashboard: se puede escoger un período de tiempo y mostrar las órdenes de compras en dicho período, junto con un resumen.
+- Dashboard: se pueden ver los detalles de cada orden de compras al presionarlas.
+- Todo el Dashboard ocurre en la misma página, mediante JavaScript y AJAX.
 
 #### Aplicación en Heroku: [Alma2](http://alma2.herokuapp.com)

@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'users' %>
+<% end %>
+
 <h1>Editing User</h1>
 
 <%= form_for(@logged_user, url: user_path(@logged_user)) do |f| %>
@@ -38,7 +42,7 @@
 	<div id='password_div' class = "field highlight-div hide-element">
 
 		<%= f.label :current_password, "Current password" %>
-		<%= f.password_field :current_password %>	
+		<%= f.password_field :current_password %>
 		<br>
 
 		<%= f.label :password, "New password" %>

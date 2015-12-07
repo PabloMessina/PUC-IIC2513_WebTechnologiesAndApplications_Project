@@ -1,7 +1,3 @@
-<DIV>TODO: render nicely :)</DIV>
+<%= render partial: 'products/products_pagination_outside_grocery', locals: {products: @products} %>
 
-<% @products.each do |product| %>
-  <div>
-    <%= link_to product.name, grocery_products_path(product.grocery, product) %>
-</div>
-<% end %>
+<!-- TODO: css -->

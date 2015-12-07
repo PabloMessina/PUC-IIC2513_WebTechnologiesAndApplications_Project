@@ -22,7 +22,7 @@
          <label>★</label><label>★</label><label>★</label><label>★</label><label>★</label>
       </span>
     </span>
-    <%#= (<%= product.stars.count %> <%#= ) 
+    <%#= (<%= product.stars.count %> <%#= )
     <br/>
     %>
     <%= product.star_count.get_rating_average.round(1) %> out of  5 stars
@@ -35,11 +35,11 @@
     IN STOCK: <%= product.inventory.stock %> <br/>
     <p>
       <strong>Category:</strong>
-      <%= @product.category ? @product.category.name : "none" %>
+      <%= product.category ? product.category.name : "none" %>
     </p>
     <p>
       <strong>Tags:</strong>
-      <%= @product.tags.any? ? @product.tags.map{|x| x.name}.join(', ') : 'none'%>
+      <%= product.tags.any? ? product.tags.map{|x| x.name}.join(', ') : 'none'%>
     </p>
   </div>
 

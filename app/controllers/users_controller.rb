@@ -7,7 +7,8 @@ class UsersController < ApplicationController
   before_action :check_user_matches_logged_user, only: [:edit,:update,:destroy]
 
   def show
-    @reports = @user.get_next_reports_feed_chunk(nil,10)
+    @per_page = 10
+    @reports = @user.get_next_reports_feed_chunk(nil, @per_page)
   end
 
 	def new
@@ -70,13 +71,13 @@ class UsersController < ApplicationController
       @reports = @user.get_next_reports_feed_chunk(params[:last_id].to_i,@per_page)
     else
       @reports = @user.get_next_reports_feed_chunk(nil,@per_page)
-    end    
+    end
   end
 
 	private
 
     def check_user_exists
-      unless @user 
+      unless @user
         ActionController::RoutingError.new("User with id #{params[:id]} not found")
       end
     end

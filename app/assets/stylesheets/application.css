@@ -159,6 +159,24 @@ div.field {
   float: left;
 }
 
+.grocery-product-container {
+  max-width: 240px;
+  text-align: center;
+  word-wrap: break-word;
+  padding: 4px;
+  background-color: #FDFDFE;
+  border: 1px solid #949494;
+  border-radius: 2px;
+  float: left;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.grocery-product-container img {
+  width: 230px;
+  height: 230px;
+}
+
 .rating-bars-container {
   font-size: 11px;
 }

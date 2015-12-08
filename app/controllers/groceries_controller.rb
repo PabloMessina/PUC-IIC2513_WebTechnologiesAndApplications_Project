@@ -192,11 +192,6 @@ class GroceriesController < ApplicationController
     end
   end
 
-  helper_method :current_user_following_grocery
-  def current_user_following_grocery
-    @logged_user.following_groceries.exists?(@grocery.id)
-  end
-
   def search_products
 
     filtered_params = grocery_search_params

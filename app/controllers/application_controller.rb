@@ -6,14 +6,14 @@ class ApplicationController < ActionController::Base
 
   def permission_denied (message)
   	render status: 401, text: message
-  end 
+  end
 
   def title(text)
     content_for :title, text
   end
 
-  helper_method :is_administrator? 
-  def is_administrator? 
+  helper_method :is_administrator?
+  def is_administrator?
     @privilege == :administrator
   end
 

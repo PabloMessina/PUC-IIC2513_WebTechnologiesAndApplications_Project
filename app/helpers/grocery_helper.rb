@@ -36,4 +36,8 @@ module GroceryHelper
     end
   end
 
+  def current_user_following_grocery
+    @logged_user.following_groceries.exists?(@grocery.id)
+  end
+
 end

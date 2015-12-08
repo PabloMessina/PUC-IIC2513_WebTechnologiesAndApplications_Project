@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'reports' %>
+<% end %>
+
 <h3>News</h3>
 
 <%= render partial: 'report', locals: {report:  @report, grocery: @grocery, show_comments_link: false} %>
@@ -10,7 +14,7 @@
 			<button onclick="showNewCommentForm()">Add a comment</button>
 		</div>
 		<div id="post_comment_div" class="hide-element">
-			
+
 			<%= form_tag report_comments_path(@report), method: 'post', remote: true, id: 'new_comment_form' , onsubmit:  'commentFormSubmit_clicked()' do %>
 				<fieldset>
 					<div id="errors"></div>
@@ -19,7 +23,7 @@
 					<%= submit_tag "Post comment" %>
 					<button type="button" name="cancel" onclick="cancelNewComment()">Cancel</button>
 				</fieldset>
-			<% end %>		
+			<% end %>
 
 		</div>
 	</div>
@@ -37,5 +41,9 @@
 </div>
 
 <br>
-<button id = "more_comments_button" onclick="showMoreComments(this)" data-url = "<%= report_comments_url(@report) %>" > Show more comments </button>
 
+<% if @comments.count == @per_page %>
+	<button id = "more_comments_button" onclick="showMoreComments(this)" data-url = "<%= report_comments_url(@report) %>" > Show more comments </button>
+<% else %>
+	<button id = "more_comments_button" disabled>No more comments available</button>
+<% end %>

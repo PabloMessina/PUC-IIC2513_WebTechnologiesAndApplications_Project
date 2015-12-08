@@ -1,6 +1,6 @@
 <%#=
   parameters: grocery
-%> 
+%>
 <div id="grocery_sidebar">
 
 	<strong>You are in Grocery:</strong> <br>
@@ -8,7 +8,7 @@
 	<%#= name + image %>
 	<%= link_to grocery_path(grocery) do %>
 		<div>
-			<span><%= grocery.name %></span> <br>			
+			<span><%= grocery.name %></span> <br>
 			<% if @grocery.has_image? %>
 			  <%= image_tag @grocery.grocery_image.grocery_image_url %>
 			<% else %>
@@ -28,6 +28,20 @@
 				<li><%= link_to 'Create a new product', new_grocery_product_path(@grocery) %></li>
 			</ul>
 		</fieldset>
+	<% end %>
+
+	<script>
+	  grocery_id = <%= @grocery.id %>;
+	</script>
+
+	<% if @logged_user %>
+	  <div id="follow" class=<%= (current_user_following_grocery ? "hidden" : "") %> >
+	    <button id="follow" onclick="follow(true)">Follow this grocery!</button>
+	  </div>
+	  <div id="unfollow" class=<%= (current_user_following_grocery ? "" : "hidden") %> >
+	    <div>You are following this grocery</div>
+	    <button id="unfollow" onclick="follow(false)">Unfollow</button>
+	  </div>
 	<% end %>
 
 </div>

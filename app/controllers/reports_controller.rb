@@ -41,7 +41,8 @@ class ReportsController < ApplicationController
   end
 
   def show
-    @comments = @report.comments.order(id: :desc).limit(10)
+      @per_page = 10
+    @comments = @report.comments.order(id: :desc).limit(@per_page)
   end
 
   def edit

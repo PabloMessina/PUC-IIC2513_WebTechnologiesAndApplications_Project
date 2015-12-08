@@ -57,10 +57,16 @@
   </table>
 <% end %>
 
-<h3 id="news_title">News Feed (<%= @reports.count %>)</h3>
+<% if user_id_matches_logged_user? %>
+    <h3 id="news_title">News Feed (<%= @reports.count %>)</h3>
 
-<div id="report_feed_container">
-  <%= render partial: 'reports/report_feed_pagination', locals: {reports: @reports} %>
-</div>
+    <div id="report_feed_container">
+      <%= render partial: 'reports/report_feed_pagination', locals: {reports: @reports} %>
+    </div>
 
-<button id='more_feed_button' data-url="<%= user_feed_url(@user) %>">Load more news</button>
+    <% if @reports.count == @per_page %>
+        <button id='more_feed_button' data-url="<%= user_feed_url(@user) %>">Load more news</button>
+    <% else %>
+        <button id='more_feed_button' data-url="<%= user_feed_url(@user) %>" disabled>No more news available</button>
+    <% end %>
+<% end %>

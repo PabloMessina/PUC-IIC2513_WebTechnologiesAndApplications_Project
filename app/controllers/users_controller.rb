@@ -7,7 +7,11 @@ class UsersController < ApplicationController
   before_action :check_user_matches_logged_user, only: [:edit,:update,:destroy, :news_feed]
 
   def show
-    redirect_to user_news_feed_path(@user)
+    if user_id_matches_logged_user?
+      redirect_to user_news_feed_path(@user)
+    else
+      redirect_to user_posted_news_path(@user)
+    end
   end
 
 	def new

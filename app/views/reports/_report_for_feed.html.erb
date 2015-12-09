@@ -1,35 +1,42 @@
 <%#=  parameters: report, grocery, show_comments_link %>
 
 <div class="report-container" id = '<%= report.id %>'>
-	<div>
-	
-		<%= link_to grocery_report_path(grocery,report) do %>
-			<strong><%= report.title %></strong>
+	<div class="grocery-image-container">
+		<%= link_to grocery_path(grocery) do %>
+			<%= image_tag grocery.image_url_or_default, class: "grocery-image" %>
 		<% end %>
-		by <%= link_to grocery_path(grocery) do %>
-			<% if grocery.has_image? %>
-				<%= image_tag grocery.grocery_image.grocery_image_url, style: "width: 40; height: 40px;"  %>
-			<% else %>
-				<%= image_tag "Springfield_grocery_store.png", :style => "width: 40px; height: 40px;"  %>
+	</div>
+	<div class="right-container">
+		<div class="report-header">
+			<%= link_to grocery.name, grocery_path(grocery) %> posted by
+			<%= link_to user_path(report.user) do %>
+				<%= report.user.username %>
+				<%= image_tag report.user.image_url_or_default, class: "author-image" %>
 			<% end %>
-			<span><%= grocery.name %></span>
-		<% end %>
+			<br>
+			<span>on <%= report.created_at.strftime("%a, %b %d %Y at %H:%M hrs") %></span>
+		</div>
 		<br>
+		<%= link_to grocery_report_path(grocery,report) do %>
+			<h3> <%= report.title %> </h3>
+		<% end %>
+		<pre class="text-container"><%= report.text %></pre>
 
 		<% if report.product %>
-			<% if report.product.has_image? %>
-				<%= image_tag report.product.product_image.product_image_url, style: "width: 50; height: 50px;"  %>
-			<% else %>
-				<%= image_tag "products-icon-basket.gif", :style => "width: 50px; height: 50px;"  %>
-			<% end %>
+			<span>Attached product: </span>			
+			<div class="attached-product-container">
+				<%= link_to grocery_product_path(grocery, report.product) do %>
+					<%= image_tag report.product.image_url_or_default, class: "attached-image" %>
+					<br>
+					<span class="product-name"><%= report.product.name %></span>
+				<% end %>
+			</div>
+			<br>
 		<% end %>
 
-		<pre class="text-container"><%= report.text %></pre>
-	
-	</div>
-	
-	<% if show_comments_link %>
-		<%= link_to "All Comments (#{report.comments.count})", grocery_report_path(grocery, report) %>
-	<% end %>
+		<% if show_comments_link %>
+			<%= link_to "All Comments (#{report.comments.count})", grocery_report_path(grocery, report) %>
+		<% end %>
 
+	</div>
 </div>

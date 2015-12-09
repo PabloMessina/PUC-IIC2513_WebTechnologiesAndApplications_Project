@@ -1,0 +1,25 @@
+<% if @reports.count > 0 %>
+
+	$('#report_feed_container').append('<%= escape_javascript(render partial: 'reports/report_feed_pagination', locals: {reports: @reports}) %>');
+
+	
+	<% @reports.each do |c| %>
+		addShowMoreLessToReport(<%= c.id  %>);
+	<% end %>
+
+	refreshNewsCount();
+
+	<% if @reports.count < @per_page %>
+		$("#more_feed_button").html('No more news available');
+		$("#more_feed_button").prop('disabled',true);
+	<% else %>
+		$("#more_feed_button").html('Load more news');
+		$("#more_feed_button").prop('disabled',false);
+	<% end %>
+
+<% else %>
+
+	$("#more_feed_button").html('No more news available');
+	$("#more_feed_button").prop('disabled',true);
+
+<% end %>

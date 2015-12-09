@@ -46,7 +46,8 @@
 body {
   font-family: arial,sans-serif;
   background-color: #ddd;
-  padding-top: 60px;
+  padding-top: 56px;
+  margin: 0;
 }
 
 #page-wrap {
@@ -222,12 +223,12 @@ div.field {
 .report-text-cell {
   word-wrap: break-word;
 }
-
+/*
 div.report-container {
   background-color: #f0f0ff;
-  padding: 10px;  /* argh, problemas con padding vertical por margin collapse... */
+  padding: 10px;  
   border-radius: 5px;
-}
+}*/
 
 div.spanner-container {
   position: relative;
@@ -262,7 +263,7 @@ div.comment {
 
 
 
-header {
+.app-header {
   position: fixed;
   left: 0px;
   top: 0px;
@@ -273,8 +274,8 @@ header {
   min-width: 800px;
 }
 
-header a:link,
-header a:visited {
+.app-header a:link,
+.app-header a:visited {
     display: block;
     width: 120px;
     font-weight: bold;
@@ -285,8 +286,8 @@ header a:visited {
     text-transform: uppercase;
 }
 
-header a:hover,
-header a:active {
+.app-header a:hover,
+.app-header a:active {
     text-decoration: underline;
 }
 
@@ -320,4 +321,14 @@ header a:active {
 
 .w100 {
     width: 100%;
+}
+
+
+a {
+  text-decoration: underline;  
+  color: #0E26A0;
+}
+
+a:hover {
+  color: #2B7B04;
 }

@@ -31,7 +31,8 @@ Rails.application.routes.draw do
 
   match '/groceries/:grocery_id/rate_product/:id', to: 'grocery_products#rate_product', via: 'post', as: 'rate_product'
 
-  match '/groceries/:grocery_id/follow', to: 'groceries#follow', via: 'post', as: 'follow'
+  match '/groceries/:grocery_id/follow', to: 'groceries#follow', via: 'post', as: 'grocery_follow'
+  match '/groceries/:grocery_id/unfollow', to: 'groceries#unfollow', via: 'post', as: 'grocery_unfollow'
 
   match '/reviews/:review_id/comments/new', to: 'review_comments#create', via: 'post', as: 'post_new_comment'
   match '/reviews/:review_id/comments', to: 'review_comments#index', via: 'get', as: 'review_comments'
@@ -41,7 +42,10 @@ Rails.application.routes.draw do
   match '/search_groceries', to: 'search#groceries', via: 'get'
   match '/search_products',  to: 'search#products',  via: 'get'
 
-  match '/users/:id/feed', to: 'users#get_news_feed', via: 'get', as:'user_feed'
+  match '/users/:id/feed', to: 'users#news_feed', via: 'get', as:'user_news_feed'
+  match '/users/:id/posted_news', to: 'users#posted_news', via: 'get', as: 'user_posted_news'
+  match '/users/:id/following_groceries', to: 'users#following_groceries', via: 'get', as: 'user_following_groceries'
+  match '/users/:id/associated_groceries', to: 'users#associated_groceries', via: 'get', as: 'user_associated_groceries'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

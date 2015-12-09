@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151120222222) do
+ActiveRecord::Schema.define(version: 20151209010558) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20151120222222) do
     t.datetime "updated_at", null: false
   end
 
+  add_index "followers", ["grocery_id", "user_id"], name: "index_followers_on_grocery_id_and_user_id", unique: true, using: :btree
   add_index "followers", ["grocery_id"], name: "index_followers_on_grocery_id", using: :btree
   add_index "followers", ["user_id"], name: "index_followers_on_user_id", using: :btree
 
@@ -150,9 +151,11 @@ ActiveRecord::Schema.define(version: 20151120222222) do
     t.integer  "product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id"
   end
 
   add_index "reports", ["grocery_id"], name: "index_reports_on_grocery_id", using: :btree
+  add_index "reports", ["user_id"], name: "index_reports_on_user_id", using: :btree
 
   create_table "review_comments", force: :cascade do |t|
     t.text     "content"
@@ -243,6 +246,7 @@ ActiveRecord::Schema.define(version: 20151120222222) do
   add_foreign_key "report_comments", "users"
   add_foreign_key "reports", "groceries"
   add_foreign_key "reports", "products"
+  add_foreign_key "reports", "users"
   add_foreign_key "review_comments", "reviews"
   add_foreign_key "review_comments", "users"
   add_foreign_key "reviews", "products"

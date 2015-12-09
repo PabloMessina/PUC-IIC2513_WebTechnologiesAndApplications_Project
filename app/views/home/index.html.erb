@@ -3,20 +3,6 @@
   <%= javascript_include_tag 'home' %>
 <% end %>
 
-<% unless @following_groceries.empty? %>
-	<h4>Following groceries</h4>
-	<div>
-		<% @following_groceries.each do |grocery| %>
-			<div>
-				<%= link_to grocery.name, grocery_path(grocery.id) %>
-			</div>
-		<% end %>
-	</div>
-<% end %>
-
-<br/>
-<br/>
-
 <div id="pagination_div">
 	<%= render partial: 'groceries/groceries_pagination', locals: {groceries: @groceries, pagination_data: @groceries} %>
 </div>

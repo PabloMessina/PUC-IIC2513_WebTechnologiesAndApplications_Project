@@ -1,0 +1,7 @@
+<div class="associated-grocery-container" id="<%= grocery.id %>">
+	<%= link_to grocery_path(grocery) do %>
+	  <%= image_tag grocery.image_url_or_default, class: 'grocery-image' %>
+	  <br>
+		<strong><%= grocery.name %></strong>
+	<% end %>
+</div>

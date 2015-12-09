@@ -1,0 +1,11 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'users_news_feed' %>
+<% end %>
+
+<h3 id="news_title" data-title="Posted News">Posted News (<%= @reports.count %>)</h3>
+
+<div id="report_feed_container">
+  <%= render partial: 'reports/report_feed_pagination', locals: {reports: @reports} %>
+</div>
+
+<button id='more_feed_button' data-url="<%= user_posted_news_url(@user) %>">Load more news</button>

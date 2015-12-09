@@ -1,5 +1,5 @@
 <% content_for :head do %>
-  <%= javascript_include_tag 'users_show', 'users' %>
+  <%= javascript_include_tag 'users_show' %>
 <% end %>
 
 <% if user_id_matches_logged_user? %>
@@ -63,4 +63,4 @@
   <%= render partial: 'reports/report_feed_pagination', locals: {reports: @reports} %>
 </div>
 
-<button id='more_feed_button' data-url="<%= user_feed_url(@user) %>">Load more news</button>
+<button id='more_feed_button' data-url="<%= user_news_feed_url(@user) %>">Load more news</button>

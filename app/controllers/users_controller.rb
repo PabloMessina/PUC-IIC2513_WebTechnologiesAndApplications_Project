@@ -1,13 +1,13 @@
 class UsersController < ApplicationController
   before_action :set_namespace
   before_action :set_logged_user_by_cookie
-  before_action :set_user_by_id, only:[:show, :edit, :get_news_feed]
-  before_action :check_user_exists, only:[:show, :edit, :update,:destroy]
-  before_action :check_user_logged_in, only:[:edit,:update,:destroy]
-  before_action :check_user_matches_logged_user, only: [:edit,:update,:destroy]
+  before_action :set_user_by_id, except:[:new, :create]
+  before_action :check_user_exists, except:[:new, :create]
+  before_action :check_user_logged_in, only:[:edit,:update,:destroy, :news_feed]
+  before_action :check_user_matches_logged_user, only: [:edit,:update,:destroy, :news_feed]
 
   def show
-    @reports = @user.get_next_reports_feed_chunk(nil,10)
+    redirect_to user_news_feed_path(@user)
   end
 
 	def new
@@ -64,13 +64,29 @@ class UsersController < ApplicationController
 
   end
 
-  def get_news_feed
+  def news_feed
     @per_page = 10
     if(params.has_key?(:last_id))
       @reports = @user.get_next_reports_feed_chunk(params[:last_id].to_i,@per_page)
     else
       @reports = @user.get_next_reports_feed_chunk(nil,@per_page)
     end    
+  end
+
+  def posted_news
+    @per_page = 10
+    if(params.has_key?(:last_id))
+      @reports = @user.get_next_posted_news_chunk(params[:last_id].to_i,@per_page)
+    else
+      @reports = @user.get_next_posted_news_chunk(nil,@per_page)
+    end    
+  end
+
+  def following_groceries
+    @groceries = @user.following_groceries
+  end
+
+  def associated_groceries
   end
 
 	private

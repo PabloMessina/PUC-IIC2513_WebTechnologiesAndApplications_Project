@@ -1,5 +1,5 @@
 var reports_data = {};
-var MAX_LENGTH = 20;
+var MAX_LENGTH = 200;
 
 $(document).ready(function() {
 
@@ -62,5 +62,7 @@ function showLess(id) {
 
 function refreshNewsCount() {
   var news_count = $(".report-container").size();
-  $("#news_title").html("News feed ("+news_count+")");
+  var $title = $("#news_title");
+  var title = $title.data("title");
+  $title.html(title+" ("+news_count+")");
 }

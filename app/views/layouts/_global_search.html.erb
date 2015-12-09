@@ -22,23 +22,23 @@
 
   <div id="advanced_fields" class="w100 hidden">
 
-    <!-- <div>
+    <%# <div>
       <label>Filter by category (OR)</label>
       <%= select_tag :categories, options_from_collection_for_select(Category.all, "id", "name"), multiple: true, class: 'awesome-select' %>
-    </div>
+    <%#</div>
     <div>
       <label>Filter by tags (AND)</label>
       <%= select_tag :tags, options_from_collection_for_select(Tag.all,"id","name"), multiple: true, class: 'awesome-select' %>
-    </div> -->
+    <%#</div> --> %>
 
     <table class="w100">
 
     <tr>
       <td>
-        <label>Filter by category (OR)</label>
+        <label id = "categories_label">Filter by category (OR)</label>
       </td>
       <td>
-        <label>Filter by tags (AND)</label>
+        <label id = "tags_label">Filter by tags (AND)</label>
       </td>
     </tr>
 

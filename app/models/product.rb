@@ -75,6 +75,10 @@ class Product < ActiveRecord::Base
     return self.product_image && !self.product_image.product_image.blank?
   end
 
+  def image_url_or_default
+    return has_image? ? self.product_image.product_image_url : "products-icon-basket.gif"
+  end
+
   def validate_new_tags
     unless @new_tags.blank? || (/^(\w+(,\w+)*)?$/ =~ @new_tags) == 0
       errors.add(:new_tags, ": some tags are invalid. Please use letters [a-zA-Z], numbers [0-9] and underscore (_) only.")

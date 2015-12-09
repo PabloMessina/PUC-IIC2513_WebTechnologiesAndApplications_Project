@@ -9,8 +9,8 @@ class GroceriesController < ApplicationController
   before_action only: [:search_products, :edit, :update, :destroy] do check_grocery_exists(:id) end
   before_action only: [:edit, :update, :destroy] do check_privilege_on_grocery(:administrator, :id) end
 
-  before_action :set_grocery_categories
-  before_action :set_grocery_tags
+  before_action :set_grocery_categories, except:[:follow, :unfollow]
+  before_action :set_grocery_tags, except:[:follow, :unfollow]
 
   def index
 
@@ -190,6 +190,24 @@ class GroceriesController < ApplicationController
       end
     rescue ActiveRecord::RecordNotFound
     end
+  end
+
+  def unfollow
+    begin
+      @logged_user.following_groceries.delete(params[:grocery_id])
+      respond_to do |format|
+        format.json { render json: nil, status: :ok }
+      end
+    rescue ActiveRecord::RecordNotFound
+      respond_to do |format|
+        format.json { render json: nil, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  helper_method :current_user_following_grocery
+  def current_user_following_grocery
+    @logged_user.following_groceries.exists?(@grocery.id)
   end
 
   def search_products

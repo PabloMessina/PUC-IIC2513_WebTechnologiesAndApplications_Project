@@ -314,9 +314,6 @@ function createChart() {
 				count: 1,
 				label: "1 year"
 			}, {
-				period: "YTD",
-				label: "YTD"
-			}, {
 				period: "MAX",
 				label: "MAX"
 			}]

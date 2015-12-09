@@ -1,5 +1,5 @@
 <% content_for :head do %>
-  <%= javascript_include_tag 'users_show', 'users' %>
+  <%= javascript_include_tag 'users_show' %>
 <% end %>
 
 <% if user_id_matches_logged_user? %>
@@ -65,8 +65,8 @@
     </div>
 
     <% if @reports.count == @per_page %>
-        <button id='more_feed_button' data-url="<%= user_feed_url(@user) %>">Load more news</button>
+        <button id='more_feed_button' data-url="<%= user_news_feed_url(@user) %>">Load more news</button>
     <% else %>
-        <button id='more_feed_button' data-url="<%= user_feed_url(@user) %>" disabled>No more news available</button>
+        <button id='more_feed_button' data-url="<%= user_news_feed_url(@user) %>" disabled>No more news available</button>
     <% end %>
 <% end %>

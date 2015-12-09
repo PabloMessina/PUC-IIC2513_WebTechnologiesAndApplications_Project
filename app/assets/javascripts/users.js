@@ -11,23 +11,6 @@ function togglePasswordDiv(checkbox) {
 	}
 }
 
-var users_ready = function() {
-
-  $("#advanced_button").on('click', function() {
-    $("#advanced_fields#categories").val('').trigger('change');
-    $("#advanced_fields#tags").val('').trigger('change');
-    $("#advanced_fields").toggleClass('hide-element');
-    var btn = $("#advanced_button");
-    var content = btn.html();
-    if(content == "Show advanced fields") {
-      btn.html("Hide advanced fields");
-    } else {
-      btn.html("Show advanced fields");
-    }
-  });
-};
-
-
 function follow_id(set_to) {
   return "#" + (set_to ? "" : "un") + "follow";
 }

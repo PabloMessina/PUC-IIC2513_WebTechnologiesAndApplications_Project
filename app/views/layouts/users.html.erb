@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> <%= if content_for?(:title) then yield(:title) + ' | ' end %>Alma</title>
+  <%= stylesheet_link_tag    'application', 'users', media: 'all' %>
+  <%= javascript_include_tag 'application', 'users' %>
+  <%=  yield(:head) if content_for?(:head) %>  
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  
+  <%= render 'layouts/header' %>
+
+  <div class="users_body_wrap">    
+
+    <aside class="users_sidebar">
+      <%= render 'layouts/users/sidebar' %>
+    </aside>	  
+
+    <section class="users_inner_wrapper" >
+      <nav class="users_inner_nav">
+        <ul>
+          <% if user_id_matches_logged_user? %>
+            <li>
+                <%= link_to "News Feed", user_news_feed_path(@user), class: (controller.action_name == "news_feed") ? 'unclickable' : 'clickable' %>
+            </li>
+          <% end %>
+          <li>
+            <%= link_to "Posted News", user_posted_news_path(@user), class: (controller.action_name == "posted_news") ? 'unclickable' : 'clickable' %>
+          </li>
+          <li>
+            <%= link_to "Following Groceries", user_following_groceries_path(@user), class: (controller.action_name == "following_groceries") ? 'unclickable' : 'clickable' %>
+          </li>
+          <li>
+            <%= link_to "Associated Groceries", user_associated_groceries_path(@user), class: (controller.action_name == "associated_groceries") ? 'unclickable' : 'clickable' %>
+          </li>
+        </ul>
+      </nav>
+      <% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %>"><%= value %></div>
+      <% end %>
+      <div class="users_page_content" %>
+        <%= yield %>
+      </div>
+    </section>
+
+  </div>
+
+</body>
+</html>

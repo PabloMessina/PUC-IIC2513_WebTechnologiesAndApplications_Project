@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
 	has_many :stars
 	has_many :review_comments
 	has_many :comments
+	has_many :reports
 
 	before_create :create_remember_token
 
@@ -48,6 +49,10 @@ class User < ActiveRecord::Base
 		return self.user_image && !self.user_image.user_image.blank?
 	end
 
+	def image_url_or_default
+		return self.has_image? ? self.user_image.user_image_url : "default_profile.jpg"
+	end
+
 
 	def get_review_for(product_id)
 		self.reviews.where("product_id = ?",product_id).first
@@ -57,14 +62,26 @@ class User < ActiveRecord::Base
 		self.stars.where("product_id = ?",product_id).first
 	end
 
-	def get_name
+	def full_name
 		self.first_name+' '+self.last_name
+	end
+
+	def get_privileged_groceries(privilege)
+		self.privileged_groceries.where('privilege = ?',privilege)
 	end
 
 	def get_next_reports_feed_chunk(id_ref, limit)		
 		reports = Report.joins('INNER JOIN groceries ON groceries.id = reports.grocery_id').joins('INNER JOIN followers ON followers.grocery_id = groceries.id').where('followers.user_id = ?', self.id)
 		reports = reports.where('reports.id < ?',id_ref) unless id_ref.nil?
-		reports = reports.order('reports.id desc')
+		reports = reports.order('reports.created_at desc')
+		reports = reports.limit(limit) unless limit.nil?
+		return reports
+	end
+
+	def get_next_posted_news_chunk(id_ref, limit)
+		reports = self.reports
+		reports = reports.where('reports.id < ?',id_ref) unless id_ref.nil?
+		reports = reports.order('reports.created_at desc')
 		reports = reports.limit(limit) unless limit.nil?
 		return reports
 	end

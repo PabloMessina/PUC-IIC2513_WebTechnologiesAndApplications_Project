@@ -32,7 +32,7 @@ $(function() {
 
     $("#advanced_fields").toggleClass("hidden");
 
-    var btn = $("#advanced_button");
+    var btn = $(this);
     var content = btn.html();
     if(content == "Show advanced fields") {
       btn.html("Hide advanced fields");
@@ -46,11 +46,13 @@ $(function() {
 function groceriesSearchSelected() {
 	$("#search_form").attr("action", "/search_groceries");
   $("#search_button").val("Search groceries");
+  $("#categories_label").html("Filter by category (AND)");
 }
 
 function productsSearchSelected() {
 	$("#search_form").attr("action", "/search_products");
   $("#search_button").val("Search products");
+  $("#categories_label").html("Filter by category (OR)");
 }
 
 //add sortBy method to array

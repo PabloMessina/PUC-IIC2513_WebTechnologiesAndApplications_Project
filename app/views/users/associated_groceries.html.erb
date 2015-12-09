@@ -1,0 +1,36 @@
+<% content_for :title do %>
+	Associated Groceries
+<% end %>
+
+<% at_least_one = false %>
+
+<% Privilege.privileges.keys.each do |priv_key| %>
+	
+	<%
+		priv_val = Privilege.privileges[priv_key] 
+	 	@groceries = @user.get_privileged_groceries(priv_val)
+	 %>
+
+	<% if @groceries.any? %>
+		<% at_least_one = true %>
+
+		<h3><%= "#{priv_key.titleize} of #{@groceries.count} #{(@groceries.count > 0) ? 'groceries' : 'grocery'}:" %></h3>
+
+		<% i = 1 %>
+		<% @groceries.each do |grocery| %>
+		  <%= render partial: 'groceries/associated_grocery', locals: {grocery: grocery} %>
+		  <% if i == 5 %>
+				<div style="clear:both;width:100%;height:5px;"></div>
+				<% i = 0 %>
+		  <% end %>
+		  <% i += 1 %>
+		<% end %>
+
+	<% end %>
+
+<% end %>
+
+<% unless at_least_one %>
+	Currently you don't have privileges on any grocery
+<% end %>
+

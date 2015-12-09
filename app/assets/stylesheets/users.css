@@ -1,9 +1,173 @@
-// Place all the styles related to the Images controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
-.highlight-div {
-  border-style: solid;
-  border-width: 5px;
-  outline: 1px solid blue;
+body {
+	background: rgb(245,248,250);
 }
+
+.users_body_wrap {
+	display: flex;
+}
+
+.users_sidebar {
+	flex: 0 0 auto;
+	margin: 0 10px 0 0;
+	padding-left: 20px;
+	padding-top: 10px;
+	width: 200px;
+	font-family: Arial,sans-serif;
+}
+
+.users_sidebar .profile-image-link {	
+  margin-bottom: 10px;
+  display: block;    
+}
+
+.users_sidebar .profile-image {
+  width: 150px;
+  height: 160px;
+  background: white;
+  border-radius: 10px;
+  padding: 5px;
+  border: 2px solid black;
+  background-color: white;
+}
+
+.users_sidebar a.fullname {
+	text-decoration: none;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  word-wrap: break-word;
+  color: rgb(41,47,51);
+}
+
+.users_sidebar .personal-info {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  word-wrap: break-word;
+}
+
+.users_sidebar a.fullname:hover {
+	text-decoration: underline;
+}
+
+.users_inner_wrapper {
+	flex: 0 1 auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.users_page_content {
+	flex: 1;
+	padding: 10px;
+}
+
+.users_inner_nav ul {		
+	list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: darkred;
+  min-width: 700px
+}
+
+.users_inner_nav li {
+	float: left;
+}
+
+.users_inner_nav li a {
+	display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.users_inner_nav li a.unclickable {
+	background-color: rgb(15,15,15);
+}
+
+.users_inner_nav li a.clickable:hover {
+  background-color: darksalmon;
+}
+
+/* CSS for reports */
+
+.report-container {
+	display: inline-block;
+	max-width: 700px;
+  background-color: white;
+	padding: 5px;
+	border-radius: 5px;
+	border: 1px solid black;
+	word-wrap: break-word;
+}
+
+.report-container .grocery-image-container {
+	float: left;
+	vertical-align: top;
+}
+
+.report-container .grocery-image {
+	width: 50px;
+	height: 50px;
+}
+
+.report-container .right-container {
+	float: right;
+	padding-left: 20px;
+	padding-right: 20px;
+	max-width: 86%;
+}
+
+.report-container .report-header {
+	display: inline-block;
+}
+
+.report-container .author-image {
+	width: 30px;
+	height: 30px;
+	float: right;
+}
+
+.report-container .attached-image {
+	width: 60px;
+	height: 60px;
+}
+
+.attached-product-container {
+	text-align: center;
+}
+
+.report-container .product-name {
+	width: 60px;
+	word-wrap: break-word;
+}
+
+.report-container .text-container {
+	word-wrap: break-word;
+	white-space: pre-wrap;
+	max-width: 600px
+}
+
+/* CSS for following groceries */
+/* CSS for associated groceries */
+
+.following-grocery-container,
+.associated-grocery-container {
+	width: 150px;
+	text-align: center;
+	word-wrap: break-word;
+	margin-right: 20px;
+	float: left;
+}
+	
+.following-grocery-container .grocery-image,
+.associated-grocery-container .grocery-image {
+	width: 145px;
+	height: 140px;
+}
+
+
+

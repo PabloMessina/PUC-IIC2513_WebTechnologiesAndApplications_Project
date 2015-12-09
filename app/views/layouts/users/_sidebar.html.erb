@@ -1,0 +1,26 @@
+<%= link_to user_path(@user), class: 'profile-image-link' do %>
+  <% if @user.has_image? %>
+    <%= image_tag @user.user_image.user_image_url, class: 'profile-image' %>
+  <% else %>
+    <%= image_tag "default_profile.jpg", class: 'profile-image  ' %>
+  <% end %>
+<% end %>
+<%= link_to @user.full_name, user_path(@user), class: 'fullname' %>
+<div class="personal-info">
+  <strong>Username:</strong> <%= @user.username %>
+  <br>
+  <% if user_id_matches_logged_user? %>
+    <strong>Email:</strong> <%= @user.email %>
+    <br>
+    <strong>Address:</strong> <%= @user.address %>
+    <br>
+  <% end %>
+  <p> Member since <%= @user.created_at.strftime("%a, %b %d %Y") %></p>
+</div>
+<br>
+<% if user_id_matches_logged_user? %>
+  <%= link_to 'Edit profile', edit_user_path(@user) %> <br>
+  <%= link_to 'Create a new grocery!', new_grocery_path %> <br>
+<% end %>
+
+

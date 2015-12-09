@@ -16,4 +16,4 @@ Rails.application.config.assets.precompile +=
 
 #javascript
 Rails.application.config.assets.precompile +=
-%w(home users groceries purchase_orders reviews reports search users_show).map {|x| "#{x}.js"}
+%w(home users groceries purchase_orders reviews reports search users_news_feed following_groceries).map {|x| "#{x}.js"}

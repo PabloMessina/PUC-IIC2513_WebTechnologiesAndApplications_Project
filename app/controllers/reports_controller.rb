@@ -29,6 +29,8 @@ class ReportsController < ApplicationController
 
   def create
 
+    filtered_params = report_params
+    filtered_params[:user_id] = @logged_user.id
     @report = Report.new(report_params)
     if @report.save
       flash[:success] = "News created successfully!"

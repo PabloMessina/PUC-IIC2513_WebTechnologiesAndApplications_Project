@@ -21,6 +21,10 @@ class Grocery < ActiveRecord::Base
 		return self.grocery_image && !self.grocery_image.grocery_image.blank?
 	end
 
+	def image_url_or_default
+		return self.has_image? ? self.grocery_image.grocery_image_url : "Springfield_grocery_store.png"
+	end
+
 	def purchases_data (from_date, to_date)
 		query = self.purchase_orders.joins(:order_lines).select('purchase_orders.id, purchase_orders.created_at as date, count(order_lines.*) as order_lines_count, sum(order_lines.amount * order_lines.product_price) as total_price').group('purchase_orders.id').order('purchase_orders.id desc')
 
